@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface VideoRepository  extends JpaRepository<Video, Integer> {
 
+    /*
     public List<Video> findVideosByClase_Idclase(int i);
 
     public List<Video> findVideosByClase_IdclaseAndEvaluacionOrderByOrdenAsc(int i, int j);
 
 
+
+     */
 }

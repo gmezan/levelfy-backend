@@ -1,8 +1,8 @@
 package com.uc.backend.service;
 
-import com.uc.backend.dto.RegistroPagoDto;
-import com.uc.backend.entity.Clase;
-import com.uc.backend.entity.Usuario;
+import com.uc.backend.dto.PaymentDto;
+import com.uc.backend.entity.Service;
+import com.uc.backend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -74,25 +74,25 @@ public class CustomEmailService {
         javaMailSender.send(msg);
     }
 
-    public void sendAsesPerRegisterMail(Usuario usuario, RegistroPagoDto registroPagoDto) throws IOException, MessagingException {
+    public void sendAsesPerRegisterMail(User user, PaymentDto paymentDto) throws IOException, MessagingException {
         String mensaje =
-                "<p>Hola se ha registrado el pago con los siguientes datos:<br/>" + "Usuario: <b>" + usuario.getNombre()
-                        + "</b> <br/>Mensaje o número de operación: <b>" + registroPagoDto.getMensaje() + "</b><br/>Fecha del pago: <b>" + registroPagoDto.getFecha() +
-                        "</b><br/>Monto: <b>" + registroPagoDto.getMonto() + "</b> a través de <b>" + METODOS_DE_PAGO[registroPagoDto.getMetodo()] + "</b><br/><br/> Verficaremos los datos y procederemos a activar el curso " +
+                "<p>Hola se ha registrado el pago con los siguientes datos:<br/>" + "Usuario: <b>" + user.getName()
+                        + "</b> <br/>Mensaje o número de operación: <b>" + paymentDto.getMessage() + "</b><br/>Fecha del pago: <b>" + paymentDto.getDate() +
+                        "</b><br/>Monto: <b>" + paymentDto.getAmount() + "</b> a través de <b>" + METODOS_DE_PAGO[paymentDto.getMethod()] + "</b><br/><br/> Verficaremos los datos y procederemos a activar el curso " +
                         "<br/> Si confundiste alguno de los datos vuelve a registrar el pago.<br/> " +
-                        "cupón usado:"+registroPagoDto.getCupon() + "</p>";
+                        "cupón usado:"+ paymentDto.getCoupon() + "</p>";
             sendHtmlMail(ADMINS, "Inscripción - Asesoría Personalizada","Registro de pago", mensaje);
-            sendHtmlMail(usuario.getCorreo(), "Inscripción - Asesoría Personalizada","Registro de pago", mensaje);
+            sendHtmlMail(user.getEmail(), "Inscripción - Asesoría Personalizada","Registro de pago", mensaje);
 
     }
-    public void sendMailToUsersMensaje(List<Usuario> listaUsuarios, Clase clase , String mensaje) throws IOException, MessagingException {
-        mensaje= mensaje+ "Tomar en cuenta el siguiente enlace de zoom para su clase:" + clase.getCurso().getNombre() +" de " +clase.getCurso().getUnivNameStr();
-        String[] correos = new String[listaUsuarios.size()];
-        for (int i = 0; i<listaUsuarios.size(); i++){
-Array.set(correos,i,listaUsuarios.get(i).getCorreo());
+    public void sendMailToUsersMensaje(List<User> listaUsers, Service service, String mensaje) throws IOException, MessagingException {
+        mensaje= mensaje+ "Tomar en cuenta el siguiente enlace de zoom para su clase:" + service.getCourse().getName() +" de " + service.getCourse().getUnivNameStr();
+        String[] correos = new String[listaUsers.size()];
+        for (int i = 0; i< listaUsers.size(); i++){
+Array.set(correos,i, listaUsers.get(i).getEmail());
              }
-        sendHtmlMail(correos, "University Class - Asesoría "+clase.getCurso().getNombre(),"Información importante acerca de la asesoría", mensaje);
-    sendHtmlMail(ADMINS, "University Class - Asesoría "+clase.getCurso().getNombre(),"Información importante acerca de la asesoría", mensaje);
+        sendHtmlMail(correos, "University Class - Asesoría "+ service.getCourse().getName(),"Información importante acerca de la asesoría", mensaje);
+    sendHtmlMail(ADMINS, "University Class - Asesoría "+ service.getCourse().getName(),"Información importante acerca de la asesoría", mensaje);
 
     }
 

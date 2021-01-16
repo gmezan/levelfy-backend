@@ -1,22 +1,13 @@
 package com.uc.backend.job.asesper;
 
-import com.uc.backend.entity.ClaseEnroll;
-import com.uc.backend.repository.ClaseEnrollRepository;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AsesPersEnrollDeactivationJob  extends QuartzJobBean {
+public class AsesPersEnrollDeactivationJob   {/*
     private static final Logger logger = LoggerFactory.getLogger(AsesPersEnrollDeactivationJob.class);
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository claseEnrollRepository;
 
     //Desactivación pasada la fecha de la asesoría
     @Override
@@ -33,4 +24,4 @@ public class AsesPersEnrollDeactivationJob  extends QuartzJobBean {
         }
 
     }
-}
+*/}

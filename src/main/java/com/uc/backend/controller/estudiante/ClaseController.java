@@ -1,22 +1,20 @@
 package com.uc.backend.controller.estudiante;
 
-import com.uc.backend.entity.Clase;
-import com.uc.backend.entity.ClaseEnroll;
-import com.uc.backend.entity.ClaseSesion;
-import com.uc.backend.entity.Usuario;
-import com.uc.backend.repository.ClaseEnrollRepository;
-import com.uc.backend.repository.ClaseRepository;
-import com.uc.backend.repository.ClaseSesionRepository;
+import com.uc.backend.entity.Service;
+import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.EnrollmentSession;
+import com.uc.backend.entity.User;
+import com.uc.backend.repository.EnrollmentRepository;
+import com.uc.backend.repository.ServiceRepository;
+import com.uc.backend.repository.EnrollmentSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.uc.backend.utils.CustomConstants.*;
@@ -25,22 +23,23 @@ import static com.uc.backend.utils.CustomConstants.*;
 @RequestMapping("/c")
 public class ClaseController {
 
+    /*
     @Autowired
-    ClaseRepository claseRepository;
+    ServiceRepository serviceRepository;
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    ClaseSesionRepository claseSesionRepository;
+    EnrollmentSessionRepository enrollmentSessionRepository;
     //----------------------------------------- Maratones ----------------------------------------------------------------
     @GetMapping(value = {"/maratones", "/maratones/"})
     public String maratonesAsesoria(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
-List <Clase>listaMaratones=new ArrayList<>();
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
+List <Service>listaMaratones=new ArrayList<>();
        if(!lista.isEmpty()) {
            for (int i=0;i< lista.size();i++ ) {
-               List<ClaseSesion> listaClaseSession = claseSesionRepository.findByClase_Idclase(lista.get(i).getIdclase());
+               List<EnrollmentSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
                if (listaClaseSession.size()==1) {
                    listaMaratones.add(lista.get(i));
                }
@@ -49,17 +48,17 @@ List <Clase>listaMaratones=new ArrayList<>();
 
            }
        model.addAttribute("listaPaqueteAsesorias", listaMaratones);  //
-        model.addAttribute("universidad",UNIVERSIDAD);
+        model.addAttribute("universidad", UNIVERSITIES);
         return "cursos/listaMaratones";
     }
     @GetMapping(value = "/maratones/{u}")
     public String maratonesAsesoriaOnlineAsd(Model model, @PathVariable("u") String univ) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PAQUETE,univ);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PAQUETE,univ);
 
-        List <Clase>listaMaratones=new ArrayList<>();
+        List <Service>listaMaratones=new ArrayList<>();
         if(!lista.isEmpty()) {
             for (int i=0;i< lista.size();i++ ) {
-                List<ClaseSesion> listaClaseSession = claseSesionRepository.findByClase_Idclase(lista.get(i).getIdclase());
+                List<EnrollmentSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
                 if (listaClaseSession.size()==1) {
                     listaMaratones.add(lista.get(i)); } }}
         model.addAttribute("listaPaqueteAsesorias", listaMaratones);  //
@@ -69,40 +68,40 @@ List <Clase>listaMaratones=new ArrayList<>();
     //----------------------------------------- PAQUETE ASESORIA -----------------------------------------------------------------
     @GetMapping(value = {"/ases-paq", "/ases-paq/"})
     public String paqueteAsesoriaOnline(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
         model.addAttribute("listaPaqueteAsesorias", lista);  //
-        model.addAttribute("universidad",UNIVERSIDAD);
+        model.addAttribute("universidad", UNIVERSITIES);
         return "cursos/listaPaqueteAsesoriaOnline";
     }
 
     @GetMapping(value = "/ases-paq/{u}")
     public String paqueteAsesoriaOnlineAsd(Model model, @PathVariable("u") String univ) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PAQUETE,univ);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PAQUETE,univ);
         model.addAttribute("listaPaqueteAsesorias", lista);  //
         model.addAttribute("univ", univ);
         return "cursos/listaPaqueteAsesoriaOnline";
     }
 
     @GetMapping("/ases-paq/enroll/{id}")
-    public String paqueteAsesoriaOnline_asesoria(Model model, @ModelAttribute("paqueteAsesoria") ClaseEnroll claseEnroll, @PathVariable("id") int id,
+    public String paqueteAsesoriaOnline_asesoria(Model model, @ModelAttribute("paqueteAsesoria") Enrollment enrollment, @PathVariable("id") int id,
                                                  HttpSession session) {
-        Optional<Clase> optionalPaqueteAsesoria =
-                claseRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PAQUETE);
+        Optional<Service> optionalPaqueteAsesoria =
+                serviceRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PAQUETE);
 
-        Usuario user = (Usuario)session.getAttribute("usuario");
+        User user = (User)session.getAttribute("usuario");
         if (user!=null){
-            Optional<ClaseEnroll> optionalClaseEnroll = claseEnrollRepository.
-                    findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(id, user.getIdusuario());
+            Optional<Enrollment> optionalClaseEnroll = enrollmentRepository.
+                    findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(id, user.getIdUser());
             if (optionalClaseEnroll.isPresent()){
-                return "redirect:/service/ases-paq/"+optionalClaseEnroll.get().getIdClaseEnroll();
+                return "redirect:/service/ases-paq/"+optionalClaseEnroll.get().getIdEnrollment();
             }
         }
 
         if (optionalPaqueteAsesoria.isPresent() &&
-                (claseSesionRepository.findByClase_Idclase(optionalPaqueteAsesoria.get().getIdclase()).size()>0)) {
-            claseEnroll.setClase(optionalPaqueteAsesoria.get());
-            model.addAttribute("paqueteAsesoria", claseEnroll);
-            model.addAttribute("fechas", claseSesionRepository.findByClase_IdclaseOrderByFechaAscInicioAsc(id));
+                (enrollmentSessionRepository.findByClase_Idclase(optionalPaqueteAsesoria.get().getIdService()).size()>0)) {
+            enrollment.setClase(optionalPaqueteAsesoria.get());
+            model.addAttribute("paqueteAsesoria", enrollment);
+            model.addAttribute("fechas", enrollmentSessionRepository.findByClase_IdclaseOrderByFechaAscInicioAsc(id));
             return "cursos/formPaqueteAsesoriaOnline";
         }
         return "redirect:/c/ases-paq";
@@ -114,28 +113,28 @@ List <Clase>listaMaratones=new ArrayList<>();
     //----------------------------------------- ASESORIA PERSONALIZADA -----------------------------------------------------------
     @GetMapping(value = {"/ases-per", "/ases-per/" })
     public String onlineCourse(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PERSONALIZADA);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PERSONALIZADA);
         model.addAttribute("listaAsesorias", lista);  //
         return "cursos/listaAsesoriaOnline";
     }
 
     @GetMapping(value = "/ases-per/{u}")
     public String onlineCourseUniv(Model model, @PathVariable("u") String univ) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PERSONALIZADA, univ);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_ASESORIA_PERSONALIZADA, univ);
         model.addAttribute("listaAsesorias", lista);  //
         model.addAttribute("univ", univ);
         return "cursos/listaAsesoriaOnline";
     }
 
     @GetMapping("/ases-per/enroll/{id}")
-    public String onlineCourseAsesoria(Model model, @ModelAttribute("asesoria") ClaseEnroll claseEnroll, @PathVariable("id") int id) {
-        Optional<Clase> optionalClase = claseRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PERSONALIZADA);
+    public String onlineCourseAsesoria(Model model, @ModelAttribute("asesoria") Enrollment enrollment, @PathVariable("id") int id) {
+        Optional<Service> optionalClase = serviceRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PERSONALIZADA);
         //List<Paquete> listaPaquetes = paqueteRepository.findAll();
 
         if (optionalClase.isPresent()) {
-            claseEnroll.setClase(optionalClase.get());
+            enrollment.setClase(optionalClase.get());
 
-            model.addAttribute("asesoria", claseEnroll);
+            model.addAttribute("asesoria", enrollment);
             model.addAttribute("paquete", PAQUETES.get(1));
             return "cursos/formAsesoria"; //Envio a formulario de registro a Asesoria
         } else {
@@ -151,14 +150,14 @@ List <Clase>listaMaratones=new ArrayList<>();
     //----------------------------------------- APRENDE A TU RITMO ---------------------------------------------------------------
     @GetMapping(value = {"/self-p","/self-p/"})
     public String selfPacedCourses(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_SELF_PACED);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_SELF_PACED);
         model.addAttribute("listaClases", lista);
         return "cursos/listaClaseSelfPaced";
     }
 
     @GetMapping(value = "/self-p/{u}")
     public String selfPacedCoursesAs(Model model, @PathVariable("u") String univ) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_SELF_PACED, univ);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(SERVICIO_SELF_PACED, univ);
         model.addAttribute("listaClases", lista);
         model.addAttribute("univ", univ);
         return "cursos/listaClaseSelfPaced";
@@ -166,6 +165,8 @@ List <Clase>listaMaratones=new ArrayList<>();
 
     //@GetMapping("/enroll/{id}")
 
+
+*/
 
 
 }

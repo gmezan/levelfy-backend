@@ -5,42 +5,40 @@ import com.uc.backend.config.Auditable;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import static com.uc.backend.utils.CustomConstants.EVALUACION;
-
 @Entity
 @Table(name = "video")
 public class Video extends Auditable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idvideo")
-    private int idvideo;
+    private int idVideo;
 
     @ManyToOne
     @JoinColumn(name = "idclase", nullable = false)
-    private Clase clase;
+    private Service service;
 
     @Column(nullable = false)
     private String url;
 
     @Column(nullable = false, name = "nombre")
-    private String nombre;
+    private String name;
 
     @Column(name = "evaluacion")
-    private Integer evaluacion;
+    private Integer evaluation;
 
     @Column(nullable = false, name = "numero_orden")
-    private int orden;
+    private int order;
 
-    @Column(nullable = true)
-    private String descripcion;
+    @Column(nullable = true, name = "description")
+    private String description;
 
 
-    public int getIdvideo() {
-        return idvideo;
+    public int getIdVideo() {
+        return idVideo;
     }
 
-    public void setIdvideo(int idvideo) {
-        this.idvideo = idvideo;
+    public void setIdVideo(int idvideo) {
+        this.idVideo = idvideo;
     }
 
     public String getUrl() {
@@ -51,40 +49,40 @@ public class Video extends Auditable implements Serializable {
         this.url = url;
     }
 
-    public Clase getClase() {
-        return clase;
+    public Service getClase() {
+        return service;
     }
 
-    public void setClase(Clase clase) {
-        this.clase = clase;
+    public void setClase(Service service) {
+        this.service = service;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String nombre) {
+        this.name = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String descripcion) {
+        this.description = descripcion;
     }
 
-    public int getOrden() {
-        return orden;
+    public int getOrder() {
+        return order;
     }
 
-    public void setOrden(int orden) {
-        this.orden = orden;
+    public void setOrder(int orden) {
+        this.order = orden;
     }
 
-    public Integer getEvaluacion() {
-        return evaluacion;
+    public Integer getEvaluation() {
+        return evaluation;
     }
 
     /*
@@ -92,7 +90,7 @@ public class Video extends Auditable implements Serializable {
         return EVALUACION.get(evaluacion);
     }*/
 
-    public void setEvaluacion(Integer evaluacion) {
-        this.evaluacion = evaluacion;
+    public void setEvaluation(Integer evaluacion) {
+        this.evaluation = evaluacion;
     }
 }

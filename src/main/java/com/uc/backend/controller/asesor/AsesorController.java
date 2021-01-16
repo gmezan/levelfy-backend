@@ -1,11 +1,11 @@
 package com.uc.backend.controller.asesor;
 
-import com.uc.backend.entity.Clase;
-import com.uc.backend.entity.ClaseEnroll;
-import com.uc.backend.entity.Usuario;
-import com.uc.backend.repository.ClaseEnrollRepository;
-import com.uc.backend.repository.ClaseRepository;
-import com.uc.backend.repository.ClaseSesionRepository;
+import com.uc.backend.entity.Service;
+import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.User;
+import com.uc.backend.repository.EnrollmentRepository;
+import com.uc.backend.repository.ServiceRepository;
+import com.uc.backend.repository.EnrollmentSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,35 +22,36 @@ import static com.uc.backend.utils.CustomConstants.*;
 @Controller
 @RequestMapping("/a")
 public class AsesorController {
+    /*
     @Autowired
-    ClaseRepository claseRepository;
+    ServiceRepository serviceRepository;
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    ClaseSesionRepository claseSesionRepository;
+    EnrollmentSessionRepository enrollmentSessionRepository;
 
 
     //Se muestran los cursos (disponibles) que está dictando el asesor
     @GetMapping(value = {"","/"})
     public String uMisCursos(Model model, HttpSession session){
-        Usuario user = (Usuario) session.getAttribute("usuario");
-        model.addAttribute("listaAsesoriaOnline", claseRepository
-                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdusuario(),SERVICIO_ASESORIA_PERSONALIZADA));
-        model.addAttribute("listaClaseSelfPaced", claseRepository
-                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdusuario(),SERVICIO_SELF_PACED));
-        model.addAttribute("listaPaquetesAsesoria",claseRepository
-                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdusuario(),SERVICIO_ASESORIA_PAQUETE));
+        User user = (User) session.getAttribute("usuario");
+        model.addAttribute("listaAsesoriaOnline", serviceRepository
+                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_ASESORIA_PERSONALIZADA));
+        model.addAttribute("listaClaseSelfPaced", serviceRepository
+                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_SELF_PACED));
+        model.addAttribute("listaPaquetesAsesoria", serviceRepository
+                .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_ASESORIA_PAQUETE));
 
 //Validar si tiene los datos necesarios para el funcionamiento de la web
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        User usuario = (User) session.getAttribute("usuario");
         if (usuario!=null){
             try {
-                if ((usuario.getCelular()==0)  || (usuario.getUniversidad().isEmpty()) ){
+                if ((usuario.getPhone()==0)  || (usuario.getUniversity().isEmpty()) ){
                     System.out.println("I'm here");
                     model.addAttribute("isDataComplete",false);
-                    model.addAttribute("universidad",UNIVERSIDAD);
+                    model.addAttribute("universidad", UNIVERSITIES);
 
                 }else{
                     System.out.println("data complete");
@@ -61,7 +62,7 @@ public class AsesorController {
                 System.out.println("I'm here 2");
 
                 model.addAttribute("isDataComplete",false);
-                model.addAttribute("universidad",UNIVERSIDAD);
+                model.addAttribute("universidad", UNIVERSITIES);
             }
 
         }else{
@@ -74,18 +75,18 @@ public class AsesorController {
 
     @GetMapping(value = {"/ases-paq", "/ases-paq/"})
     public String paqueteAsesoriaOnline(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
         model.addAttribute("listaPaqueteAsesorias", lista);  //
         return "/asesor/cursos/listaPaqueteAsesoriaOnline";
     }
 
     @GetMapping(value = {"/ases-paq/lis-ins/{id}", "/ases-paq/"})
     public String mostrarListaDeInscritos(Model model, @PathVariable("id") int id) {
-        List<Usuario> listaInscritos = new ArrayList<>() ;
+        List<User> listaInscritos = new ArrayList<>() ;
 
-        List<ClaseEnroll> lista = claseEnrollRepository.findClaseEnrollByClase_Idclase(id);
-        for (ClaseEnroll c: lista){
-             Usuario u=c.getEstudiante();
+        List<Enrollment> lista = enrollmentRepository.findClaseEnrollByClase_Idclase(id);
+        for (Enrollment c: lista){
+             User u=c.getStudent();
         listaInscritos.add(u);
         }
         model.addAttribute("listaInscritos", listaInscritos);
@@ -93,13 +94,13 @@ public class AsesorController {
 
 
         @GetMapping(value = "/new/ases-paq")
-        public String crearPaqueteAsesoria(Model model, Clase clase){
+        public String crearPaqueteAsesoria(Model model, Service service){
 
-        model.addAttribute("universidad",UNIVERSIDAD);
+        model.addAttribute("universidad", UNIVERSITIES);
 
 
 
         return "crearClaseAdmin";
     }
-
+*/
 }

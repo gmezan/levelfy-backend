@@ -1,23 +1,14 @@
 package com.uc.backend.job;
 
-import com.uc.backend.entity.Clase;
-import com.uc.backend.repository.ClaseRepository;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 
 @Component
-public class ClaseDeactivationJob extends QuartzJobBean {
+public class ClaseDeactivationJob  {/*
     private static final Logger logger = LoggerFactory.getLogger(ClaseDeactivationJob.class);
 
     @Autowired
-    ClaseRepository claseRepository;
+    ServiceRepository claseRepository;
 
     //Desactivación
     @Override
@@ -35,6 +26,6 @@ public class ClaseDeactivationJob extends QuartzJobBean {
 
     }
 
-
+*/
 
 }

@@ -1,27 +1,10 @@
 package com.uc.backend.job;
 
-import com.uc.backend.entity.ClaseEnroll;
-import com.uc.backend.repository.ClaseEnrollRepository;
-import com.uc.backend.service.CustomEmailService;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.uc.backend.utils.CustomConstants.SERVICIO_ASESORIA_PAQUETE;
-import static com.uc.backend.utils.CustomConstants.SERVICIO_ASESORIA_PERSONALIZADA;
-
-public class ClaseEnrollDeactivationJob extends QuartzJobBean {
+public class ClaseEnrollDeactivationJob { /*
     private static final Logger logger = LoggerFactory.getLogger(ClaseEnrollDeactivationJob.class);
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository claseEnrollRepository;
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -52,5 +35,5 @@ public class ClaseEnrollDeactivationJob extends QuartzJobBean {
         if (!claseEnrollsAsesPaq.isEmpty())
             claseEnrollRepository.saveAll(claseEnrollsAsesPaq);
 
-    }
+    }*/
 }

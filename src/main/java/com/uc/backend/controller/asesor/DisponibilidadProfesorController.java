@@ -1,10 +1,10 @@
 package com.uc.backend.controller.asesor;
 
-import com.uc.backend.entity.DisponibilidadProfesor;
-import com.uc.backend.entity.Usuario;
-import com.uc.backend.repository.ClaseEnrollRepository;
-import com.uc.backend.repository.DisponibilidadProfesorRepository;
-import com.uc.backend.repository.UsuarioRepository;
+import com.uc.backend.entity.TeacherAvailability;
+import com.uc.backend.entity.User;
+import com.uc.backend.repository.EnrollmentRepository;
+import com.uc.backend.repository.TeacherAvailabilityRepository;
+import com.uc.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,62 +16,61 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static com.uc.backend.utils.CustomConstants.DIA;
+import static com.uc.backend.utils.CustomConstants.DAYS;
 import static com.uc.backend.utils.CustomConstants.SERVICIO_ASESORIA_PERSONALIZADA;
 
 @Controller
 public class DisponibilidadProfesorController {
+/*
+    @Autowired
+    TeacherAvailabilityRepository teacherAvailabilityRepository;
 
     @Autowired
-    DisponibilidadProfesorRepository disponibilidadProfesorRepository;
+    UserRepository userRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
-
-    @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository enrollmentRepository;
 
     private final int ROL_ASESOR = 2;
 
 
     @GetMapping("a/availability")
     public String disponibilidadList(Model model, HttpSession session){
-        model.addAttribute("availability", disponibilidadProfesorRepository
+        model.addAttribute("availability", teacherAvailabilityRepository
                 .findDisponibilidadProfesorsByUsuario_IdusuarioAndUsuario_ActivoIsTrueAndUsuario_Rol_Idrol
-                        (((Usuario)session.getAttribute("usuario")).getIdusuario(), ROL_ASESOR));
+                        (((User)session.getAttribute("usuario")).getIdUser(), ROL_ASESOR));
         return "asesor/disponibilidad/list";
     }
 
     @GetMapping("a/availability/new")
-    public String disponibilidadNew(@ModelAttribute("disp") DisponibilidadProfesor disponibilidadProfesor,
+    public String disponibilidadNew(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
             Model model, HttpSession session){
-        Usuario user = (Usuario)session.getAttribute("usuario");
-        model.addAttribute("dias", DIA);
-        model.addAttribute("disp", disponibilidadProfesor);
+        User user = (User)session.getAttribute("usuario");
+        model.addAttribute("dias", DAYS);
+        model.addAttribute("disp", teacherAvailability);
         model.addAttribute("titleForm","Nueva Disponibilidad");
         return "asesor/disponibilidad/form";
     }
 
 
     @GetMapping("a/availability/edit/{id}")
-    public String disponibilidadEdit(@ModelAttribute("disp") DisponibilidadProfesor disponibilidadProfesor,
+    public String disponibilidadEdit(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
                                      Model model, @PathVariable("id") Integer id, HttpSession session,
                                      RedirectAttributes attributes){
-        Usuario user = (Usuario)session.getAttribute("usuario");
-        Optional<DisponibilidadProfesor> optionalDisponibilidadProfesor =
-                disponibilidadProfesorRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario(id,user.getIdusuario());
+        User user = (User)session.getAttribute("usuario");
+        Optional<TeacherAvailability> optionalDisponibilidadProfesor =
+                teacherAvailabilityRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario(id,user.getIdUser());
 
 
         if (optionalDisponibilidadProfesor.isPresent()){
-            disponibilidadProfesor = optionalDisponibilidadProfesor.get();
-            model.addAttribute("dias", DIA);
-            model.addAttribute("disp", disponibilidadProfesor);
+            teacherAvailability = optionalDisponibilidadProfesor.get();
+            model.addAttribute("dias", DAYS);
+            model.addAttribute("disp", teacherAvailability);
             model.addAttribute("titleForm","Editar Disponibilidad");
             return "asesor/disponibilidad/form";
         }
@@ -84,52 +83,52 @@ public class DisponibilidadProfesorController {
 
 
     @PostMapping("a/availability/save")
-    public String disponibilidadSave(@ModelAttribute("disp") @Valid DisponibilidadProfesor disponibilidadProfesor,
+    public String disponibilidadSave(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
                                      BindingResult bindingResult, Model model, HttpSession session, RedirectAttributes attributes){
-        Usuario user = (Usuario)session.getAttribute("usuario");
+        User user = (User)session.getAttribute("usuario");
 
-        if (disponibilidadProfesor.getInicio()!=null && disponibilidadProfesor.getFin()!=null
-                && disponibilidadProfesor.getInicio().isAfter(disponibilidadProfesor.getFin()))
+        if (teacherAvailability.getStart()!=null && teacherAvailability.getEnd()!=null
+                && teacherAvailability.getStart().isAfter(teacherAvailability.getEnd()))
             bindingResult.rejectValue("fin", "error.user", "Elija una fecha de fin válida");
 
-        if (disponibilidadProfesor.getId()==0 && !disponibilidadProfesorRepository.findDisponibilidadProfesorsByUsuario_IdusuarioAndDia
-                (user.getIdusuario(), disponibilidadProfesor.getDia()).isEmpty())
+        if (teacherAvailability.getId()==0 && !teacherAvailabilityRepository.findDisponibilidadProfesorsByUsuario_IdusuarioAndDia
+                (user.getIdUser(), teacherAvailability.getDay()).isEmpty())
             bindingResult.rejectValue("dia","error.user","Este dia no puede tener más de un registro de disponibilidad");
 
-        if (disponibilidadProfesor.getId()!=0 && !disponibilidadProfesorRepository.findDisponibilidadProfesorsByUsuario_IdusuarioAndDia
-                (user.getIdusuario(), disponibilidadProfesor.getDia()).isEmpty()
-        && !disponibilidadProfesorRepository.findDisponibilidadProfesorsByIdAndUsuario_IdusuarioAndDia
-                (disponibilidadProfesor.getId(), user.getIdusuario(), disponibilidadProfesor.getDia()).isPresent())
+        if (teacherAvailability.getId()!=0 && !teacherAvailabilityRepository.findDisponibilidadProfesorsByUsuario_IdusuarioAndDia
+                (user.getIdUser(), teacherAvailability.getDay()).isEmpty()
+        && !teacherAvailabilityRepository.findDisponibilidadProfesorsByIdAndUsuario_IdusuarioAndDia
+                (teacherAvailability.getId(), user.getIdUser(), teacherAvailability.getDay()).isPresent())
             bindingResult.rejectValue("dia","error.user","Este dia no puede tener más de un registro de disponibilidad");
 
 
         if (!bindingResult.hasErrors()){
-            if (disponibilidadProfesor.getId()==0){ //Si es nuevo
-                disponibilidadProfesor.setUsuario(user);
-                disponibilidadProfesor.setOcupado(false);
+            if (teacherAvailability.getId()==0){ //Si es nuevo
+                teacherAvailability.setUser(user);
+                teacherAvailability.setBusy(false);
                 attributes.addFlashAttribute("msgSuccess","Disponibilidad creada correctamente");
             }else {
-                Optional<DisponibilidadProfesor> optionalDisponibilidadProfesor =
-                        disponibilidadProfesorRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario
-                                (disponibilidadProfesor.getId(), user.getIdusuario());
+                Optional<TeacherAvailability> optionalDisponibilidadProfesor =
+                        teacherAvailabilityRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario
+                                (teacherAvailability.getId(), user.getIdUser());
                 if (!optionalDisponibilidadProfesor.isPresent()){
                     attributes.addFlashAttribute("msgError", "Hubo un error");
                     return "redirect:/a/availability";
                 }
                 else {
-                    DisponibilidadProfesor dispTemp = optionalDisponibilidadProfesor.get();
-                    dispTemp.setDia(disponibilidadProfesor.getDia());
-                    dispTemp.setInicio(disponibilidadProfesor.getInicio());
-                    dispTemp.setFin(disponibilidadProfesor.getFin());
-                    disponibilidadProfesor = dispTemp;
+                    TeacherAvailability dispTemp = optionalDisponibilidadProfesor.get();
+                    dispTemp.setDay(teacherAvailability.getDay());
+                    dispTemp.setStart(teacherAvailability.getStart());
+                    dispTemp.setEnd(teacherAvailability.getEnd());
+                    teacherAvailability = dispTemp;
                 }
                 attributes.addFlashAttribute("msgSuccess","Disponibilidad actualizada correctamente");
             }
-            disponibilidadProfesorRepository.save(disponibilidadProfesor);
+            teacherAvailabilityRepository.save(teacherAvailability);
 
         }else {
-            model.addAttribute("dias", DIA);
-            model.addAttribute("disp", disponibilidadProfesor);
+            model.addAttribute("dias", DAYS);
+            model.addAttribute("disp", teacherAvailability);
             model.addAttribute("titleForm","Formulario");
             return "asesor/disponibilidad/form";
         }
@@ -140,11 +139,11 @@ public class DisponibilidadProfesorController {
     @GetMapping("a/availability/delete/{id}")
     public String disponibilidadDelete(Model model, @PathVariable("id") Integer id, HttpSession session,
                                        RedirectAttributes attributes){
-        Usuario user = (Usuario)session.getAttribute("usuario");
-        Optional<DisponibilidadProfesor> optionalDisponibilidadProfesor =
-                disponibilidadProfesorRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario(id,user.getIdusuario());
+        User user = (User)session.getAttribute("usuario");
+        Optional<TeacherAvailability> optionalDisponibilidadProfesor =
+                teacherAvailabilityRepository.findDisponibilidadProfesorByIdAndUsuario_Idusuario(id,user.getIdUser());
         if (optionalDisponibilidadProfesor.isPresent()){
-            disponibilidadProfesorRepository.delete(optionalDisponibilidadProfesor.get());
+            teacherAvailabilityRepository.delete(optionalDisponibilidadProfesor.get());
             attributes.addFlashAttribute("msgSuccess","Disponibilidad borrada correctamente");
         }
         else {
@@ -163,28 +162,28 @@ public class DisponibilidadProfesorController {
 
     @ResponseBody
     @GetMapping(value = "/dev/disponibilidadAsesor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DisponibilidadProfesor>> getDisp(@PathVariable("id") int id){
-        return new ResponseEntity<>(disponibilidadProfesorRepository
+    public ResponseEntity<List<TeacherAvailability>> getDisp(@PathVariable("id") int id){
+        return new ResponseEntity<>(teacherAvailabilityRepository
                 .findDisponibilidadProfesorsByUsuario_IdusuarioAndUsuario_ActivoIsTrueAndUsuario_Rol_Idrol(id, ROL_ASESOR), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping(value = "/dev/disponibilidadAsesor/a/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String,Object>> getMap(@PathVariable("id") int id){
-        Optional<Usuario> optionalUsuario = usuarioRepository.findByIdusuarioAndRol_IdrolAndActivoIsTrue(id,ROL_ASESOR);
+        Optional<User> optionalUsuario = userRepository.findByIdusuarioAndRol_IdrolAndActivoIsTrue(id,ROL_ASESOR);
         List<Map<String, Object>> list = new ArrayList<>();
         Map<LocalDate,ArrayList<LocalTime>> map = new HashMap<>();
         ArrayList<LocalDate> dtProgramado = new ArrayList<>();
-        optionalUsuario.ifPresent(user -> claseEnrollRepository.
+        optionalUsuario.ifPresent(user -> enrollmentRepository.
                 findClaseEnrollsByClase_Profesor_IdusuarioAndClase_ServicioAndClaseDisponibleIsTrueAndInicioasesoriaIsAfter(
-                        user.getIdusuario(), SERVICIO_ASESORIA_PERSONALIZADA, LocalDateTime.now().minusHours(5))
+                        user.getIdUser(), SERVICIO_ASESORIA_PERSONALIZADA, LocalDateTime.now().minusHours(5))
                 .forEach((claseEnroll1) -> {
-                    dtProgramado.add(claseEnroll1.getInicioasesoria().toLocalDate());
+                    dtProgramado.add(claseEnroll1.getStart().toLocalDate());
                 }));
         final int[] i = {1};
         if(optionalUsuario.isPresent()){
-            Usuario asesor = optionalUsuario.get();
-                for (LocalDateTime dp : asesor.mapDisponibilidad().keySet()){
+            User asesor = optionalUsuario.get();
+                for (LocalDateTime dp : asesor.mapAvailability().keySet()){
                 if (!dtProgramado.contains(dp.toLocalDate())){
                     list.add(new HashMap<String,Object>(){{
                         put("start",dp);
@@ -210,5 +209,5 @@ public class DisponibilidadProfesorController {
             }});
         }},HttpStatus.OK);
     }
-
+*/
 }

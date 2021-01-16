@@ -15,25 +15,27 @@ import java.time.format.DateTimeFormatter;
 public abstract class Auditable {
 
     @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP",name = "creation", nullable = false, updatable= false)
-    protected LocalDateTime fechacreacion;
+    @Column(columnDefinition = "TIMESTAMP",name = "created", nullable = false, updatable= false)
+    protected LocalDateTime created;
 
     @LastModifiedDate
     @Column(columnDefinition = "TIMESTAMP",name = "modified", nullable = false)
-    protected LocalDateTime fechamodificacion;
+    protected LocalDateTime modified;
 
 
-    public LocalDateTime getFechacreacion() {
-        return fechacreacion;
-    }
-    public String obtenerFechacreacionStr() {
-        return fechacreacion.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public LocalDateTime getFechamodificacion() {
-        return fechamodificacion;
+    public String printCreatedToString() {
+        return created.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
-    public String obtenerFechamodificacionStr() {
-        return fechamodificacion.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public String printModifiedToString() {
+        return modified.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }

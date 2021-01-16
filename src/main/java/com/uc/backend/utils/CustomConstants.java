@@ -1,17 +1,17 @@
 package com.uc.backend.utils;
 
-import com.example.universityclass.entity.Paquete;
+import com.uc.backend.entity.Paquete;
 
 import java.util.HashMap;
 
 public abstract class CustomConstants {
     // HashMaps:
-    public final static HashMap<Integer, String> DIA = new HashMap<>();
-    public final static HashMap<Integer, String> EVALUACION = new HashMap<>();
-    public final static HashMap<Integer, Integer> TIEMPOCLASE = new HashMap<>();
-    public final static HashMap<String, String> UNIVERSIDAD = new HashMap<>();
-    public final static HashMap<String, String> SERVICIO = new HashMap<>();
-    public final static HashMap<Integer, String> ROLS = new HashMap<>();
+    public final static HashMap<Integer, String> DAYS = new HashMap<>();
+    public final static HashMap<Integer, String> EVALUATIONS = new HashMap<>();
+    //public final static HashMap<Integer, Integer> TIEMPOCLASE = new HashMap<>();
+    public final static HashMap<String, String> UNIVERSITIES = new HashMap<>();
+    public final static HashMap<String, String> SERVICES = new HashMap<>();
+    public final static HashMap<Integer, String> ROLES = new HashMap<>();
     public final static HashMap<Integer, Paquete> PAQUETES = new HashMap<>();
 
     public final static String SERVICIO_ASESORIA_PERSONALIZADA = "ASES_PER";
@@ -33,9 +33,9 @@ public abstract class CustomConstants {
     public final static String LOCAL_DOWNLOAD_PATH = "C:\\\\Users\\\\Dino Lopez\\\\Downloads\\\\Invoice_May_new.pdf";
 
     public static final String SUFFIX = "/";
-public final static String AMAZON_KEY_S3="AKIAVFA75GPQ36NIXBUH";
-public final static String AMAZON_SEC_S3="1nbJ9iFRZbvc7wUNqWa4BFhmREpNwqAT8YQbe3l8";
-public final static int PRECIO_BASE_ASES_PER_PUCP = 30;
+    public final static String AMAZON_KEY_S3="AKIAVFA75GPQ36NIXBUH";
+    public final static String AMAZON_SEC_S3="1nbJ9iFRZbvc7wUNqWa4BFhmREpNwqAT8YQbe3l8";
+    public final static int PRECIO_BASE_ASES_PER_PUCP = 30;
     public final static int PRECIO_BASE_ASES_PAQ_PUCP = 30;
     public final static int DIA_DOMINGO=7;
     public final static int DIA_LUNES=1;
@@ -66,50 +66,50 @@ public final static int PRECIO_BASE_ASES_PER_PUCP = 30;
 
     static{
         // Table DIA
-        DIA.put(1,"Lunes");
-        DIA.put(2,"Martes");
-        DIA.put(3,"Miércoles");
-        DIA.put(4,"Jueves");
-        DIA.put(5,"Viernes");
-        DIA.put(6,"Sábado");
-        DIA.put(7,"Domingo");
+        DAYS.put(1,"Lunes");
+        DAYS.put(2,"Martes");
+        DAYS.put(3,"Miércoles");
+        DAYS.put(4,"Jueves");
+        DAYS.put(5,"Viernes");
+        DAYS.put(6,"Sábado");
+        DAYS.put(7,"Domingo");
 
         // Table Evaluación
-        EVALUACION.put(1,"PC1");
-        EVALUACION.put(2,"PC2");
-        EVALUACION.put(3,"PC3");
-        EVALUACION.put(4,"PC4");
-        EVALUACION.put(5,"PC5");
-        EVALUACION.put(6,"Examen Parcial");
-        EVALUACION.put(7,"Examen Final");
-        EVALUACION.put(8,"Examen 1");
-        EVALUACION.put(9,"Examen 2");
-        EVALUACION.put(10,"Examen 3");
-        EVALUACION.put(11,"Examen 4");
-        EVALUACION.put(12,"Examen Especial");
-        EVALUACION.put(13,"Libre");
+        EVALUATIONS.put(1,"PC1");
+        EVALUATIONS.put(2,"PC2");
+        EVALUATIONS.put(3,"PC3");
+        EVALUATIONS.put(4,"PC4");
+        EVALUATIONS.put(5,"PC5");
+        EVALUATIONS.put(6,"Examen Parcial");
+        EVALUATIONS.put(7,"Examen Final");
+        EVALUATIONS.put(8,"Examen 1");
+        EVALUATIONS.put(9,"Examen 2");
+        EVALUATIONS.put(10,"Examen 3");
+        EVALUATIONS.put(11,"Examen 4");
+        EVALUATIONS.put(12,"Examen Especial");
+        EVALUATIONS.put(13,"Libre");
 
         //Table UNIVERSIDAD
-        UNIVERSIDAD.put("PUCP","Pontificia Universidad Católica del Perú");
-        UNIVERSIDAD.put("UPC","Universidad Peruana de Ciencias Aplicadas");
-        UNIVERSIDAD.put("UL","Universidad de Lima");
-        UNIVERSIDAD.put("UPCH","Universidad Peruana Cayetano Heredia");
-        UNIVERSIDAD.put("LIBRE","Libre");
+        UNIVERSITIES.put("PUCP","Pontificia Universidad Católica del Perú");
+        UNIVERSITIES.put("UPC","Universidad Peruana de Ciencias Aplicadas");
+        UNIVERSITIES.put("UL","Universidad de Lima");
+        UNIVERSITIES.put("UPCH","Universidad Peruana Cayetano Heredia");
+        UNIVERSITIES.put("LIBRE","Libre");
 
         //Table Servicio
-        SERVICIO.put("ASES_PER","Asesoría personalizada");
-        SERVICIO.put("ASES_PAQ","Paquete de asesorías");
-        SERVICIO.put("SELF_P","Aprende a tu ritmo");
+        SERVICES.put("ASES_PER","Asesoría personalizada");
+        SERVICES.put("ASES_PAQ","Paquete de asesorías");
+        SERVICES.put("SELF_P","Aprende a tu ritmo");
 
         //Table ROLS
-        ROLS.put(1,"estudiante");
-        ROLS.put(2,"asesor");
-        ROLS.put(3,"admin");
+        ROLES.put(1,"estudiante");
+        ROLES.put(2,"asesor");
+        ROLES.put(3,"admin");
 
         //Table TIEMPOCLASE (tiempo de suscripción)
-        TIEMPOCLASE.put(1,7); //una semana
-        TIEMPOCLASE.put(2,30); // un mes
-        TIEMPOCLASE.put(3,60); //dos meses
+        //TIEMPOCLASE.put(1,7); //una semana
+        //TIEMPOCLASE.put(2,30); // un mes
+        //TIEMPOCLASE.put(3,60); //dos meses
 
         //PAQUETES
         //---- ASESORIAS PERSONALIZADAS

@@ -10,20 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComentarioForoController {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository userRepository;
 
     @Autowired
-    CursoRepository cursoRepository;
+    CourseRepository courseRepository;
 
     @Autowired
-    ClaseRepository claseRepository;
+    ServiceRepository serviceRepository;
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
+    EnrollmentRepository enrollmentRepository;
 
     @Autowired
     VideoRepository videoRepository;
 
     @Autowired
-    ClaseSesionRepository claseSesionRepository;
+    EnrollmentSessionRepository enrollmentSessionRepository;
 }

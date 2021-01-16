@@ -6,16 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
-import org.apache.commons.io.FileUtils;
 
 
-
-import static com.example.universityclass.utils.CustomConstants.*;
+import static com.uc.backend.utils.CustomConstants.*;
 
 public class CommonService {
 
+    /*
 	public void getObj(AmazonS3 s3client)  {
 	        String bucketName = BUCKET_NAME;
 	        String objectName = BUCKET_FILE_PATH ;
@@ -48,10 +45,6 @@ public class CommonService {
 		client.putObject(putObjectRequest);
 	}
 
-	/**
-	 * This method first deletes all the files in given folder and than the folder
-	 * itself
-	 */
 
 	public static void deleteFolder(String bucketName, String folderName, AmazonS3 client) {
 		List fileList = client.listObjects(bucketName, folderName).getObjectSummaries();
@@ -61,7 +54,7 @@ public class CommonService {
 		}
 		client.deleteObject(bucketName, folderName);
 	}
-	        
+	        */
 }
 	
 

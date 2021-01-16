@@ -3,7 +3,6 @@ package com.uc.backend.controller.admin;
 import com.uc.backend.entity.*;
 import com.uc.backend.repository.*;
 import com.uc.backend.service.CustomEmailService;
-import dto.CantidadSugerencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -30,37 +28,34 @@ import static com.uc.backend.utils.CustomConstants.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+/*
+    @Autowired
+    ServiceRepository serviceRepository;
 
     @Autowired
-    ClaseRepository claseRepository;
+    CourseSuggestionRepository courseSuggestionRepository;
 
     @Autowired
-    SugerenciaCursoRepository sugerenciaCursoRepository;
+    EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    ClaseEnrollRepository claseEnrollRepository;
-
+    EnrollmentSessionRepository enrollmentSessionRepository;
     @Autowired
-    ClaseSesionRepository claseSesionRepository;
+    UserRepository userRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    CourseRepository courseRepository;
     @Autowired
-    CursoRepository cursoRepository;
-    @Autowired
-    VentaRepository ventaRepository;
+    SaleRepository saleRepository;
 
     @Autowired
     CustomEmailService customEmailService;
     @Autowired
-    VentaCanceladaRepository ventaCanceladaRepository;
+    SaleCanceledRepository saleCanceledRepository;
 
 
     @GetMapping("/editarCurso")
     public String editarCurso(Model model){
-        List<CantidadSugerencia> listaSugerencias = sugerenciaCursoRepository.cantidadSugerencias();
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PERSONALIZADA);
-        model.addAttribute("listaSugerenciaCurso",listaSugerencias);
-        model.addAttribute("listaAsesorias", lista);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PERSONALIZADA);
 
 
         return "admin/editarCurso";
@@ -68,15 +63,15 @@ public class AdminController {
 
 
     @GetMapping("/editarCurso/enroll/{id}")
-    public String onlineCourseAsesoria(Model model, @ModelAttribute("asesoria") Clase clase, @PathVariable("id") int id, HttpSession session) {
-        Optional<Clase> optionalClase = claseRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PERSONALIZADA);
+    public String onlineCourseAsesoria(Model model, @ModelAttribute("asesoria") Service service, @PathVariable("id") int id, HttpSession session) {
+        Optional<Service> optionalClase = serviceRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PERSONALIZADA);
         //List<Paquete> listaPaquetes = paqueteRepository.findAll();
         Map<LocalDateTime, String> disponibilidades;
 
         if (optionalClase.isPresent()) {
 
-            clase = optionalClase.get();
-            model.addAttribute("asesoria", clase);
+            service = optionalClase.get();
+            model.addAttribute("asesoria", service);
             model.addAttribute("paquete", PAQUETES.get(1));
             return "cursos/formCursoAdmin"; //Envio a formulario de registro a Asesoria
         } else {
@@ -90,7 +85,7 @@ public class AdminController {
 
     @GetMapping(value = {"","/","/ases-paq", "/ases-paq/"})
     public String paqueteAsesoriaOnline(Model model) {
-        List<Clase> lista = claseRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
+        List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
         model.addAttribute("listaPaqueteAsesorias", lista);  //
 
         return "admin/curso/listaPaqueteAsesoriaOnline";
@@ -98,77 +93,77 @@ public class AdminController {
 
     @GetMapping(value = {"/ases-paq/lis-ins/{id}"})
     public String mostrarListaDeInscritos(Model model, @PathVariable("id") int id) {
-        List<Usuario> listaInscritos = new ArrayList<>() ;
+        List<User> listaInscritos = new ArrayList<>() ;
 
-        List<ClaseEnroll> listaClaseEnroll = claseEnrollRepository.findClaseEnrollByClase_Idclase(id);
-        for (ClaseEnroll c: listaClaseEnroll){
-            Usuario u=c.getEstudiante();
+        List<Enrollment> listaEnrollment = enrollmentRepository.findClaseEnrollByClase_Idclase(id);
+        for (Enrollment c: listaEnrollment){
+            User u=c.getStudent();
             listaInscritos.add(u);
         }
         model.addAttribute("idclase",id);
-        model.addAttribute("listaInscritos", listaClaseEnroll);
+        model.addAttribute("listaInscritos", listaEnrollment);
         return "admin/listaInscritosAdmin";
     }
 
 
     @GetMapping(value = "/new/ases-paq")
-    public String crearPaqueteAsesoria(Model model, Clase clase, HttpSession session){
+    public String crearPaqueteAsesoria(Model model, Service service, HttpSession session){
 
 
 
-        model.addAttribute("asesores", usuarioRepository.findAllByRol_IdrolAndActivoIsTrue(2));
-        List<String> universidad=cursoRepository.findUniversidades();
+        model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+        List<String> universidad= courseRepository.findUniversidades();
         model.addAttribute("universidad",universidad);
 
-        Usuario user = (Usuario) session.getAttribute("usuario");
-        clase = new Clase();
+        User user = (User) session.getAttribute("usuario");
+        service = new Service();
 
-        clase.setVencimiento(LocalDate.now().plusMonths(1));
-        clase.setClaseSesions(new ArrayList<>());
-        clase.setPrecio(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
-        clase.setProfesor(user);
-        for (int i=0; i<5;i++) clase.getClaseSesions().add(new ClaseSesion(clase));
+        service.setExpiration(LocalDate.now().plusMonths(1));
+        service.setClaseSesions(new ArrayList<>());
+        service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
+        service.setTeacher(user);
+        for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
         model.addAttribute("title","Nuevo Paquete de Asesorías");
-        model.addAttribute("clase",clase);
-        model.addAttribute("listaCursos",cursoRepository.findAll());
-        model.addAttribute("listaEvaluaciones", EVALUACION);
+        model.addAttribute("clase", service);
+        model.addAttribute("listaCursos", courseRepository.findAll());
+        model.addAttribute("listaEvaluaciones", EVALUATIONS);
 
         return "admin/ases-paq/formAsesPaq";
     }
     @GetMapping(value = "/send-email/{id}")
     public  String enviarCorreoClase(@PathVariable ("id") int id ,@RequestParam("mensaje") String mensaje) throws IOException, MessagingException {
-        List<Usuario> listaInscritos = new ArrayList<>() ;
+        List<User> listaInscritos = new ArrayList<>() ;
 
-        List<ClaseEnroll> listaClaseEnroll = claseEnrollRepository.findClaseEnrollByClase_Idclase(id);
-        for (ClaseEnroll c: listaClaseEnroll){
-            Usuario u=c.getEstudiante();
+        List<Enrollment> listaEnrollment = enrollmentRepository.findClaseEnrollByClase_Idclase(id);
+        for (Enrollment c: listaEnrollment){
+            User u=c.getStudent();
             listaInscritos.add(u);
         }
-        customEmailService.sendMailToUsersMensaje(listaInscritos,listaClaseEnroll.get(0).getClase(),mensaje);
+        customEmailService.sendMailToUsersMensaje(listaInscritos, listaEnrollment.get(0).getClase(),mensaje);
 
-        return "redirect:/admin/ases-paq/lis-ins/"+ listaClaseEnroll.get(0).getClase().getIdclase();
+        return "redirect:/admin/ases-paq/lis-ins/"+ listaEnrollment.get(0).getClase().getIdService();
     }
 
     @GetMapping(value = "/edit/ases-paq/{id}")
-    public String editarPaqueteAsesoria(Model model, Clase clase, HttpSession session,@PathVariable("id") int id ){
+    public String editarPaqueteAsesoria(Model model, Service service, HttpSession session, @PathVariable("id") int id ){
 
-        model.addAttribute("universidad",UNIVERSIDAD);
+        model.addAttribute("universidad", UNIVERSITIES);
 
-        model.addAttribute("asesores", usuarioRepository.findAllByRol_IdrolAndActivoIsTrue(2));
-        Usuario user = (Usuario) session.getAttribute("usuario");
-       Optional<Clase> optClase = claseRepository.findByIdclaseAndDisponibleIsTrue(id);
+        model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+        User user = (User) session.getAttribute("usuario");
+       Optional<Service> optClase = serviceRepository.findByIdclaseAndDisponibleIsTrue(id);
        if (optClase.isPresent()){
-           clase=optClase.get();
-        clase.setCurso(new Curso(user.getUniversidad()));
-        clase.setVencimiento(LocalDate.now().plusMonths(1));
-        clase.setClaseSesions(new ArrayList<>());
-        clase.setPrecio(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
-        clase.setProfesor(user);
-        for (int i=0; i<5;i++) clase.getClaseSesions().add(new ClaseSesion(clase));
+           service =optClase.get();
+        service.setCurso(new Course(user.getUniversity()));
+        service.setExpiration(LocalDate.now().plusMonths(1));
+        service.setClaseSesions(new ArrayList<>());
+        service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
+        service.setTeacher(user);
+        for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
         model.addAttribute("title","Nuevo Paquete de Asesorías");
-        model.addAttribute("clase",clase);
-        model.addAttribute("listaCursos",cursoRepository.findAllByCursoId_Universidad(user.getUniversidad()));
-        model.addAttribute("listaEvaluaciones", EVALUACION);
+        model.addAttribute("clase", service);
+        model.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
+        model.addAttribute("listaEvaluaciones", EVALUATIONS);
 
         return "admin/crearClase";
        }
@@ -179,31 +174,31 @@ public class AdminController {
        }
     }
     @PostMapping("ases-paq/save")
-    public String saveAsesPaq(@ModelAttribute("clase") @Valid Clase clase, BindingResult bindingResult,
+    public String saveAsesPaq(Service service, BindingResult bindingResult,
                               HttpSession session, Model model, RedirectAttributes attributes){
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        ClaseSesion claseSesion;
+        EnrollmentSession enrollmentSession;
 
-        Usuario user = (Usuario)session.getAttribute("usuario");
-        Optional<Curso> optionalCurso = cursoRepository.findById(clase.getCurso().getCursoId());
+        User user = (User)session.getAttribute("usuario");
+        Optional<Course> optionalCurso = courseRepository.findById(service.getCurso().getCursoId());
 
-        if (!EVALUACION.containsKey(clase.getEvaluacion()))
+        if (!EVALUATIONS.containsKey(service.getEvaluation()))
             bindingResult.rejectValue("evaluacion","error.user","Elija la evaluación");
 
-        if (clase.getNumSesiones()<0 || clase.getNumSesiones()>5)
+        if (service.getSessionsNumber()<0 || service.getSessionsNumber()>5)
             bindingResult.rejectValue("numSesiones","error.user", "Elija el número de sesiones");
 
-        if (!UNIVERSIDAD.containsKey(clase.getCurso().getCursoId().getUniversidad()) ||
-                !(user.getUniversidad().equals(clase.getCurso().getCursoId().getUniversidad())))
+        if (!UNIVERSITIES.containsKey(service.getCurso().getCursoId().getUniversity()) ||
+                !(user.getUniversity().equals(service.getCurso().getCursoId().getUniversity())))
             bindingResult.rejectValue("curso.cursoId.universidad","error.user", "Elija la universidad");
 
         if (!optionalCurso.isPresent())
             bindingResult.rejectValue("curso.cursoId.idcurso","error.user", "Elija el curso");
 
-        if (clase.getIdclase()==0){//Si es nuevo
+        if (service.getIdService()==0){//Si es nuevo
 
-            Optional<Clase> optionalClase = claseRepository.findByProfesor_IdusuarioAndServicioAndCurso_CursoIdAndEvaluacionAndDisponibleIsTrue
-                    (user.getIdusuario(), SERVICIO_ASESORIA_PAQUETE, clase.getCurso().getCursoId(), clase.getEvaluacion());
+            Optional<Service> optionalClase = serviceRepository.findByProfesor_IdusuarioAndServicioAndCurso_CursoIdAndEvaluacionAndDisponibleIsTrue
+                    (user.getIdUser(), SERVICIO_ASESORIA_PAQUETE, service.getCurso().getCursoId(), service.getEvaluation());
 
             if (optionalClase.isPresent())
                 bindingResult.rejectValue("curso.cursoId.idcurso","error.user", "Ya existe una asesoría para este curso");
@@ -211,65 +206,65 @@ public class AdminController {
 
             // VALIDACION DE LAS SESIONES DE LA ASESORIA:
             if (!bindingResult.hasErrors()){
-                for (int i = 0; i < clase.getNumSesiones(); i++){
-                    claseSesion = clase.getClaseSesions().get(i);
+                for (int i = 0; i < service.getSessionsNumber(); i++){
+                    enrollmentSession = service.getClaseSesions().get(i);
 
                     //Se valida la fecha
-                    if (claseSesion.getFecha()==null)
+                    if (enrollmentSession.getDate()==null)
                         bindingResult.rejectValue("claseSesions["+i+"].fecha","error.user", "Ingrese una fecha");
-                    else if (LocalDateTime.now().minusHours(5).plusDays(1).toLocalDate().isAfter(claseSesion.getFecha()) || LocalDate.now().plusMonths(2).isBefore(claseSesion.getFecha()))
+                    else if (LocalDateTime.now().minusHours(5).plusDays(1).toLocalDate().isAfter(enrollmentSession.getDate()) || LocalDate.now().plusMonths(2).isBefore(enrollmentSession.getDate()))
                         bindingResult.rejectValue("claseSesions["+i+"].fecha","error.user", "Ingrese una fecha válida");
 
                     //Se valida la hora de inicio y fin
-                    if (claseSesion.getInicio()==null)
+                    if (enrollmentSession.getStart()==null)
                         bindingResult.rejectValue("claseSesions["+i+"].inicio","error.user", "Ingrese un inicio");
-                    else if (LocalTime.of(6,0).isAfter(claseSesion.getInicio()) || LocalTime.of(23, 1).isBefore(claseSesion.getInicio()))
+                    else if (LocalTime.of(6,0).isAfter(enrollmentSession.getStart()) || LocalTime.of(23, 1).isBefore(enrollmentSession.getStart()))
                         bindingResult.rejectValue("claseSesions["+i+"].inicio","error.user", "Ingrese un hora de inicio válida: De 6:00 a 23:00");
-                    else if (claseSesion.getFin()!=null)
+                    else if (enrollmentSession.getEnd()!=null)
                     {
-                        if (claseSesion.getFin().isBefore(claseSesion.getInicio()))
+                        if (enrollmentSession.getEnd().isBefore(enrollmentSession.getStart()))
                             bindingResult.rejectValue("claseSesions["+i+"].fin","error.user", "Ingrese una hora fin válida");
 
-                        if (claseSesion.getInicio().plusMinutes(30).isAfter(claseSesion.getFin()))
+                        if (enrollmentSession.getStart().plusMinutes(30).isAfter(enrollmentSession.getEnd()))
                             bindingResult.rejectValue("claseSesions["+i+"].fin","error.user", "La sesión no puede durar menos de 30 minutos");
 
-                        if (claseSesion.getInicio().isBefore(LocalTime.of(9,0)) && claseSesion.getInicio().plusHours(3).isBefore(claseSesion.getFin()))
+                        if (enrollmentSession.getStart().isBefore(LocalTime.of(9,0)) && enrollmentSession.getStart().plusHours(3).isBefore(enrollmentSession.getEnd()))
                             bindingResult.rejectValue("claseSesions["+i+"].fin","error.user", "La sesión no puede durar más de 3 horas");
                     }
-                    if (claseSesion.getFin()==null)
+                    if (enrollmentSession.getEnd()==null)
                         bindingResult.rejectValue("claseSesions["+i+"].fin","error.user", "Ingrese un fin");
                 }
             }
 
             if (bindingResult.hasErrors()){
-                model.addAttribute("universidad",UNIVERSIDAD);
+                model.addAttribute("universidad", UNIVERSITIES);
 
-                model.addAttribute("asesores", usuarioRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+                model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
 
-                clase.getCurso().getCursoId().setUniversidad(user.getUniversidad());
+                service.getCurso().getCursoId().setUniversity(user.getUniversity());
                 model.addAttribute("title","Nuevo Paquete de Asesoría");
-                model.addAttribute("clase",clase);
-                model.addAttribute("listaCursos",cursoRepository.findAllByCursoId_Universidad(user.getUniversidad()));
-                model.addAttribute("listaEvaluaciones", EVALUACION);
+                model.addAttribute("clase", service);
+                model.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
+                model.addAttribute("listaEvaluaciones", EVALUATIONS);
                 return "admin/ases-paq/formAsesPaq";
             }
             //Si all está bien
             else {
                 //TODO: schedule un job que desactive la asesoría luego de la última clase
-                List<ClaseSesion> claseSesionList = new ArrayList<ClaseSesion>(){{
-                    for (int i = 0; i < clase.getNumSesiones(); i++)
-                        add(new ClaseSesion(clase, clase.getClaseSesions().get(i)));
+                List<EnrollmentSession> enrollmentSessionList = new ArrayList<EnrollmentSession>(){{
+                    for (int i = 0; i < service.getSessionsNumber(); i++)
+                        add(new EnrollmentSession(service, service.getClaseSesions().get(i)));
                 }};
-                clase.setClaseSesions(null);
-                clase.setServicio(SERVICIO_ASESORIA_PAQUETE);
-                clase.setProfesor(user);
-                clase.setCurso(optionalCurso.orElse(null));
+                service.setClaseSesions(null);
+                service.setServiceType(SERVICIO_ASESORIA_PAQUETE);
+                service.setTeacher(user);
+                service.setCurso(optionalCurso.orElse(null));
 
-                clase.setFoto(clase.getCurso().getFoto());
-                clase.setDisponible(true);
-                claseRepository.save(clase);
-                claseSesionList.forEach(claseSesion1 -> claseSesion1.setClase(clase));
-                claseSesionRepository.saveAll(claseSesionList);
+                service.setPhoto(service.getCurso().getPhoto());
+                service.setAvailable(true);
+                serviceRepository.save(service);
+                enrollmentSessionList.forEach(claseSesion1 -> claseSesion1.setClase(service));
+                enrollmentSessionRepository.saveAll(enrollmentSessionList);
                 attributes.addFlashAttribute("msgSuccess","Paquete de asesorías creado correctamente");
                 return "redirect:/admin/ases-paq";
             }
@@ -279,53 +274,53 @@ public class AdminController {
     //Activar y desactivar pago
     @GetMapping("/activarPago/{idclase}/{idusuario}")
     public String activarPago(@PathVariable("idclase") int idclase,@PathVariable("idusuario") int idusuario){
-    Optional<ClaseEnroll> optClaseEnroll=claseEnrollRepository.findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(idclase,idusuario);
+    Optional<Enrollment> optClaseEnroll= enrollmentRepository.findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(idclase,idusuario);
     if (optClaseEnroll.isPresent()){
-    ClaseEnroll claseEnroll =optClaseEnroll.get();
-    claseEnroll.setPagado(true);
+    Enrollment enrollment =optClaseEnroll.get();
+    enrollment.setPayed(true);
         }
         return "redirect:/admin/ases-paq/lis-ins/"+idclase;
 
     }
     @GetMapping("/desactivarPago/{idclase}/{idusuario}")
     public String desactivarPago(@PathVariable("idclase") int idclase,@PathVariable("idusuario") int idusuario){
-        Optional<ClaseEnroll> optClaseEnroll=claseEnrollRepository.findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(idclase,idusuario);
+        Optional<Enrollment> optClaseEnroll= enrollmentRepository.findByClase_IdclaseAndEstudiante_IdusuarioAndActiveIsTrue(idclase,idusuario);
         if (optClaseEnroll.isPresent()){
-            ClaseEnroll claseEnroll =optClaseEnroll.get();
-            claseEnroll.setPagado(false);
+            Enrollment enrollment =optClaseEnroll.get();
+            enrollment.setPayed(false);
         }
         return "redirect:/admin/ases-paq/lis-ins/"+idclase;
 
     }
     @PostMapping("/ases-paq/delete")
     public String deleteAsesPaq(@RequestParam("idclase") Integer id, HttpSession session, RedirectAttributes attributes) throws IOException, MessagingException {
-        Usuario user = (Usuario)session.getAttribute("usuario");
-        Optional<Clase> claseOptional = claseRepository.
+        User user = (User)session.getAttribute("usuario");
+        Optional<Service> claseOptional = serviceRepository.
                 findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PAQUETE);
         if (claseOptional.isPresent()){
-            Clase clase = claseOptional.get();
+            Service service = claseOptional.get();
 
-            List<Venta> ventasDeClase =  ventaRepository.findVentasByClaseEnroll_Clase(clase);
+            List<Sale> ventasDeClase =  saleRepository.findVentasByClaseEnroll_Clase(service);
 
             if (!ventasDeClase.isEmpty()){
                 //TODO: notificar a los usuarios via correo que la clase fue cancelada
-                List<Usuario> listaInscritos = new ArrayList<>() ;
+                List<User> listaInscritos = new ArrayList<>() ;
 
-                List<ClaseEnroll> listaClaseEnroll = claseEnrollRepository.findClaseEnrollByClase_Idclase(clase.getIdclase());
-                for (ClaseEnroll c: listaClaseEnroll){
-                    Usuario u=c.getEstudiante();
+                List<Enrollment> listaEnrollment = enrollmentRepository.findClaseEnrollByClase_Idclase(service.getIdService());
+                for (Enrollment c: listaEnrollment){
+                    User u=c.getStudent();
                     listaInscritos.add(u);
                 }
                 String mensaje="Lamentamos informarles que la clase ha sido cancelada por motivos que escapan de " +
                         "manos de la academia.Esperamos su comprensión. Nos pondremos en contacto a la brevedad para reponer el dinero en caso se haya realizado el pago." +
                         "Gracias por su comprensión, esperamos contar con su preferencia siempre.";
-                customEmailService.sendMailToUsersMensaje(listaInscritos,listaClaseEnroll.get(0).getClase(),mensaje);
-                ventaCanceladaRepository.saveAll(VentaCancelada.generateVentaCanceladas(ventasDeClase));
-                ventaRepository.deleteAll(ventasDeClase);
+                customEmailService.sendMailToUsersMensaje(listaInscritos, listaEnrollment.get(0).getClase(),mensaje);
+                saleCanceledRepository.saveAll(SaleCanceled.generateVentaCanceladas(ventasDeClase));
+                saleRepository.deleteAll(ventasDeClase);
             }
-            claseSesionRepository.deleteAll(clase.getClaseSesions());
-            claseEnrollRepository.deleteAll(clase.getClaseEnrollList());
-            claseRepository.delete(clase);
+            enrollmentSessionRepository.deleteAll(service.getClaseSesions());
+            enrollmentRepository.deleteAll(service.getClaseEnrollList());
+            serviceRepository.delete(service);
             attributes.addFlashAttribute("msgSuccess", "Paquete de Asesorías eliminado correctamente");
 
         }else {
@@ -334,5 +329,5 @@ public class AdminController {
         return "redirect:/admin/ases-paq/";
     }
 
-
+*/
 }
