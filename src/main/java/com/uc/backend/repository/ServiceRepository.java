@@ -34,4 +34,6 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     List<Service> findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(String servicio, String curso_cursoId_universidad);
 */
+
+    List<Service> findServiceByServiceTypeAndCourse_CourseId(String serviceType, CourseId course_courseId);
 }
