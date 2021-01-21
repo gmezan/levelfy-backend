@@ -31,7 +31,7 @@ public class ServiceController {
             @RequestParam("u") String university) {
         CourseId courseId = new CourseId(idCourse, university);
         return new ResponseEntity<>(
-                serviceRepository.findServiceByServiceTypeAndCourse_CourseId(serviceType,courseId),
+                serviceRepository.findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId),
                 HttpStatus.OK
         );
     }
