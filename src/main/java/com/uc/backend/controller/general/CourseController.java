@@ -68,4 +68,6 @@ public class CourseController {
                 .orElseGet(() -> new ResponseEntity(HttpStatus.BAD_REQUEST));
     }
 
+    // PatchMapping?
+
 }
