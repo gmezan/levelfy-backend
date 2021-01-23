@@ -1,6 +1,4 @@
-package com.uc.backend.entity;
-
-import java.math.BigDecimal;
+package com.uc.backend.model;
 
 public class Paquete {
     private String idpaquete;

@@ -1,14 +1,4 @@
-package com.uc.backend.utils;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-
-
-import static com.uc.backend.utils.CustomConstants.*;
+package com.uc.backend.util;
 
 public class CommonService {
 

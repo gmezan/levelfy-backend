@@ -1,20 +1,12 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.uc.backend.config.Auditable;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
-
-import static com.uc.backend.utils.CustomConstants.MINUTES_EXPIRATION_TIME_FOR_ASES_PER;
 
 @Entity
 @Table(name = "clase_enroll")

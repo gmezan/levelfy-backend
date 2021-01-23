@@ -1,4 +1,4 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 public class Coupon {
     String valido;

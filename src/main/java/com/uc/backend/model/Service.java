@@ -1,8 +1,7 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.uc.backend.config.Auditable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;

@@ -1,8 +1,8 @@
 package com.uc.backend.service;
 
 import com.uc.backend.dto.PaymentDto;
-import com.uc.backend.entity.Service;
-import com.uc.backend.entity.User;
+import com.uc.backend.model.Service;
+import com.uc.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
 
-import static com.uc.backend.utils.CustomConstants.ADMINS;
-import static com.uc.backend.utils.CustomConstants.METODOS_DE_PAGO;
+import static com.uc.backend.util.CustomConstants.ADMINS;
+import static com.uc.backend.util.CustomConstants.METODOS_DE_PAGO;
 
 @Component
 public class CustomEmailService {

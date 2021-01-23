@@ -1,29 +1,7 @@
 package com.uc.backend.controller.admin;
 
-import com.uc.backend.entity.*;
-import com.uc.backend.repository.*;
-import com.uc.backend.service.CustomEmailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static com.uc.backend.utils.CustomConstants.*;
 
 @Controller
 @RequestMapping("/admin")

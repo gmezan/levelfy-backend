@@ -1,10 +1,7 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.entity.Service;
-import com.uc.backend.entity.CommentForum;
+import com.uc.backend.model.CommentForum;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface CommentForumRepository extends JpaRepository<CommentForum, Integer> {
 

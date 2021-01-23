@@ -1,7 +1,5 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
-
-import com.uc.backend.config.Auditable;
 
 import javax.persistence.*;
 import java.io.Serializable;

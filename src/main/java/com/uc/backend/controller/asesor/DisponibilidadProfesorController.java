@@ -1,28 +1,6 @@
 package com.uc.backend.controller.asesor;
 
-import com.uc.backend.entity.TeacherAvailability;
-import com.uc.backend.entity.User;
-import com.uc.backend.repository.EnrollmentRepository;
-import com.uc.backend.repository.TeacherAvailabilityRepository;
-import com.uc.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.*;
-
-import static com.uc.backend.utils.CustomConstants.DAYS;
-import static com.uc.backend.utils.CustomConstants.SERVICIO_ASESORIA_PERSONALIZADA;
 
 @Controller
 public class DisponibilidadProfesorController {

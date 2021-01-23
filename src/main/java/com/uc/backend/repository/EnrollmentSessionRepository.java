@@ -1,9 +1,7 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.entity.EnrollmentSession;
+import com.uc.backend.model.EnrollmentSession;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface EnrollmentSessionRepository extends JpaRepository <EnrollmentSession, Integer> {
 

@@ -1,10 +1,10 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-import static com.uc.backend.utils.CustomConstants.ROLES;
+import static com.uc.backend.util.CustomConstants.ROLES;
 
 @Entity
 @Table(name = "rol")

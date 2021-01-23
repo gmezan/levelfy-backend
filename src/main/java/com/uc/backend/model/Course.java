@@ -1,13 +1,12 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 
-import com.uc.backend.config.Auditable;
 import com.uc.backend.dto.CourseId;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-import static com.uc.backend.utils.CustomConstants.UNIVERSITIES;
+import static com.uc.backend.util.CustomConstants.UNIVERSITIES;
 
 @Entity
 @Table(name =  "curso")

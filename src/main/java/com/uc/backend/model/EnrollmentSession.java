@@ -1,15 +1,12 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.uc.backend.config.Auditable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @Entity
 @Table(name = "clase_sesion")

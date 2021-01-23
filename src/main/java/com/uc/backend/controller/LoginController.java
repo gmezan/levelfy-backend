@@ -68,9 +68,9 @@ session.setAttribute("idinvitante", idinvitante);
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken()
                     .getTokenValue());
-            HttpEntity entity = new HttpEntity("", headers);
+            HttpEntity model = new HttpEntity("", headers);
             ResponseEntity<Map> response = restTemplate
-                    .exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
+                    .exchange(userInfoEndpointUri, HttpMethod.GET, model, Map.class);
             Map userAttributes = response.getBody();
             Usuario usuario = usuarioRepository.findByCorreo((String)userAttributes.get("email"));
             if (usuario==null){

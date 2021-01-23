@@ -1,10 +1,7 @@
-package com.uc.backend.entity;
+package com.uc.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.uc.backend.config.Auditable;
 
 import javax.persistence.*;
 import java.io.Serializable;

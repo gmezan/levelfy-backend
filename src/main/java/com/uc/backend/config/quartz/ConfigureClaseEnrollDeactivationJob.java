@@ -1,4 +1,4 @@
-package com.uc.backend.config;
+package com.uc.backend.config.quartz;
 
 import com.uc.backend.job.ClaseEnrollDeactivationJob;
 //import org.quartz.*;

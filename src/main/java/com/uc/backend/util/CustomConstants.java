@@ -1,6 +1,6 @@
-package com.uc.backend.utils;
+package com.uc.backend.util;
 
-import com.uc.backend.entity.Paquete;
+import com.uc.backend.model.Paquete;
 
 import java.util.HashMap;
 

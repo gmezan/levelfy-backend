@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static com.uc.backend.utils.CustomConstants.METODOS_DE_PAGO;
+import static com.uc.backend.util.CustomConstants.METODOS_DE_PAGO;
 
 public class PaymentDto {
     private String persona;

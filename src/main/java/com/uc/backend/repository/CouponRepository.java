@@ -1,10 +1,7 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.entity.CommentForum;
+import com.uc.backend.model.CommentForum;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface CouponRepository extends JpaRepository<CommentForum, Integer> {
 /*
