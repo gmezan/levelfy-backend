@@ -1,7 +1,10 @@
 package com.uc.backend.service;
 
+import com.uc.backend.controller.OAuthController;
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,13 +17,14 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
+    private final static Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     UserRepository  userRepository;
 
     public Optional<User> getCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-       return userRepository.findByEmail(userDetails.getUsername());
+       return userRepository.findByEmail((String) SecurityContextHolder.getContext().getAuthentication()
+               .getPrincipal());
     }
 
 

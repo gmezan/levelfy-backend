@@ -130,8 +130,6 @@ public class OAuthController {
         user.setEmail(email);
         user.setLastname("");
         user.setName("Mock name");
-        logger.info("Secret PSWD " + secretPsw);
-        logger.info("Client id " + googleClientId);
         user.setPassword(passwordEncoder.encode(secretPsw));
         Role role = roleService.getByName(RoleName.client).get();
         Set<Role> roles =  new HashSet<>(); roles.add(role);
