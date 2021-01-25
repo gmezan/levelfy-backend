@@ -1,4 +1,4 @@
-package com.uc.backend.controller.asesor;
+package com.uc.backend.controller.teach;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +17,15 @@ public class AsesorController {
     EnrollmentSessionRepository enrollmentSessionRepository;
 
 
-    //Se muestran los cursos (disponibles) que está dictando el asesor
+    //Se muestran los cursos (disponibles) que está dictando el teach
     @GetMapping(value = {"","/"})
-    public String uMisCursos(Model model, HttpSession session){
+    public String uMisCursos(Model entity, HttpSession session){
         User user = (User) session.getAttribute("usuario");
-        model.addAttribute("listaAsesoriaOnline", serviceRepository
+        entity.addAttribute("listaAsesoriaOnline", serviceRepository
                 .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_ASESORIA_PERSONALIZADA));
-        model.addAttribute("listaClaseSelfPaced", serviceRepository
+        entity.addAttribute("listaClaseSelfPaced", serviceRepository
                 .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_SELF_PACED));
-        model.addAttribute("listaPaquetesAsesoria", serviceRepository
+        entity.addAttribute("listaPaquetesAsesoria", serviceRepository
                 .findClasesByProfesor_IdusuarioAndDisponibleIsTrueAndServicio(user.getIdUser(),SERVICIO_ASESORIA_PAQUETE));
 
 //Validar si tiene los datos necesarios para el funcionamiento de la web
@@ -34,38 +34,38 @@ public class AsesorController {
             try {
                 if ((usuario.getPhone()==0)  || (usuario.getUniversity().isEmpty()) ){
                     System.out.println("I'm here");
-                    model.addAttribute("isDataComplete",false);
-                    model.addAttribute("universidad", UNIVERSITIES);
+                    entity.addAttribute("isDataComplete",false);
+                    entity.addAttribute("universidad", UNIVERSITIES);
 
                 }else{
                     System.out.println("data complete");
-                    model.addAttribute("isDataComplete",true);
+                    entity.addAttribute("isDataComplete",true);
 
                 }
             } catch ( Exception e) {
                 System.out.println("I'm here 2");
 
-                model.addAttribute("isDataComplete",false);
-                model.addAttribute("universidad", UNIVERSITIES);
+                entity.addAttribute("isDataComplete",false);
+                entity.addAttribute("universidad", UNIVERSITIES);
             }
 
         }else{
-            model.addAttribute("isDataComplete",true);
+            entity.addAttribute("isDataComplete",true);
 
         }
-        return "asesor/dictando";
+        return "teach/dictando";
     }
 
 
     @GetMapping(value = {"/ases-paq", "/ases-paq/"})
-    public String paqueteAsesoriaOnline(Model model) {
+    public String paqueteAsesoriaOnline(Model entity) {
         List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
-        model.addAttribute("listaPaqueteAsesorias", lista);  //
-        return "/asesor/cursos/listaPaqueteAsesoriaOnline";
+        entity.addAttribute("listaPaqueteAsesorias", lista);  //
+        return "/teach/cursos/listaPaqueteAsesoriaOnline";
     }
 
     @GetMapping(value = {"/ases-paq/lis-ins/{id}", "/ases-paq/"})
-    public String mostrarListaDeInscritos(Model model, @PathVariable("id") int id) {
+    public String mostrarListaDeInscritos(Model entity, @PathVariable("id") int id) {
         List<User> listaInscritos = new ArrayList<>() ;
 
         List<Enrollment> lista = enrollmentRepository.findClaseEnrollByClase_Idclase(id);
@@ -73,14 +73,14 @@ public class AsesorController {
              User u=c.getStudent();
         listaInscritos.add(u);
         }
-        model.addAttribute("listaInscritos", listaInscritos);
-        return "/asesor/listaInscritos";}
+        entity.addAttribute("listaInscritos", listaInscritos);
+        return "/teach/listaInscritos";}
 
 
         @GetMapping(value = "/new/ases-paq")
-        public String crearPaqueteAsesoria(Model model, Service service){
+        public String crearPaqueteAsesoria(Model entity, Service service){
 
-        model.addAttribute("universidad", UNIVERSITIES);
+        entity.addAttribute("universidad", UNIVERSITIES);
 
 
 

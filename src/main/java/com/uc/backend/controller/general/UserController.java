@@ -1,63 +1,107 @@
 package com.uc.backend.controller.general;
 
-import com.uc.backend.model.*;
+import com.uc.backend.entity.*;
 import com.uc.backend.repository.*;
+import com.uc.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/u")
+@RequestMapping("model/user")
 public class UserController {
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    CourseRepository courseRepository;
+    UserService userService;
 
-    @Autowired
-    ServiceRepository serviceRepository;
 
-    @Autowired
-    EnrollmentRepository enrollmentRepository;
+    @GetMapping(value = "me", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getCurrentUser() {
 
-    @Autowired
-    VideoRepository videoRepository;
+        return userService.getCurrentUser()
+                .map(user -> new ResponseEntity<>(user, OK))
+                .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
 
-    @Autowired
-    EnrollmentSessionRepository enrollmentSessionRepository;
+    }
 
-    //@CrossOrigin(origins = "http://localhost:8080")
+
+    /*@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/dev/listAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getAll(){
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+    }*/
+
+
+    // RESTFUL
+
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userRepository.findAll(), OK);
     }
 
+    @GetMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUser(@PathVariable("u") int userId) {
+        return userRepository.findById(userId)
+                .map(value -> new ResponseEntity<>(value, OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+    }
+
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> newUser(@RequestBody User User) {
+        return userRepository.findById(User.getIdUser())
+                .map(value -> new ResponseEntity<>(value, HttpStatus.BAD_REQUEST))
+                .orElseGet(() -> new ResponseEntity<>(userRepository.save(User), OK));
+    }
+
+    @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> updateUser(@RequestBody User User) {
+        return userRepository.findById(User.getIdUser())
+                .map(value -> new ResponseEntity<>(userRepository.save(User), OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+    }
+
+    @DeleteMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteUser(@PathVariable("u") int userId) {
+        return userRepository.findById(userId)
+                .map(value -> {
+                    userRepository.delete(value);
+                    return new ResponseEntity(OK);
+                })
+                .orElseGet(() -> new ResponseEntity(HttpStatus.BAD_REQUEST));
+    }
+    
+
+    
+    
+    
 /*
     @GetMapping(value = {"","/"})
-    public String uMisCursos(Model model, HttpSession session){
+    public String uMisCursos(Model entity, HttpSession session){
         User user = (User) session.getAttribute("usuario");
-        model.addAttribute("listaAsesoriaOnline", enrollmentRepository
+        entity.addAttribute("listaAsesoriaOnline", enrollmentRepository
                                                 .findClaseEnrollsByEstudiante_IdusuarioAndClase_ServicioAndClase_DisponibleIsTrueAndActiveIsTrue(user.getIdUser(),SERVICIO_ASESORIA_PERSONALIZADA));
-        model.addAttribute("listaClaseSelfPaced", enrollmentRepository
+        entity.addAttribute("listaClaseSelfPaced", enrollmentRepository
                                                 .findClaseEnrollsByEstudiante_IdusuarioAndClase_ServicioAndClase_DisponibleIsTrueAndActiveIsTrue(user.getIdUser(),SERVICIO_SELF_PACED));
-        model.addAttribute("listaPaquetesAsesoria", enrollmentRepository
+        entity.addAttribute("listaPaquetesAsesoria", enrollmentRepository
                                                 .findClaseEnrollsByEstudiante_IdusuarioAndClase_ServicioAndClase_DisponibleIsTrueAndActiveIsTrue(user.getIdUser(),SERVICIO_ASESORIA_PAQUETE));
-        return "estudiante/misCursos";
+        return "client/misCursos";
     }
 
 
     /*
     @GetMapping("/miClase")
-    public String uMiClase(Model model, HttpSession session, ServletRequest request){
+    public String uMiClase(Model entity, HttpSession session, ServletRequest request){
         Map<String, String[]> paramMap = request.getParameterMap();
         Usuario user = (Usuario) session.getAttribute("usuario");
         int idClaseEnroll = Integer.parseInt(paramMap.get("id")[0]);
@@ -76,7 +120,7 @@ public class UserController {
                 }
 
                 //Si pago, Enviar a plataforma de video
-                model.addAttribute("claseEnroll", claseEnroll);
+                entity.addAttribute("claseEnroll", claseEnroll);
                 if(session.getAttribute(Integer.toString(idClaseEnroll)) == null ){
                     List<Evaluacion> evaluaciones = evaluacionRepository.findByOrderByIdevaluacionAsc();
                     List<Video> v_aux ;
@@ -85,12 +129,12 @@ public class UserController {
                         if(!v_aux.isEmpty()){ lista.add(v_aux); }
                     }
                     session.setAttribute(Integer.toString(idClaseEnroll), lista);
-                    model.addAttribute("clase", claseEnroll.getClase()); // Nombre Curso, profesor
-                    model.addAttribute("map", lista); //Orden de videos
+                    entity.addAttribute("clase", claseEnroll.getClase()); // Nombre Curso, profesor
+                    entity.addAttribute("map", lista); //Orden de videos
                 }
                 else{
-                    model.addAttribute("clase", claseEnroll.getClase()); // Nombre Curso, profesor
-                    model.addAttribute("map", session.getAttribute(Integer.toString(idClaseEnroll))); //Orden de videos
+                    entity.addAttribute("clase", claseEnroll.getClase()); // Nombre Curso, profesor
+                    entity.addAttribute("map", session.getAttribute(Integer.toString(idClaseEnroll))); //Orden de videos
                 }
 
                 if(paramMap.containsKey("video")){
@@ -101,11 +145,11 @@ public class UserController {
                         if(!claseEnroll.getClase().equals(vd.getClase())){
                             return "redirect:/u/misCursos";
                         }
-                        model.addAttribute("videosrc", vd);
+                        entity.addAttribute("videosrc", vd);
                     }
                 }
 
-                return "estudiante/claseSelfPaced";
+                return "client/claseSelfPaced";
 
             }
         }
@@ -114,7 +158,7 @@ public class UserController {
     }
 
     @GetMapping("/selfPaced/confirmClase")
-    public String confirmClase(Model model, @RequestParam(name = "id") int idClaseEnroll,
+    public String confirmClase(Model entity, @RequestParam(name = "id") int idClaseEnroll,
                                   HttpSession session)
     {
         Usuario user = (Usuario) session.getAttribute("usuario");
@@ -124,8 +168,8 @@ public class UserController {
         if(optionalClaseEnroll.isPresent()){
             ClaseEnroll claseEnroll= optionalClaseEnroll.get();
             if(claseEnroll.getEstudiante().getIdusuario() == user.getIdusuario()){
-                model.addAttribute("claseEnroll", claseEnroll);
-                return "estudiante/confirmSelfPaced";
+                entity.addAttribute("claseEnroll", claseEnroll);
+                return "client/confirmSelfPaced";
             }
         }
         return "redirect:/u/misCursos";

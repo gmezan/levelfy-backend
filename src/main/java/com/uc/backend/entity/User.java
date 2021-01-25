@@ -1,7 +1,8 @@
-package com.uc.backend.model;
+package com.uc.backend.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -23,11 +24,12 @@ public class User extends Auditable implements Serializable {
     @Column(name = "idusuario")
     private int idUser;
 
+    @NotNull
     @Column(name = "correo", nullable = false)
     private String email;
 
     @Column(name = "celular")
-    private Integer phone =0;
+    private Integer phone = 0;
 
     @Column(name = "saldo")
     private BigDecimal balance;
@@ -64,9 +66,12 @@ public class User extends Auditable implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    @ManyToOne
-    @JoinColumn(name = "idrol")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_has_rol",
+            joinColumns = @JoinColumn(name = "idusuario", referencedColumnName = "idusuario") ,
+            inverseJoinColumns = @JoinColumn(name = "idrol", referencedColumnName = "idrol"))
+    private Set<Role> role = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<TeacherAvailability> teacherAvailabilitySet;
@@ -251,19 +256,19 @@ public class User extends Auditable implements Serializable {
         this.birthday = birthday;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public Integer getInvitingId() {
         return invitingId;
     }
 
     public void setInvitingId(Integer invitingId) {
         this.invitingId = invitingId;
+    }
+
+    public Set<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(Set<Role> role) {
+        this.role = role;
     }
 }

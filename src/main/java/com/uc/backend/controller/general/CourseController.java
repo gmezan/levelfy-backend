@@ -2,7 +2,7 @@ package com.uc.backend.controller.general;
 
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.model.*;
+import com.uc.backend.entity.*;
 import com.uc.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

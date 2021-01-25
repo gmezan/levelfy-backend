@@ -1,6 +1,6 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.model.TeacherAvailability;
+import com.uc.backend.entity.TeacherAvailability;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeacherAvailabilityRepository extends JpaRepository<TeacherAvailability,Integer> {

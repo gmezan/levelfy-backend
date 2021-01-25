@@ -1,6 +1,6 @@
 package com.uc.backend.controller.general;
 
-import com.uc.backend.model.Enrollment;
+import com.uc.backend.entity.Enrollment;
 import com.uc.backend.repository.EnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

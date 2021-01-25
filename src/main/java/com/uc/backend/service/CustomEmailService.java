@@ -1,8 +1,8 @@
 package com.uc.backend.service;
 
 import com.uc.backend.dto.PaymentDto;
-import com.uc.backend.model.Service;
-import com.uc.backend.model.User;
+import com.uc.backend.entity.Service;
+import com.uc.backend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -1,4 +1,4 @@
-package com.uc.backend.model;
+package com.uc.backend.entity;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

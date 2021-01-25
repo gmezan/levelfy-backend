@@ -1,4 +1,4 @@
-package com.uc.backend.model;
+package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

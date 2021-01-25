@@ -1,4 +1,4 @@
-package com.uc.backend.controller.estudiante;
+package com.uc.backend.controller.client;
 
 import org.springframework.web.bind.annotation.*;
 

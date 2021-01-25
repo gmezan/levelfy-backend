@@ -1,6 +1,6 @@
 package com.uc.backend.util;
 
-import com.uc.backend.model.Paquete;
+import com.uc.backend.entity.Paquete;
 
 import java.util.HashMap;
 
@@ -102,8 +102,8 @@ public abstract class CustomConstants {
         SERVICES.put("SELF_P","Aprende a tu ritmo");
 
         //Table ROLS
-        ROLES.put(1,"estudiante");
-        ROLES.put(2,"asesor");
+        ROLES.put(1,"client");
+        ROLES.put(2,"teach");
         ROLES.put(3,"admin");
 
         //Table TIEMPOCLASE (tiempo de suscripción)

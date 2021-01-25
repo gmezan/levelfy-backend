@@ -1,6 +1,6 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.model.Video;
+import com.uc.backend.entity.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VideoRepository  extends JpaRepository<Video, Integer> {

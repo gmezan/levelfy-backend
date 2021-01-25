@@ -1,4 +1,4 @@
-package com.uc.backend.controller.asesor;
+package com.uc.backend.controller.teach;
 
 import org.springframework.stereotype.Controller;
 
@@ -18,27 +18,27 @@ public class DisponibilidadProfesorController {
 
 
     @GetMapping("a/availability")
-    public String disponibilidadList(Model model, HttpSession session){
-        model.addAttribute("availability", teacherAvailabilityRepository
+    public String disponibilidadList(Model entity, HttpSession session){
+        entity.addAttribute("availability", teacherAvailabilityRepository
                 .findDisponibilidadProfesorsByUsuario_IdusuarioAndUsuario_ActivoIsTrueAndUsuario_Rol_Idrol
                         (((User)session.getAttribute("usuario")).getIdUser(), ROL_ASESOR));
-        return "asesor/disponibilidad/list";
+        return "teach/disponibilidad/list";
     }
 
     @GetMapping("a/availability/new")
     public String disponibilidadNew(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
-            Model model, HttpSession session){
+            Model entity, HttpSession session){
         User user = (User)session.getAttribute("usuario");
-        model.addAttribute("dias", DAYS);
-        model.addAttribute("disp", teacherAvailability);
-        model.addAttribute("titleForm","Nueva Disponibilidad");
-        return "asesor/disponibilidad/form";
+        entity.addAttribute("dias", DAYS);
+        entity.addAttribute("disp", teacherAvailability);
+        entity.addAttribute("titleForm","Nueva Disponibilidad");
+        return "teach/disponibilidad/form";
     }
 
 
     @GetMapping("a/availability/edit/{id}")
     public String disponibilidadEdit(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
-                                     Model model, @PathVariable("id") Integer id, HttpSession session,
+                                     Model entity, @PathVariable("id") Integer id, HttpSession session,
                                      RedirectAttributes attributes){
         User user = (User)session.getAttribute("usuario");
         Optional<TeacherAvailability> optionalDisponibilidadProfesor =
@@ -47,10 +47,10 @@ public class DisponibilidadProfesorController {
 
         if (optionalDisponibilidadProfesor.isPresent()){
             teacherAvailability = optionalDisponibilidadProfesor.get();
-            model.addAttribute("dias", DAYS);
-            model.addAttribute("disp", teacherAvailability);
-            model.addAttribute("titleForm","Editar Disponibilidad");
-            return "asesor/disponibilidad/form";
+            entity.addAttribute("dias", DAYS);
+            entity.addAttribute("disp", teacherAvailability);
+            entity.addAttribute("titleForm","Editar Disponibilidad");
+            return "teach/disponibilidad/form";
         }
         else {
             attributes.addFlashAttribute("msgError","No se encontro la disponibilidad");
@@ -62,7 +62,7 @@ public class DisponibilidadProfesorController {
 
     @PostMapping("a/availability/save")
     public String disponibilidadSave(@ModelAttribute("disp") TeacherAvailability teacherAvailability,
-                                     BindingResult bindingResult, Model model, HttpSession session, RedirectAttributes attributes){
+                                     BindingResult bindingResult, Model entity, HttpSession session, RedirectAttributes attributes){
         User user = (User)session.getAttribute("usuario");
 
         if (teacherAvailability.getStart()!=null && teacherAvailability.getEnd()!=null
@@ -105,17 +105,17 @@ public class DisponibilidadProfesorController {
             teacherAvailabilityRepository.save(teacherAvailability);
 
         }else {
-            model.addAttribute("dias", DAYS);
-            model.addAttribute("disp", teacherAvailability);
-            model.addAttribute("titleForm","Formulario");
-            return "asesor/disponibilidad/form";
+            entity.addAttribute("dias", DAYS);
+            entity.addAttribute("disp", teacherAvailability);
+            entity.addAttribute("titleForm","Formulario");
+            return "teach/disponibilidad/form";
         }
         return "redirect:/a/availability";
     }
 
 
     @GetMapping("a/availability/delete/{id}")
-    public String disponibilidadDelete(Model model, @PathVariable("id") Integer id, HttpSession session,
+    public String disponibilidadDelete(Model entity, @PathVariable("id") Integer id, HttpSession session,
                                        RedirectAttributes attributes){
         User user = (User)session.getAttribute("usuario");
         Optional<TeacherAvailability> optionalDisponibilidadProfesor =
@@ -160,8 +160,8 @@ public class DisponibilidadProfesorController {
                 }));
         final int[] i = {1};
         if(optionalUsuario.isPresent()){
-            User asesor = optionalUsuario.get();
-                for (LocalDateTime dp : asesor.mapAvailability().keySet()){
+            User teach = optionalUsuario.get();
+                for (LocalDateTime dp : teach.mapAvailability().keySet()){
                 if (!dtProgramado.contains(dp.toLocalDate())){
                     list.add(new HashMap<String,Object>(){{
                         put("start",dp);

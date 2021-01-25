@@ -1,4 +1,4 @@
-package com.uc.backend.model;
+package com.uc.backend.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

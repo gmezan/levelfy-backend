@@ -1,6 +1,6 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.model.Enrollment;
+import com.uc.backend.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {

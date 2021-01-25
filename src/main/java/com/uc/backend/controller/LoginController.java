@@ -25,7 +25,7 @@ public class LoginController {
 
 
     @GetMapping("/loginForm")
-    public String loginForm(Model model,@RequestParam(value = "codigo",required = false) Integer idinvitante ,Authentication auth, HttpServletRequest request, RedirectAttributes attr, HttpSession session){
+    public String loginForm(Model entity,@RequestParam(value = "codigo",required = false) Integer idinvitante ,Authentication auth, HttpServletRequest request, RedirectAttributes attr, HttpSession session){
         Iterable<ClientRegistration> clientRegistrations = null;
         ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
                 .as(Iterable.class);
@@ -37,7 +37,7 @@ public class LoginController {
 
         clientRegistrations.forEach(registration -> oauth2AuthenticationUrls.put(registration.getClientName(),
                         authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-        model.addAttribute("urls", oauth2AuthenticationUrls);
+        entity.addAttribute("urls", oauth2AuthenticationUrls);
 
         if(auth!=null)
             return redirectUser(request,auth.getAuthorities());
@@ -68,9 +68,9 @@ session.setAttribute("idinvitante", idinvitante);
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken()
                     .getTokenValue());
-            HttpEntity model = new HttpEntity("", headers);
+            HttpEntity entity = new HttpEntity("", headers);
             ResponseEntity<Map> response = restTemplate
-                    .exchange(userInfoEndpointUri, HttpMethod.GET, model, Map.class);
+                    .exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
             Map userAttributes = response.getBody();
             Usuario usuario = usuarioRepository.findByCorreo((String)userAttributes.get("email"));
             if (usuario==null){
@@ -109,9 +109,9 @@ session.setAttribute("idinvitante", idinvitante);
         switch (rol) {
             case "admin":
                 return "redirect:/admin";
-            case "asesor":
+            case "teach":
                 return "redirect:/a";
-            case "estudiante":
+            case "client":
                 return "redirect:/home";
             default:
                 try{
@@ -139,9 +139,9 @@ session.setAttribute("idinvitante", idinvitante);
         switch (rol) {
             case "admin":
                 return "redirect:/home";
-            case "asesor":
+            case "teach":
                 return "redirect:/a";
-            case "estudiante":
+            case "client":
                 return "redirect:/home";
             default:
                 return "redirect:/";
@@ -149,7 +149,7 @@ session.setAttribute("idinvitante", idinvitante);
     }
 
     @GetMapping("/signup")
-    public String signup(Model model){
+    public String signup(Model entity){
 
         Iterable<ClientRegistration> clientRegistrations = null;
         ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
@@ -162,7 +162,7 @@ session.setAttribute("idinvitante", idinvitante);
         clientRegistrations.forEach(registration ->
                 oauth2AuthenticationUrls.put(registration.getClientName(),
                         authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-        model.addAttribute("urls", oauth2AuthenticationUrls);
+        entity.addAttribute("urls", oauth2AuthenticationUrls);
         return "login/signup";
     }
 
@@ -187,9 +187,9 @@ session.setAttribute("idinvitante", idinvitante);
     public String forgotPassword(){ return "login/forgot_password";}
 
     @PostMapping("/processForgotPassword")
-    public String processForgotPassword(Model model, @RequestParam(value = "username", required = true) String email){
+    public String processForgotPassword(Model entity, @RequestParam(value = "username", required = true) String email){
         System.out.println(email);
-        model.addAttribute("msg", email);
+        entity.addAttribute("msg", email);
         return "login/confirmationForgotPswd";
     }
 

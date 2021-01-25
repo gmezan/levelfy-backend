@@ -1,5 +1,8 @@
-package com.uc.backend.model;
+package com.uc.backend.entity;
 
+
+import com.sun.istack.NotNull;
+import com.uc.backend.enums.RoleName;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,14 +17,15 @@ public class Role implements Serializable {
     @Column(name = "idrol")
     private int idRole; // student's role
 
-    @Column(name = "nombre")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = "nombre", unique = true)
+    private RoleName name;
 
     public Role(){}
 
     public Role(int r){
         idRole = r;
-        name = ROLES.get(r);
     }
 
     public int getIdRole() {
@@ -32,11 +36,11 @@ public class Role implements Serializable {
         this.idRole = idRole;
     }
 
-    public String getName() {
+    public RoleName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RoleName name) {
         this.name = name;
     }
 }

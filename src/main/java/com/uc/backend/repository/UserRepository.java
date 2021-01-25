@@ -1,7 +1,9 @@
 package com.uc.backend.repository;
 
-import com.uc.backend.model.User;
+import com.uc.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
@@ -16,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value="SELECT  COUNT(DISTINCT u.correo) FROM clase_enroll c inner join usuario u on  c.idalumno = u.idusuario where u.idinvitante =?1 and c.pago_confirmado=1 group by  u.idinvitante ",nativeQuery = true)
     String findCantidadInvitadosMatriculados(int id);
 */
+
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
+
 }

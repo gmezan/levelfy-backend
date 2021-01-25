@@ -1,7 +1,7 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.model.Service;
+import com.uc.backend.entity.Service;
 import com.uc.backend.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("service")
+@RequestMapping("model/service")
 public class ServiceController {
     @Autowired
     ServiceRepository serviceRepository;

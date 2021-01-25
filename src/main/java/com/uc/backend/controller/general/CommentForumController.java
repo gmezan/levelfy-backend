@@ -1,6 +1,6 @@
 package com.uc.backend.controller.general;
 
-import com.uc.backend.model.CommentForum;
+import com.uc.backend.entity.CommentForum;
 import com.uc.backend.repository.CommentForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

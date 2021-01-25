@@ -1,6 +1,6 @@
 package com.uc.backend.controller.general;
 
-import com.uc.backend.model.CourseSuggestion;
+import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.repository.CourseSuggestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

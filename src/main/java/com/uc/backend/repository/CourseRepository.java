@@ -1,7 +1,7 @@
 package com.uc.backend.repository;
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.model.Course;
+import com.uc.backend.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

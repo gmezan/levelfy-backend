@@ -32,7 +32,7 @@ public class AdminController {
 
 
     @GetMapping("/editarCurso")
-    public String editarCurso(Model model){
+    public String editarCurso(Model entity){
         List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PERSONALIZADA);
 
 
@@ -41,7 +41,7 @@ public class AdminController {
 
 
     @GetMapping("/editarCurso/enroll/{id}")
-    public String onlineCourseAsesoria(Model model, @ModelAttribute("asesoria") Service service, @PathVariable("id") int id, HttpSession session) {
+    public String onlineCourseAsesoria(Model entity, @ModelAttribute("asesoria") Service service, @PathVariable("id") int id, HttpSession session) {
         Optional<Service> optionalClase = serviceRepository.findByIdclaseAndServicioAndDisponibleIsTrue(id,SERVICIO_ASESORIA_PERSONALIZADA);
         //List<Paquete> listaPaquetes = paqueteRepository.findAll();
         Map<LocalDateTime, String> disponibilidades;
@@ -49,28 +49,28 @@ public class AdminController {
         if (optionalClase.isPresent()) {
 
             service = optionalClase.get();
-            model.addAttribute("asesoria", service);
-            model.addAttribute("paquete", PAQUETES.get(1));
+            entity.addAttribute("asesoria", service);
+            entity.addAttribute("paquete", PAQUETES.get(1));
             return "cursos/formCursoAdmin"; //Envio a formulario de registro a Asesoria
         } else {
             return "redirect:/admin/editarCurso";
         } }
 
-//asesor
+//teach
 
-    //Se muestran los cursos (disponibles) que está dictando el asesor
+    //Se muestran los cursos (disponibles) que está dictando el teach
 
 
     @GetMapping(value = {"","/","/ases-paq", "/ases-paq/"})
-    public String paqueteAsesoriaOnline(Model model) {
+    public String paqueteAsesoriaOnline(Model entity) {
         List<Service> lista = serviceRepository.findClasesByServicioAndDisponibleIsTrue(SERVICIO_ASESORIA_PAQUETE);
-        model.addAttribute("listaPaqueteAsesorias", lista);  //
+        entity.addAttribute("listaPaqueteAsesorias", lista);  //
 
         return "admin/curso/listaPaqueteAsesoriaOnline";
     }
 
     @GetMapping(value = {"/ases-paq/lis-ins/{id}"})
-    public String mostrarListaDeInscritos(Model model, @PathVariable("id") int id) {
+    public String mostrarListaDeInscritos(Model entity, @PathVariable("id") int id) {
         List<User> listaInscritos = new ArrayList<>() ;
 
         List<Enrollment> listaEnrollment = enrollmentRepository.findClaseEnrollByClase_Idclase(id);
@@ -78,20 +78,20 @@ public class AdminController {
             User u=c.getStudent();
             listaInscritos.add(u);
         }
-        model.addAttribute("idclase",id);
-        model.addAttribute("listaInscritos", listaEnrollment);
+        entity.addAttribute("idclase",id);
+        entity.addAttribute("listaInscritos", listaEnrollment);
         return "admin/listaInscritosAdmin";
     }
 
 
     @GetMapping(value = "/new/ases-paq")
-    public String crearPaqueteAsesoria(Model model, Service service, HttpSession session){
+    public String crearPaqueteAsesoria(Model entity, Service service, HttpSession session){
 
 
 
-        model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+        entity.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
         List<String> universidad= courseRepository.findUniversidades();
-        model.addAttribute("universidad",universidad);
+        entity.addAttribute("universidad",universidad);
 
         User user = (User) session.getAttribute("usuario");
         service = new Service();
@@ -101,10 +101,10 @@ public class AdminController {
         service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
         service.setTeacher(user);
         for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
-        model.addAttribute("title","Nuevo Paquete de Asesorías");
-        model.addAttribute("clase", service);
-        model.addAttribute("listaCursos", courseRepository.findAll());
-        model.addAttribute("listaEvaluaciones", EVALUATIONS);
+        entity.addAttribute("title","Nuevo Paquete de Asesorías");
+        entity.addAttribute("clase", service);
+        entity.addAttribute("listaCursos", courseRepository.findAll());
+        entity.addAttribute("listaEvaluaciones", EVALUATIONS);
 
         return "admin/ases-paq/formAsesPaq";
     }
@@ -123,11 +123,11 @@ public class AdminController {
     }
 
     @GetMapping(value = "/edit/ases-paq/{id}")
-    public String editarPaqueteAsesoria(Model model, Service service, HttpSession session, @PathVariable("id") int id ){
+    public String editarPaqueteAsesoria(Model entity, Service service, HttpSession session, @PathVariable("id") int id ){
 
-        model.addAttribute("universidad", UNIVERSITIES);
+        entity.addAttribute("universidad", UNIVERSITIES);
 
-        model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+        entity.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
         User user = (User) session.getAttribute("usuario");
        Optional<Service> optClase = serviceRepository.findByIdclaseAndDisponibleIsTrue(id);
        if (optClase.isPresent()){
@@ -138,10 +138,10 @@ public class AdminController {
         service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
         service.setTeacher(user);
         for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
-        model.addAttribute("title","Nuevo Paquete de Asesorías");
-        model.addAttribute("clase", service);
-        model.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
-        model.addAttribute("listaEvaluaciones", EVALUATIONS);
+        entity.addAttribute("title","Nuevo Paquete de Asesorías");
+        entity.addAttribute("clase", service);
+        entity.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
+        entity.addAttribute("listaEvaluaciones", EVALUATIONS);
 
         return "admin/crearClase";
        }
@@ -153,7 +153,7 @@ public class AdminController {
     }
     @PostMapping("ases-paq/save")
     public String saveAsesPaq(Service service, BindingResult bindingResult,
-                              HttpSession session, Model model, RedirectAttributes attributes){
+                              HttpSession session, Model entity, RedirectAttributes attributes){
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         EnrollmentSession enrollmentSession;
 
@@ -215,15 +215,15 @@ public class AdminController {
             }
 
             if (bindingResult.hasErrors()){
-                model.addAttribute("universidad", UNIVERSITIES);
+                entity.addAttribute("universidad", UNIVERSITIES);
 
-                model.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
+                entity.addAttribute("asesores", userRepository.findAllByRol_IdrolAndActivoIsTrue(2));
 
                 service.getCurso().getCursoId().setUniversity(user.getUniversity());
-                model.addAttribute("title","Nuevo Paquete de Asesoría");
-                model.addAttribute("clase", service);
-                model.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
-                model.addAttribute("listaEvaluaciones", EVALUATIONS);
+                entity.addAttribute("title","Nuevo Paquete de Asesoría");
+                entity.addAttribute("clase", service);
+                entity.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
+                entity.addAttribute("listaEvaluaciones", EVALUATIONS);
                 return "admin/ases-paq/formAsesPaq";
             }
             //Si all está bien
