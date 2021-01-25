@@ -28,6 +28,12 @@ public class CourseController {
         return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType), HttpStatus.OK);
     }
 
+    // List all courses by university
+    @GetMapping(value = "univ", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Course>> getCoursesListByUniversity(
+            @RequestParam(name = "u", required = true) String u) {
+        return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
+    }
 
 
     // RESTFUL Service: TESTED AND OK

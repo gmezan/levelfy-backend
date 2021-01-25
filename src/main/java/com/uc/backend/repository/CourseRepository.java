@@ -24,4 +24,6 @@ public interface CourseRepository extends JpaRepository<Course, CourseId> {
             "where cl.tipo_servicio = ?1 and cl.disponible=1", nativeQuery = true)
     List<Course> findCoursesAvailableByServiceTypeAndAvailableIsTrue(String serviceType);
 
+    List<Course> findCourseByCourseId_University(String courseId_university);
+
 }

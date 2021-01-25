@@ -24,6 +24,23 @@ public class CourseId implements Serializable {
         this.university = university;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj instanceof CourseId)
+        {
+            CourseId courseId = (CourseId)obj;
+            return (courseId.idCourse.equals(this.idCourse)) && (courseId.university.equals(this.university));
+        }
+        return false;
+    }
+
     public String getIdCourse() {
         return idCourse;
     }

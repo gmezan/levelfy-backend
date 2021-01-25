@@ -18,11 +18,7 @@ public class ServiceController {
     @Autowired
     ServiceRepository serviceRepository;
 
-    @GetMapping(value = "/dev/listAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Service>> getAll(){
-        return new ResponseEntity<>(serviceRepository.findAll(), HttpStatus.OK);
-    }
-
+    // Web Service for forms
     @GetMapping(value = "form", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getListOfServicesForForm(
             @RequestParam("serviceType") String serviceType,
