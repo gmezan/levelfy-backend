@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public abstract class Auditable {
 
     @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP",name = "created", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP",name = "created", nullable = false, updatable = false)
     protected LocalDateTime created;
 
     @LastModifiedDate
