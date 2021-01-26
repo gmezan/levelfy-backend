@@ -19,7 +19,7 @@ public abstract class Auditable {
     protected LocalDateTime created;
 
     @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP",name = "modified", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP",name = "modified", nullable = false, updatable = false)
     protected LocalDateTime modified;
 
 
