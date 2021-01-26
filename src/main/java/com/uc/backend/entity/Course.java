@@ -24,7 +24,7 @@ public class Course extends Auditable implements Serializable {
     @Column(name = "foto_url")
     private String photo;
 
-    @Column(name = "descripcion", nullable = false)
+    @Column(name = "descripcion", nullable = true)
     private String description;
 
     public Course(){}
