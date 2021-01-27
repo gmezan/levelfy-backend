@@ -45,7 +45,7 @@ public class AwsResourceService {
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
         fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream()) ;
 
-        return String.format("%s/%s/%s", BucketName.BUCKET_URL.getValue(), folder, fileName);
+        return String.format("%s/%s/%s/%s", BucketName.BUCKET_URL.getValue(), folder, name, fileName);
 
     }
 
