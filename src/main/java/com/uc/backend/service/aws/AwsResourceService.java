@@ -40,7 +40,7 @@ public class AwsResourceService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         // 5. Store the image in s3 and update database with s3 image link
-        String path = String.format("%s/%s", "levelfy-development-private", folder );
+        String path = String.format("%s/%s/%s", "levelfy-development-private", folder, name );
 
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
         fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream()) ;
