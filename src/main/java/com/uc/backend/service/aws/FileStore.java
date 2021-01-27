@@ -2,9 +2,7 @@ package com.uc.backend.service.aws;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +28,12 @@ public class FileStore {
                 map.forEach(metadata::addUserMetadata);
             }
         });
+        AccessControlList acl = new AccessControlList();
+        acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 
         try {
             s3.putObject(new PutObjectRequest(path, fileName, inputStream, metadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead));
+                            .withAccessControlList(acl));
         }
         catch (AmazonServiceException ex) {
             throw new IllegalStateException("Failed to store file to s3");
