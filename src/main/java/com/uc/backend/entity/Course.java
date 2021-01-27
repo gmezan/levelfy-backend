@@ -33,9 +33,13 @@ public class Course extends Auditable implements Serializable {
         this.courseId = courseId;
     }
 
-    public Course(String universidad){
+    public Course(String university){
         this.courseId = new CourseId();
-        this.courseId.setUniversity(universidad);
+        this.courseId.setUniversity(university);
+    }
+
+    public String idToString(){
+        return this.courseId.getIdCourse() + "_" + this.courseId.getUniversity();
     }
 
 
