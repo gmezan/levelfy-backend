@@ -30,6 +30,8 @@ public class AwsResourceController {
     @Autowired
     CourseRepository courseRepository;
 
+
+    /*
     @PostMapping(
             path = "{i}/{u}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -57,6 +59,8 @@ public class AwsResourceController {
 
         }
         else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }
 
+
+    }
+*/
 }
