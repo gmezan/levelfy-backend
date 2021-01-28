@@ -35,18 +35,16 @@ public class CourseController {
         return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType), HttpStatus.OK);
     }
 
-    // List all courses by university
-    @GetMapping(value = "course/univ", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getCoursesListByUniversity(
-            @RequestParam(name = "u", required = true) String u) {
-        return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
-    }
-
 
     // RESTFUL Service: TESTED AND OK
 
     @GetMapping(value = "course", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<Course>> getAllCourses(@RequestParam(name = "u", required = false) String u) {
+
+        if (u!=null && !u.isEmpty()) {
+            return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
     }
 
