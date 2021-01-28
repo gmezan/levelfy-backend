@@ -57,8 +57,6 @@ public class AwsResourceController {
 
         }
         else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-
     }
 
 }
