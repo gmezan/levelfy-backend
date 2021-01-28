@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @CrossOrigin
 @RestController
-@RequestMapping("aws")
+@RequestMapping("s3/course")
 public class AwsResourceController {
 
     private final String courses = "courses";
@@ -31,7 +31,7 @@ public class AwsResourceController {
     CourseRepository courseRepository;
 
 
-    /*
+
     @PostMapping(
             path = "{i}/{u}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -62,5 +62,5 @@ public class AwsResourceController {
 
 
     }
-*/
+
 }

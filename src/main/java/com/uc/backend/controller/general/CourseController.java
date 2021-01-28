@@ -22,10 +22,6 @@ import java.util.Optional;
 @RequestMapping("model")
 public class CourseController {
 
-    private final String coursesS3FolderName = "courses";
-
-    @Autowired
-    AwsResourceService awsResourceService;
 
 
     @Autowired
@@ -45,33 +41,6 @@ public class CourseController {
             @RequestParam(name = "u", required = true) String u) {
         return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
     }
-
-    // To Upload an Image attached to the course
-    @PostMapping(path = "s3/course/i}/{u}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i")String courseId,
-                                                           @PathVariable("u") String university,
-                                                           @RequestParam("file") MultipartFile file) {
-        Optional<Course> optionalCourse = courseRepository.findById(new CourseId(courseId, university));
-
-        if (optionalCourse.isPresent()) {
-            Course course = optionalCourse.get();
-            String url = null;
-            try {
-                url = awsResourceService.uploadImage(course.idToString(), coursesS3FolderName, file);
-                course.setPhoto(url);
-                courseRepository.save(course);
-                return new ResponseEntity<>(new FileUploadDto(url), HttpStatus.OK);
-            } catch (IllegalAccessException e) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            } catch (IOException e) {
-                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-        }
-        else return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }
-
-
 
 
     // RESTFUL Service: TESTED AND OK
