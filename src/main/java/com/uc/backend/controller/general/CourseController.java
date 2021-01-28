@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/model/course")
+@RequestMapping("model")
 public class CourseController {
 
     private final String coursesS3FolderName = "courses";
@@ -33,21 +33,21 @@ public class CourseController {
 
 
     // List available courses
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "course/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getServicesList(
             @RequestParam(name = "serviceType", required = true) String serviceType) {
         return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType), HttpStatus.OK);
     }
 
     // List all courses by university
-    @GetMapping(value = "univ", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "course/univ", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getCoursesListByUniversity(
             @RequestParam(name = "u", required = true) String u) {
         return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
     }
 
     // To Upload an Image attached to the course
-    @PostMapping(path = "image-upload/i}/{u}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Access-Control-Allow-Origin: *"})
+    @PostMapping(path = "s3/course/i}/{u}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i")String courseId,
                                                            @PathVariable("u") String university,
                                                            @RequestParam("file") MultipartFile file) {
@@ -76,33 +76,33 @@ public class CourseController {
 
     // RESTFUL Service: TESTED AND OK
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getAllCourses() {
         return new ResponseEntity<>(courseRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "course/{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Course> getCourse(@PathVariable("i") String id, @PathVariable("u") String university) {
         return courseRepository.findById(new CourseId(id, university))
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Course> newCourse(@RequestBody Course course) {
         return courseRepository.findById(course.getCourseId())
                 .map(value -> new ResponseEntity<>(value, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK));
     }
 
-    @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Course> updateCourse(@RequestBody Course course) {
         return courseRepository.findById(course.getCourseId())
                 .map(value -> new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
-    @DeleteMapping(value = "{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "course/{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteCourse(@PathVariable("i") String id, @PathVariable("u") String university) {
         return courseRepository.findById(new CourseId(id, university))
                 .map(value -> {
