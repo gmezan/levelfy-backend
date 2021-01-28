@@ -47,7 +47,7 @@ public class CourseController {
     }
 
     // To Upload an Image attached to the course
-    @PostMapping(path = "image-upload/i}/{u}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "image-upload/i}/{u}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Access-Control-Allow-Origin: *"})
     public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i")String courseId,
                                                            @PathVariable("u") String university,
                                                            @RequestParam("file") MultipartFile file) {
