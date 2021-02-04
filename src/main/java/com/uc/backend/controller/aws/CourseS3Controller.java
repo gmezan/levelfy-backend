@@ -20,16 +20,17 @@ import java.util.UUID;
 @CrossOrigin
 @RestController
 @RequestMapping("s3/course")
-public class AwsResourceController {
+public class CourseS3Controller {
 
     private final String courses = "courses";
-
-    @Autowired
     AwsResourceService awsResourceService;
-
-    @Autowired
     CourseRepository courseRepository;
 
+    @Autowired
+    public CourseS3Controller(AwsResourceService awsResourceService, CourseRepository courseRepository) {
+        this.awsResourceService = awsResourceService;
+        this.courseRepository = courseRepository;
+    }
 
 
     @PostMapping(

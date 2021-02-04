@@ -2,6 +2,7 @@ package com.uc.backend.repository;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
+import com.uc.backend.enums.LevelfyServiceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -34,5 +35,5 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
     List<Service> findClasesByServicioAndDisponibleIsTrueAndCurso_CursoId_Universidad(String servicio, String curso_cursoId_universidad);
 */
 
-    List<Service> findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(String serviceType, CourseId course_courseId);
+    List<Service> findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(LevelfyServiceType serviceType, CourseId course_courseId);
 }
