@@ -1,4 +1,4 @@
-package com.uc.backend.service.mongo;
+package com.uc.backend.mongo.document;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

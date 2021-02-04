@@ -1,7 +1,7 @@
 package com.uc.backend.controller.mongo;
 
-import com.uc.backend.repository.mongo.MongoCourseRepository;
-import com.uc.backend.service.mongo.MongoCourse;
+import com.uc.backend.mongo.repository.MongoCourseRepository;
+import com.uc.backend.mongo.document.MongoCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
