@@ -7,7 +7,6 @@ import com.uc.backend.enums.RoleName;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import static com.uc.backend.util.CustomConstants.ROLES;
 
 @Entity
 @Table(name = "rol")

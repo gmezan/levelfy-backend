@@ -2,6 +2,7 @@ package com.uc.backend.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.uc.backend.enums.LevelfyServiceType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -37,8 +38,9 @@ public class Service extends Auditable implements Serializable {
     @Column(nullable = false, name = "disponible")
     private Boolean available;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_servicio" ,nullable = false)
-    private String serviceType;
+    private LevelfyServiceType serviceType;
 
     @Column(name = "precio_individual", nullable = false)
     private BigDecimal price;
@@ -112,11 +114,11 @@ public class Service extends Auditable implements Serializable {
         this.available = available;
     }
 
-    public String getServiceType() {
+    public LevelfyServiceType getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(LevelfyServiceType serviceType) {
         this.serviceType = serviceType;
     }
 

@@ -1,5 +1,7 @@
 package com.uc.backend.entity;
 
+import com.uc.backend.enums.LevelfyServiceType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -30,8 +32,9 @@ public class SaleCanceled extends Auditable implements Serializable {
     })
     private Course course;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "servicio", nullable = false)
-    private String serviceType;
+    private LevelfyServiceType serviceType;
 
     @Column(nullable = false, name = "fecha_pago")
     private LocalDateTime paymentDateTime;
@@ -114,14 +117,6 @@ public class SaleCanceled extends Auditable implements Serializable {
         this.course = course;
     }
 
-    public String getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(String servicio) {
-        this.serviceType = servicio;
-    }
-
     public LocalDateTime getPaymentDateTime() {
         return paymentDateTime;
     }
@@ -160,5 +155,21 @@ public class SaleCanceled extends Auditable implements Serializable {
 
     public void setDateTimeSaleCreation(LocalDateTime dateTimeVentaCreation) {
         this.dateTimeSaleCreation = dateTimeVentaCreation;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public LevelfyServiceType getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(LevelfyServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 }

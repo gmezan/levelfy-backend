@@ -1,4 +1,4 @@
-package com.uc.backend.controller.client;
+package com.uc.backend.controller.roles.client;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
