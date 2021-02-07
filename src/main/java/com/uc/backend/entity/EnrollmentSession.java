@@ -64,9 +64,7 @@ public class EnrollmentSession extends Auditable implements Serializable {
         this.idEnrollmentSession = idEnrollmentSession;
     }
 
-    public Service getService() {
-        return service;
-    }
+    public Service getService() { return service; }
 
     public void setService(Service service) {
         this.service = service;
