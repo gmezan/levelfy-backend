@@ -25,21 +25,17 @@ public class CommentForum extends Auditable implements Serializable {
             {"created","modified","role","coupon","phone","balance","birthday","token","invitingId",
                 "active","code"})
     @ManyToOne
-    @JoinColumn(name = "idusuario")
+    @JoinColumn(name = "idusuario", nullable = false)
     private User user;
 
     @Column(nullable = false, name = "fecha")
     private LocalDateTime dateTime;
 
-    //@JsonIgnoreProperties({"enrollmentList","enrollmentSessionList","teacher","course"})
-    @JsonIgnore
+    @JsonIgnoreProperties({"enrollmentList","enrollmentSessionList"})
+    /*@JsonIgnore*/
     @ManyToOne
     @JoinColumn(name = "idclase")
     private Service service;
-
-    public int getIdService(){
-        return service.getIdService();
-    }
 
     public int getIdComment() {
         return idComment;
