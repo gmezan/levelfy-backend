@@ -58,11 +58,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-/*                .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
+                .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/course/list").permitAll() // To list available courses
                 .antMatchers("/model/service/form").permitAll()
-                .antMatchers("/mongo/course").permitAll()*/
-                .anyRequest().permitAll()
+                .antMatchers("/mongo/course").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
