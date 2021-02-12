@@ -1,6 +1,7 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.entity.*;
+import com.uc.backend.enums.RoleName;
 import com.uc.backend.repository.*;
 import com.uc.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +49,12 @@ public class UserController {
     // RESTFUL
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers(
+            @RequestParam(name = "u", required = false) String u,
+            @RequestParam(name = "r", required = false) RoleName r
+    ) {
+        System.out.println(u);
+        System.out.println(r);
         return new ResponseEntity<>(userRepository.findAll(), OK);
     }
 
