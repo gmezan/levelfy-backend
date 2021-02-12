@@ -1,6 +1,7 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
+import com.uc.backend.entity.Course;
 import com.uc.backend.entity.Service;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
@@ -36,6 +37,51 @@ public class ServiceController {
                 serviceRepository.findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId),
                 HttpStatus.OK
         );
+    }
+
+    // RESTFUL Service -> TODO: Test
+
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Service>> getAllCourses(@RequestParam(name = "u", required = false) UniversityName u,
+                                                      @RequestParam(name = "s", required = false) LevelfyServiceType s) {
+        if (u!=null && s!=null)
+            return new ResponseEntity<>(serviceRepository.findServicesByCourse_CourseId_UniversityAndServiceType(u, s), HttpStatus.OK);
+        else if(u!=null)
+            return new ResponseEntity<>(serviceRepository.findServicesByCourse_CourseId_University(u), HttpStatus.OK);
+        else if(s!=null)
+            return new ResponseEntity<>(serviceRepository.findServicesByServiceType(s), HttpStatus.OK);
+        return new ResponseEntity<>(serviceRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Service> getCourse(@PathVariable("s") int id) {
+        return serviceRepository.findById(id)
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+    }
+
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Service> newCourse(@RequestBody Service service) {
+        return serviceRepository.findById(service.getIdService())
+                .map(value -> new ResponseEntity<>(value, HttpStatus.BAD_REQUEST))
+                .orElseGet(() -> new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK));
+    }
+
+    @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Service> updateCourse(@RequestBody Service service) {
+        return serviceRepository.findById(service.getIdService())
+                .map(value -> new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+    }
+
+    @DeleteMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteCourse(@PathVariable("s") int id) {
+        return serviceRepository.findById(id)
+                .map(value -> {
+                    serviceRepository.delete(value);
+                    return new ResponseEntity(HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity(HttpStatus.BAD_REQUEST));
     }
 
 }
