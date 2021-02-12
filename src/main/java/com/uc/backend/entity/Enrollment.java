@@ -18,7 +18,7 @@ public class Enrollment extends Auditable implements Serializable {
     @Column(name = "idclase_enroll")
     private int idEnrollment;
 
-    @JsonIgnoreProperties(value = {"enrollmentList"})
+    @JsonIgnoreProperties(value = {"enrollmentList", "enrollmentSessionList"})
     @ManyToOne
     @JoinColumn(name = "idclase", nullable = false)
     private Service service;
