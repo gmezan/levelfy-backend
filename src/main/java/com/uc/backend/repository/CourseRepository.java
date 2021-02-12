@@ -2,6 +2,7 @@ package com.uc.backend.repository;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Course;
+import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,6 +25,6 @@ public interface CourseRepository extends JpaRepository<Course, CourseId> {
             "where cl.tipo_servicio = ?1 and cl.disponible=1", nativeQuery = true)
     List<Course> findCoursesAvailableByServiceTypeAndAvailableIsTrue(String serviceType);
 
-    List<Course> findCourseByCourseId_University(String courseId_university);
+    List<Course> findCourseByCourseId_University(UniversityName courseId_university);
 
 }

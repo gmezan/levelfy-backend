@@ -40,9 +40,9 @@ public class CourseController {
     // RESTFUL Service: TESTED AND OK
 
     @GetMapping(value = "course", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getAllCourses(@RequestParam(name = "u", required = false) String u) {
+    public ResponseEntity<List<Course>> getAllCourses(@RequestParam(name = "u", required = false) UniversityName u) {
 
-        if (u!=null && !u.isEmpty()) {
+        if (u!=null) {
             return new ResponseEntity<>(courseRepository.findCourseByCourseId_University(u), HttpStatus.OK);
         }
 
