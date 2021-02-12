@@ -16,6 +16,7 @@ import javax.persistence.Enumerated;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -53,17 +54,21 @@ public class UserController {
             @RequestParam(name = "u", required = false) UniversityName u,
             @RequestParam(name = "r", required = false) RoleName r
     ) {
+        Role role =  null;
+        if (r!=null) role = roleRepository.findByName(r).orElse(null);
 
-        if (u!=null && r!=null){
-            return new ResponseEntity<>(userRepository.findUsersByUniversityAndRole(u,
-                    new HashSet<Role>(){{add(roleRepository.findByName(r).orElse(null));}}), OK);
+        if (u!=null && role!=null){
+            Role finalRole = role;
+            return new ResponseEntity<>(userRepository.findUsersByUniversity(u).stream()
+                    .filter(user -> user.getRole().contains(finalRole)).collect(Collectors.toList()), OK);
         }
         else if (u!=null){
             return new ResponseEntity<>(userRepository.findUsersByUniversity(u), OK);
         }
-        else if (r!=null){
-            return new ResponseEntity<>(userRepository.findUsersByRole(
-                    new HashSet<Role>(){{add(roleRepository.findByName(r).orElse(null));}}), OK);
+        else if (role!=null){
+            Role finalRole = role;
+            return new ResponseEntity<>(userRepository.findAll().stream()
+                    .filter(user -> user.getRole().contains(finalRole)).collect(Collectors.toList()), OK);
         } else return new ResponseEntity<>(userRepository.findAll(), OK);
     }
 

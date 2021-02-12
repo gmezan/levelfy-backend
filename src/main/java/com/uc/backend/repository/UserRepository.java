@@ -28,8 +28,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findUsersByUniversity(UniversityName university);
 
-    List<User> findUsersByRole(Set<Role> role);
-
-    List<User> findUsersByUniversityAndRole(UniversityName university, Set<Role> role);
-
 }
