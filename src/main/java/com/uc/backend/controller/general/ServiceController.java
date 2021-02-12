@@ -42,7 +42,7 @@ public class ServiceController {
     // RESTFUL Service -> TODO: Test
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Service>> getAllCourses(@RequestParam(name = "u", required = false) UniversityName u,
+    public ResponseEntity<List<Service>> getAll(@RequestParam(name = "u", required = false) UniversityName u,
                                                       @RequestParam(name = "s", required = false) LevelfyServiceType s) {
         if (u!=null && s!=null)
             return new ResponseEntity<>(serviceRepository.findServicesByCourse_CourseId_UniversityAndServiceType(u, s), HttpStatus.OK);

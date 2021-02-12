@@ -1,7 +1,11 @@
 package com.uc.backend.repository;
 
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
 
@@ -33,4 +37,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
 
 */
 
+    List<Enrollment> findEnrollmentsByService_Course_CourseId_University(UniversityName service_course_courseId_university);
+
+    List<Enrollment> findEnrollmentsByService_ServiceType(LevelfyServiceType service_serviceType);
+
+    List<Enrollment> findEnrollmentsByService_ServiceTypeAndService_Course_CourseId_University(LevelfyServiceType service_serviceType, UniversityName service_course_courseId_university);
 }
