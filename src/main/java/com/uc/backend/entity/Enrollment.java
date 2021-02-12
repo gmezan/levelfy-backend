@@ -1,6 +1,7 @@
 package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class Enrollment extends Auditable implements Serializable {
     @Column(name = "idclase_enroll")
     private int idEnrollment;
 
-    //@JsonBackReference
+    @JsonIgnoreProperties(value = {"enrollmentList"})
     @ManyToOne
     @JoinColumn(name = "idclase", nullable = false)
     private Service service;
