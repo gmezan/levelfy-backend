@@ -3,6 +3,7 @@ package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import com.uc.backend.enums.UniversityName;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -56,8 +57,9 @@ public class User extends Auditable implements Serializable {
     @Column(name = "contrasena", nullable = true)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "universidad")
-    private String university ="";
+    private UniversityName university;
 
     @Column(name = "token")
     private String token;
@@ -232,11 +234,11 @@ public class User extends Auditable implements Serializable {
         this.password = password;
     }
 
-    public String getUniversity() {
+    public UniversityName getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(UniversityName university) {
         this.university = university;
     }
 

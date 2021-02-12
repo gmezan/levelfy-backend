@@ -3,6 +3,7 @@ package com.uc.backend.controller.general;
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
 import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ServiceController {
     public ResponseEntity<List<Service>> getListOfServicesForForm(
             @RequestParam("serviceType") LevelfyServiceType serviceType,
             @RequestParam("i") String idCourse,
-            @RequestParam("u") String university) {
+            @RequestParam("u") UniversityName university) {
         CourseId courseId = new CourseId(idCourse, university);
         return new ResponseEntity<>(
                 serviceRepository.findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId),

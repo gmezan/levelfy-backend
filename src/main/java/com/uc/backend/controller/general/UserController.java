@@ -2,6 +2,7 @@ package com.uc.backend.controller.general;
 
 import com.uc.backend.entity.*;
 import com.uc.backend.enums.RoleName;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.*;
 import com.uc.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +24,16 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("model/user")
 public class UserController {
-    @Autowired
     UserRepository userRepository;
+    UserService userService;
+    RoleRepository roleRepository;
 
     @Autowired
-    UserService userService;
+    public UserController(UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.userService = userService;
+    }
 
 
     @GetMapping(value = "me", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,23 +46,25 @@ public class UserController {
     }
 
 
-    /*@CrossOrigin(origins = "http://localhost:8080")
-    @GetMapping(value = "/dev/listAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> getAll(){
-        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
-    }*/
-
-
     // RESTFUL
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getAllUsers(
-            @RequestParam(name = "u", required = false) String u,
+            @RequestParam(name = "u", required = false) UniversityName u,
             @RequestParam(name = "r", required = false) RoleName r
     ) {
-        System.out.println(u);
-        System.out.println(r);
-        return new ResponseEntity<>(userRepository.findAll(), OK);
+
+        if (u!=null && r!=null){
+            return new ResponseEntity<>(userRepository.findUsersByUniversityAndRole(u,
+                    new HashSet<Role>(){{add(roleRepository.findByName(r).orElse(null));}}), OK);
+        }
+        else if (u!=null){
+            return new ResponseEntity<>(userRepository.findUsersByUniversity(u), OK);
+        }
+        else if (r!=null){
+            return new ResponseEntity<>(userRepository.findUsersByRole(
+                    new HashSet<Role>(){{add(roleRepository.findByName(r).orElse(null));}}), OK);
+        } else return new ResponseEntity<>(userRepository.findAll(), OK);
     }
 
     @GetMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)

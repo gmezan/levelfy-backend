@@ -1,15 +1,14 @@
 package com.uc.backend.util;
 
-import com.uc.backend.entity.Paquete;
+import com.uc.backend.enums.UniversityName;
 
-import java.time.DayOfWeek;
 import java.util.HashMap;
 
 public abstract class CustomConstants {
     // HashMaps:
     public final static HashMap<Integer, String> DAYS = new HashMap<>();
     public final static HashMap<Integer, String> EVALUATIONS = new HashMap<>();
-    public final static HashMap<String, String> UNIVERSITIES = new HashMap<>();
+    public final static HashMap<UniversityName, String> UNIVERSITIES = new HashMap<>();
     public final static HashMap<String, String> SERVICES = new HashMap<>();
 
     /// Amazon S3
@@ -81,11 +80,11 @@ public abstract class CustomConstants {
         EVALUATIONS.put(13,"Libre");
 
         //Table UNIVERSIDAD
-        UNIVERSITIES.put("PUCP","Pontificia Universidad Católica del Perú");
-        UNIVERSITIES.put("UPC","Universidad Peruana de Ciencias Aplicadas");
-        UNIVERSITIES.put("UL","Universidad de Lima");
-        UNIVERSITIES.put("UPCH","Universidad Peruana Cayetano Heredia");
-        UNIVERSITIES.put("LIBRE","Libre");
+        UNIVERSITIES.put(UniversityName.PUCP,"Pontificia Universidad Católica del Perú");
+        UNIVERSITIES.put(UniversityName.UPC, "Universidad Peruana de Ciencias Aplicadas");
+        UNIVERSITIES.put(UniversityName.UL, "Universidad de Lima");
+        UNIVERSITIES.put(UniversityName.UPCH, "Universidad Peruana Cayetano Heredia");
+        UNIVERSITIES.put(UniversityName.OPEN,"Libre");
 
         //Table Servicio
         SERVICES.put("ASES_PER","Asesoría personalizada");

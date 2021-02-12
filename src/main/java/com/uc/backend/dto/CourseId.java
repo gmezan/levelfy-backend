@@ -1,9 +1,9 @@
 package com.uc.backend.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import com.sun.istack.NotNull;
+import com.uc.backend.enums.UniversityName;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 
@@ -14,12 +14,14 @@ public class CourseId implements Serializable {
     @Column(name = "idcurso")
     private String idCourse;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(nullable = false, name = "universidad")
-    private String university;
+    private UniversityName university;
 
     public CourseId(){}
 
-    public CourseId(String idCourse, String university){
+    public CourseId(String idCourse, UniversityName university){
         this.idCourse = idCourse;
         this.university = university;
     }
@@ -49,11 +51,11 @@ public class CourseId implements Serializable {
         this.idCourse = idCourse;
     }
 
-    public String getUniversity() {
+    public UniversityName getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(UniversityName university) {
         this.university = university;
     }
 }

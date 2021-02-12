@@ -2,6 +2,7 @@ package com.uc.backend.entity;
 
 
 import com.uc.backend.dto.CourseId;
+import com.uc.backend.enums.UniversityName;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class Course extends Auditable implements Serializable {
         this.courseId = courseId;
     }
 
-    public Course(String university){
+    public Course(UniversityName university){
         this.courseId = new CourseId();
         this.courseId.setUniversity(university);
     }

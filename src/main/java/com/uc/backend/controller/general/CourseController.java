@@ -4,6 +4,7 @@ package com.uc.backend.controller.general;
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.FileUploadDto;
 import com.uc.backend.entity.*;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.*;
 import com.uc.backend.service.aws.AwsResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "course/{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Course> getCourse(@PathVariable("i") String id, @PathVariable("u") String university) {
+    public ResponseEntity<Course> getCourse(@PathVariable("i") String id, @PathVariable("u") UniversityName university) {
         return courseRepository.findById(new CourseId(id, university))
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
@@ -70,7 +71,7 @@ public class CourseController {
     }
 
     @DeleteMapping(value = "course/{i}/{u}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity deleteCourse(@PathVariable("i") String id, @PathVariable("u") String university) {
+    public ResponseEntity deleteCourse(@PathVariable("i") String id, @PathVariable("u") UniversityName university) {
         return courseRepository.findById(new CourseId(id, university))
                 .map(value -> {
                     courseRepository.delete(value);

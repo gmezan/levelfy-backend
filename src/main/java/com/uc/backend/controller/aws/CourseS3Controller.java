@@ -3,6 +3,7 @@ package com.uc.backend.controller.aws;
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.FileUploadDto;
 import com.uc.backend.entity.Course;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.CourseRepository;
 import com.uc.backend.service.aws.AwsResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class CourseS3Controller {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i")String courseId,
-                                                           @PathVariable("u") String university,
+                                                           @PathVariable("u") UniversityName university,
                                                            @RequestParam("file")MultipartFile file) {
 
         Optional<Course> optionalCourse = courseRepository.findById(new CourseId(courseId, university));

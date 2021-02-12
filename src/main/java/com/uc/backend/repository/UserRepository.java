@@ -1,9 +1,13 @@
 package com.uc.backend.repository;
 
+import com.uc.backend.entity.Role;
 import com.uc.backend.entity.User;
+import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
@@ -21,5 +25,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
+
+    List<User> findUsersByUniversity(UniversityName university);
+
+    List<User> findUsersByRole(Set<Role> role);
+
+    List<User> findUsersByUniversityAndRole(UniversityName university, Set<Role> role);
 
 }
