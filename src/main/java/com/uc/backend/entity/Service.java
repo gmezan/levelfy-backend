@@ -51,13 +51,9 @@ public class Service extends Auditable implements Serializable {
     @Column(name = "descripcion")
     private String description;
 
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "fecha_vencimiento")
     private LocalDate expiration;
-
-    @Column(name = "num_sesiones")
-    private Integer sessionsNumber;
 
     @Column(name = "archived")
     private Boolean archived = false;
@@ -152,14 +148,6 @@ public class Service extends Auditable implements Serializable {
 
     public void setExpiration(LocalDate expiration) {
         this.expiration = expiration;
-    }
-
-    public Integer getSessionsNumber() {
-        return sessionsNumber;
-    }
-
-    public void setSessionsNumber(Integer sessionsNumber) {
-        this.sessionsNumber = sessionsNumber;
     }
 
     public Boolean getArchived() {
