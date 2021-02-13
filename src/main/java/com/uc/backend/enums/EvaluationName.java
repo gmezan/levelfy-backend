@@ -1,8 +1,8 @@
 package com.uc.backend.enums;
 
 public enum EvaluationName {
-    PC1, PC2, PC3, PC4, PC5, ExamenParcial, ExamenFinal, Examen1, Examen2, Examen3, Examen4,
-    ExamenEspecial, Libre;
+    PC1, PC2, PC3, PC4, PC5, EXAM_PARCIAL, EXAM_FINAL, EXAM_1, EXAM_2, EXAM_3, EXAM_4,
+    EXAM_ESPECIAL, OPEN;
 
     public String toCustomString() {
         switch (this) {
@@ -16,21 +16,21 @@ public enum EvaluationName {
                 return "PC4";
             case PC5:
                 return "PC5";
-            case ExamenParcial:
+            case EXAM_PARCIAL:
                 return "Examen Parcial";
-            case ExamenFinal:
+            case EXAM_FINAL:
                 return "Examen Final";
-            case Libre:
+            case OPEN:
                 return "Libre";
-            case Examen1:
+            case EXAM_1:
                 return "Examen 1";
-            case Examen2:
+            case EXAM_2:
                 return "Examen 2";
-            case Examen3:
+            case EXAM_3:
                 return "Examen 3";
-            case Examen4:
+            case EXAM_4:
                 return "Examen 4";
-            case ExamenEspecial:
+            case EXAM_ESPECIAL:
                 return "Examen Especial";
 
         }

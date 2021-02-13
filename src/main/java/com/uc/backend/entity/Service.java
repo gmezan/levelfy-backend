@@ -2,6 +2,7 @@ package com.uc.backend.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.uc.backend.enums.EvaluationName;
 import com.uc.backend.enums.LevelfyServiceType;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -45,8 +46,9 @@ public class Service extends Auditable implements Serializable {
     @Column(name = "precio_individual", nullable = false)
     private BigDecimal price;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "evaluacion")
-    private Integer evaluation;
+    private EvaluationName evaluation;
 
     @Column(name = "descripcion")
     private String description;
@@ -126,11 +128,11 @@ public class Service extends Auditable implements Serializable {
         this.price = price;
     }
 
-    public Integer getEvaluation() {
+    public EvaluationName getEvaluation() {
         return evaluation;
     }
 
-    public void setEvaluation(Integer evaluation) {
+    public void setEvaluation(EvaluationName evaluation) {
         this.evaluation = evaluation;
     }
 

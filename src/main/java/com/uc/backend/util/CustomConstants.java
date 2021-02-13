@@ -9,7 +9,6 @@ public abstract class CustomConstants {
     public final static HashMap<Integer, String> DAYS = new HashMap<>();
     public final static HashMap<Integer, String> EVALUATIONS = new HashMap<>();
     public final static HashMap<UniversityName, String> UNIVERSITIES = new HashMap<>();
-    public final static HashMap<String, String> SERVICES = new HashMap<>();
 
     /// Amazon S3
 
@@ -85,11 +84,6 @@ public abstract class CustomConstants {
         UNIVERSITIES.put(UniversityName.UL, "Universidad de Lima");
         UNIVERSITIES.put(UniversityName.UPCH, "Universidad Peruana Cayetano Heredia");
         UNIVERSITIES.put(UniversityName.OPEN,"Libre");
-
-        //Table Servicio
-        SERVICES.put("ASES_PER","Asesoría personalizada");
-        SERVICES.put("ASES_PAQ","Paquete de asesorías");
-        SERVICES.put("SELF_P","Aprende a tu ritmo");
 
 
         //Table TIEMPOCLASE (tiempo de suscripción)
