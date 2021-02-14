@@ -63,11 +63,9 @@ public class Service extends Auditable implements Serializable {
 
     // OneToMany Relations:
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "service")
     private List<Enrollment> enrollmentList;
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
     private List<ServiceSession> serviceSessionList;
 
