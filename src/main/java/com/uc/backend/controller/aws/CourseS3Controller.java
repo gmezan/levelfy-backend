@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("s3/course")
 public class CourseS3Controller {
 
-    private final String courses = "courses";
+    private final String folder = "courses";
     AwsResourceService awsResourceService;
     CourseRepository courseRepository;
 
@@ -49,7 +49,7 @@ public class CourseS3Controller {
             Course course = optionalCourse.get();
             String url = null;
             try {
-                url = awsResourceService.uploadImage(course.idToString(), courses, file);
+                url = awsResourceService.uploadImage(course.idToString(), folder, file);
                 course.setPhoto(url);
                 courseRepository.save(course);
                 return new ResponseEntity<>(new FileUploadDto(url), HttpStatus.OK);
