@@ -69,7 +69,7 @@ public class Service extends Auditable implements Serializable {
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
-    private List<EnrollmentSession> enrollmentSessionList;
+    private List<ServiceSession> serviceSessionList;
 
 
     public int getIdService() {
@@ -168,11 +168,11 @@ public class Service extends Auditable implements Serializable {
         this.enrollmentList = enrollmentList;
     }
 
-    public List<EnrollmentSession> getEnrollmentSessionList() {
-        return enrollmentSessionList;
+    public List<ServiceSession> getEnrollmentSessionList() {
+        return serviceSessionList;
     }
 
-    public void setEnrollmentSessionList(List<EnrollmentSession> enrollmentSessions) {
-        this.enrollmentSessionList = enrollmentSessions;
+    public void setEnrollmentSessionList(List<ServiceSession> serviceSessions) {
+        this.serviceSessionList = serviceSessions;
     }
 }

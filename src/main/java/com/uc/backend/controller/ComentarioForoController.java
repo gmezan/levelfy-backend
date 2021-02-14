@@ -25,5 +25,5 @@ public class ComentarioForoController {
     VideoRepository videoRepository;
 
     @Autowired
-    EnrollmentSessionRepository enrollmentSessionRepository;
+    ServiceSessionRepository serviceSessionRepository;
 }

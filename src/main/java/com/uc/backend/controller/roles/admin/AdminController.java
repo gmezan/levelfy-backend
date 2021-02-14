@@ -17,7 +17,7 @@ public class AdminController {
     EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    EnrollmentSessionRepository enrollmentSessionRepository;
+    ServiceSessionRepository enrollmentSessionRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -100,7 +100,7 @@ public class AdminController {
         service.setClaseSesions(new ArrayList<>());
         service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
         service.setTeacher(user);
-        for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
+        for (int i=0; i<5;i++) service.getClaseSesions().add(new ServiceSession(service));
         entity.addAttribute("title","Nuevo Paquete de Asesorías");
         entity.addAttribute("clase", service);
         entity.addAttribute("listaCursos", courseRepository.findAll());
@@ -137,7 +137,7 @@ public class AdminController {
         service.setClaseSesions(new ArrayList<>());
         service.setPrice(BigDecimal.valueOf(PRECIO_BASE_ASES_PAQ_PUCP));
         service.setTeacher(user);
-        for (int i=0; i<5;i++) service.getClaseSesions().add(new EnrollmentSession(service));
+        for (int i=0; i<5;i++) service.getClaseSesions().add(new ServiceSession(service));
         entity.addAttribute("title","Nuevo Paquete de Asesorías");
         entity.addAttribute("clase", service);
         entity.addAttribute("listaCursos", courseRepository.findAllByCursoId_Universidad(user.getUniversity()));
@@ -155,7 +155,7 @@ public class AdminController {
     public String saveAsesPaq(Service service, BindingResult bindingResult,
                               HttpSession session, Model entity, RedirectAttributes attributes){
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        EnrollmentSession enrollmentSession;
+        ServiceSession enrollmentSession;
 
         User user = (User)session.getAttribute("usuario");
         Optional<Course> optionalCurso = courseRepository.findById(service.getCurso().getCursoId());
@@ -229,9 +229,9 @@ public class AdminController {
             //Si all está bien
             else {
                 //TODO: schedule un job que desactive la asesoría luego de la última clase
-                List<EnrollmentSession> enrollmentSessionList = new ArrayList<EnrollmentSession>(){{
+                List<ServiceSession> enrollmentSessionList = new ArrayList<ServiceSession>(){{
                     for (int i = 0; i < service.getSessionsNumber(); i++)
-                        add(new EnrollmentSession(service, service.getClaseSesions().get(i)));
+                        add(new ServiceSession(service, service.getClaseSesions().get(i)));
                 }};
                 service.setClaseSesions(null);
                 service.setServiceType(SERVICIO_ASESORIA_PAQUETE);

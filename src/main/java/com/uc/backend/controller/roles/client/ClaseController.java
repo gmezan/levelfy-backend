@@ -15,7 +15,7 @@ public class ClaseController {
     EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    EnrollmentSessionRepository enrollmentSessionRepository;
+    ServiceSessionRepository enrollmentSessionRepository;
     //----------------------------------------- Maratones ----------------------------------------------------------------
     @GetMapping(value = {"/maratones", "/maratones/"})
     public String maratonesAsesoria(Model entity) {
@@ -23,7 +23,7 @@ public class ClaseController {
 List <Service>listaMaratones=new ArrayList<>();
        if(!lista.isEmpty()) {
            for (int i=0;i< lista.size();i++ ) {
-               List<EnrollmentSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
+               List<ServiceSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
                if (listaClaseSession.size()==1) {
                    listaMaratones.add(lista.get(i));
                }
@@ -42,7 +42,7 @@ List <Service>listaMaratones=new ArrayList<>();
         List <Service>listaMaratones=new ArrayList<>();
         if(!lista.isEmpty()) {
             for (int i=0;i< lista.size();i++ ) {
-                List<EnrollmentSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
+                List<ServiceSession> listaClaseSession = enrollmentSessionRepository.findByClase_Idclase(lista.get(i).getIdService());
                 if (listaClaseSession.size()==1) {
                     listaMaratones.add(lista.get(i)); } }}
         entity.addAttribute("listaPaqueteAsesorias", listaMaratones);  //

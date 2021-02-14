@@ -14,7 +14,7 @@ public class AsesorController {
     EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    EnrollmentSessionRepository enrollmentSessionRepository;
+    ServiceSessionRepository enrollmentSessionRepository;
 
 
     //Se muestran los cursos (disponibles) que está dictando el teach

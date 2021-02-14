@@ -10,12 +10,12 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "clase_sesion")
-public class EnrollmentSession extends Auditable implements Serializable {
+public class ServiceSession extends Auditable implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idsesion")
-    private int idEnrollmentSession;
+    private int idServiceSession;
 
     @JsonBackReference
     @ManyToOne
@@ -41,27 +41,27 @@ public class EnrollmentSession extends Auditable implements Serializable {
     private String description;
 
 
-    public EnrollmentSession(){
+    public ServiceSession(){
 
     }
-    public EnrollmentSession(Service service){
+    public ServiceSession(Service service){
         this.service = service;
     }
 
-    public EnrollmentSession(Service service, EnrollmentSession enrollmentSession){
+    public ServiceSession(Service service, ServiceSession serviceSession){
         this.service = service;
-        this.date = enrollmentSession.date;
-        this.start = enrollmentSession.start;
-        this.end = enrollmentSession.end;
-        this.zoom= enrollmentSession.zoom;
+        this.date = serviceSession.date;
+        this.start = serviceSession.start;
+        this.end = serviceSession.end;
+        this.zoom= serviceSession.zoom;
     }
 
-    public int getIdEnrollmentSession() {
-        return idEnrollmentSession;
+    public int getIdServiceSession() {
+        return idServiceSession;
     }
 
-    public void setIdEnrollmentSession(int idEnrollmentSession) {
-        this.idEnrollmentSession = idEnrollmentSession;
+    public void setIdServiceSession(int idEnrollmentSession) {
+        this.idServiceSession = idEnrollmentSession;
     }
 
     public Service getService() { return service; }
