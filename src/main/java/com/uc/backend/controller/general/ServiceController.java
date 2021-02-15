@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -47,14 +48,22 @@ public class ServiceController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getAll(@RequestParam(name = "u", required = false) UniversityName u,
-                                                      @RequestParam(name = "s", required = false) LevelfyServiceType s) {
-        if (u!=null && s!=null)
-            return new ResponseEntity<>(serviceRepository.findServicesByCourse_CourseId_UniversityAndServiceType(u, s), HttpStatus.OK);
-        else if(u!=null)
-            return new ResponseEntity<>(serviceRepository.findServicesByCourse_CourseId_University(u), HttpStatus.OK);
-        else if(s!=null)
-            return new ResponseEntity<>(serviceRepository.findServicesByServiceType(s), HttpStatus.OK);
-        return new ResponseEntity<>(serviceRepository.findAll(), HttpStatus.OK);
+                                                      @RequestParam(name = "s", required = false) LevelfyServiceType s,
+                                                @RequestParam(name = "a", required = false) Boolean available ) {
+        List<Service> serviceList;
+
+        if (u!=null && s!=null) serviceList = serviceRepository.findServicesByCourse_CourseId_UniversityAndServiceType(u, s);
+        else if(u!=null) serviceList = serviceRepository.findServicesByCourse_CourseId_University(u);
+        else if(s!=null) serviceList = serviceRepository.findServicesByServiceType(s);
+        else serviceList = serviceRepository.findAll();
+
+        if (available == null) return new ResponseEntity<>(serviceList, HttpStatus.OK);
+
+        if (available)
+            return new ResponseEntity<>(serviceList.stream().filter(Service::getAvailable).collect(Collectors.toList()), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(serviceList.stream().filter(serv->!serv.getAvailable()).collect(Collectors.toList()), HttpStatus.OK);
+
     }
 
     @GetMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
