@@ -1,6 +1,7 @@
 package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -45,7 +46,7 @@ public class Enrollment extends Auditable implements Serializable {
     private LocalDateTime end;
 
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "enrollment")
     private List<Sale> saleList;
 
