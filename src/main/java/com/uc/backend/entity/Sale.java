@@ -20,6 +20,7 @@ public class Sale extends Auditable implements Serializable {
     @Column(name = "idventa")
     private int idSale;
 
+    @JsonBackReference
     @JsonIgnoreProperties(value = {"service.enrollmentList", "service.serviceSessionList", "student", "saleList"})
     @ManyToOne
     @JoinColumn(name = "idclase_enroll")
