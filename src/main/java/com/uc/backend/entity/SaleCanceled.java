@@ -70,7 +70,7 @@ public class SaleCanceled extends Auditable implements Serializable {
         this.dateTimeSaleCreation = sale.getCreated();
     }
 
-    public static List<SaleCanceled> generateVentaCanceladas(List<Sale> sales){
+    public static List<SaleCanceled> generateCanceledSales(List<Sale> sales){
         return new ArrayList<SaleCanceled>(){{
             sales.forEach(sale -> add(new SaleCanceled(sale)));
         }};
