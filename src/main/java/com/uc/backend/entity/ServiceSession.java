@@ -34,12 +34,6 @@ public class ServiceSession extends Auditable implements Serializable {
     @Column(name = "fin", nullable = false)
     private LocalTime end;
 
-    @Column(name = "sesion_url")
-    private String zoom;
-
-    @Column(name = "descripcion")
-    private String description;
-
 
     public ServiceSession(){
 
@@ -53,7 +47,6 @@ public class ServiceSession extends Auditable implements Serializable {
         this.date = serviceSession.date;
         this.start = serviceSession.start;
         this.end = serviceSession.end;
-        this.zoom= serviceSession.zoom;
     }
 
     public int getIdServiceSession() {
@@ -94,19 +87,4 @@ public class ServiceSession extends Auditable implements Serializable {
         this.end = end;
     }
 
-    public String getZoom() {
-        return zoom;
-    }
-
-    public void setZoom(String zoom) {
-        this.zoom = zoom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
