@@ -95,13 +95,13 @@ public class SaleController {
     }
 
     @DeleteMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteSale(@PathVariable("s") int idSale) {
+    public ResponseEntity deleteSale(@PathVariable("s") int idSale) {
         return saleRepository.findById(idSale)
                 .map( (sale) -> {
                     saleCanceledRepository.save(new SaleCanceled(sale));
                     saleRepository.deleteById(idSale);
-                    return new ResponseEntity<>("Successfully deleted", OK);
+                    return new ResponseEntity( OK);
                 })
-                .orElseGet( () -> new ResponseEntity<>("Error: object doesn't exist", BAD_REQUEST));
+                .orElseGet( () -> new ResponseEntity(BAD_REQUEST));
     }
 }
