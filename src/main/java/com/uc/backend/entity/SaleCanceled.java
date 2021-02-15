@@ -1,6 +1,8 @@
 package com.uc.backend.entity;
 
+import com.sun.istack.NotNull;
 import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.PaymentMethodName;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -45,8 +47,10 @@ public class SaleCanceled extends Auditable implements Serializable {
     @Column(name = "mensaje")
     private String message;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(name = "metodo")
-    private String method;
+    private PaymentMethodName method;
 
     @Column(nullable = false, name = "venta_creation")
     private LocalDateTime dateTimeSaleCreation;
@@ -141,12 +145,12 @@ public class SaleCanceled extends Auditable implements Serializable {
         this.message = mensaje;
     }
 
-    public String getMethod() {
+    public PaymentMethodName getMethod() {
         return method;
     }
 
-    public void setMethod(String metodo) {
-        this.method = metodo;
+    public void setMethod(PaymentMethodName method) {
+        this.method = method;
     }
 
     public LocalDateTime getDateTimeSaleCreation() {

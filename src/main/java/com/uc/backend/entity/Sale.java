@@ -3,6 +3,8 @@ package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
+import com.uc.backend.enums.PaymentMethodName;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,8 +43,10 @@ public class Sale extends Auditable implements Serializable {
     @Column(name = "mensaje")
     private String message;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(name = "metodo")
-    private String method;
+    private PaymentMethodName method;
 
 
 
@@ -110,11 +114,11 @@ public class Sale extends Auditable implements Serializable {
         this.message = message;
     }
 
-    public String getMethod() {
+    public PaymentMethodName getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(PaymentMethodName method) {
         this.method = method;
     }
 }
