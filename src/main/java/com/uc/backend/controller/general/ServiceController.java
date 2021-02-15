@@ -73,7 +73,7 @@ public class ServiceController {
                     Service newService = serviceRepository.save(service);
                     serviceSessionList.forEach(sl->sl.setService(newService));
                     serviceSessionRepository.saveAll(serviceSessionList);
-                    new ResponseEntity<>(newService, HttpStatus.OK);
+                    return new ResponseEntity<>(newService, HttpStatus.OK);
                 });
     }
 
