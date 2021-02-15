@@ -3,9 +3,11 @@ package com.uc.backend.controller.general;
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.Service;
+import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.ServiceRepository;
+import com.uc.backend.repository.ServiceSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,10 +22,12 @@ import java.util.List;
 public class ServiceController {
 
     ServiceRepository serviceRepository;
+    ServiceSessionRepository serviceSessionRepository;
 
     @Autowired
-    public ServiceController(ServiceRepository serviceRepository) {
+    public ServiceController(ServiceRepository serviceRepository, ServiceSessionRepository serviceSessionRepository) {
         this.serviceRepository = serviceRepository;
+        this.serviceSessionRepository = serviceSessionRepository;
     }
 
     // Web Service for forms
@@ -64,7 +68,13 @@ public class ServiceController {
     public ResponseEntity<Service> newCourse(@RequestBody Service service) {
         return serviceRepository.findById(service.getIdService())
                 .map(value -> new ResponseEntity<>(value, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK));
+                .orElseGet(() -> {
+                    List<ServiceSession> serviceSessionList = service.getServiceSessionList();
+                    Service newService = serviceRepository.save(service);
+                    serviceSessionList.forEach(sl->sl.setService(newService));
+                    serviceSessionRepository.saveAll(serviceSessionList);
+                    new ResponseEntity<>(newService, HttpStatus.OK);
+                });
     }
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
