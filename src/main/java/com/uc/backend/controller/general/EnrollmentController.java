@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -32,14 +33,22 @@ public class EnrollmentController {
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Enrollment>> getAll(@RequestParam(name = "u", required = false) UniversityName u,
-                                                   @RequestParam(name = "s", required = false) LevelfyServiceType s) {
+                                                   @RequestParam(name = "s", required = false) LevelfyServiceType s,
+                                                   @RequestParam(name = "a", required = false) Boolean active) {
+        List<Enrollment> enrollmentList;
         if (u!=null && s!=null)
-            return new ResponseEntity<>(enrollmentRepository.findEnrollmentsByService_ServiceTypeAndService_Course_CourseId_University(s, u), HttpStatus.OK);
+            enrollmentList = enrollmentRepository.findEnrollmentsByService_ServiceTypeAndService_Course_CourseId_University(s, u);
         else if(u!=null)
-            return new ResponseEntity<>(enrollmentRepository.findEnrollmentsByService_Course_CourseId_University(u), HttpStatus.OK);
+            enrollmentList = enrollmentRepository.findEnrollmentsByService_Course_CourseId_University(u);
         else if(s!=null)
-            return new ResponseEntity<>(enrollmentRepository.findEnrollmentsByService_ServiceType(s), HttpStatus.OK);
-        return new ResponseEntity<>(enrollmentRepository.findAll(), HttpStatus.OK);
+            enrollmentList = enrollmentRepository.findEnrollmentsByService_ServiceType(s);
+        else enrollmentList = enrollmentRepository.findAll();
+
+        if (active == null) return new ResponseEntity<>(enrollmentList, OK);
+
+        if (active) return new ResponseEntity<>(enrollmentList.stream().filter(Enrollment::getActive).collect(Collectors.toList()), OK);
+        else return new ResponseEntity<>(enrollmentList.stream().filter(e->!e.getActive()).collect(Collectors.toList()), OK);
+
     }
 
     @GetMapping(value = "{e}", produces = MediaType.APPLICATION_JSON_VALUE)
