@@ -88,6 +88,7 @@ public class ServiceController {
     public ResponseEntity deleteCourse(@PathVariable("s") int id) {
         return serviceRepository.findById(id)
                 .map(value -> {
+                    serviceSessionRepository.deleteAll(value.getServiceSessionList());
                     serviceRepository.delete(value);
                     return new ResponseEntity(HttpStatus.OK);
                 })
