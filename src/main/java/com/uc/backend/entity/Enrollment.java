@@ -30,6 +30,9 @@ public class Enrollment extends Auditable implements Serializable {
     @Column(name = "pago_confirmado",nullable = false)
     private Boolean payed;
 
+    @Column(name = "activo")
+    private Boolean active;
+
     //For "ASES-PER"
 
     @Column(name = "cantidad_persona")
@@ -40,16 +43,6 @@ public class Enrollment extends Auditable implements Serializable {
 
     @Column(name = "ases_per_fin")
     private LocalDateTime end;
-
-    @Column(name = "info")
-    private String info;
-
-    @Column(name = "activo")
-    private Boolean active;
-
-    @Column(name = "conference_url")
-    private String url;
-
 
 
     @JsonManagedReference
@@ -113,28 +106,12 @@ public class Enrollment extends Auditable implements Serializable {
         this.end = end;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public List<Sale> getSaleList() {
