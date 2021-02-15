@@ -1,6 +1,9 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.entity.Sale;
+import com.uc.backend.entity.Service;
+import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.EnrollmentRepository;
 import com.uc.backend.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,22 +13,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+@CrossOrigin
 @RestController
 @RequestMapping("model/sale")
 public class SaleController {
-
-    @Autowired
+    
     SaleRepository saleRepository;
-    @Autowired
     EnrollmentRepository enrollmentRepository;
+    
+    @Autowired
+    public SaleController(SaleRepository saleRepository,EnrollmentRepository enrollmentRepository ) {
+        this.saleRepository = saleRepository;
+        this.enrollmentRepository = enrollmentRepository;
+    }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Sale>> getAll(){
-        return new ResponseEntity<>(saleRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<Sale>> getAll(@RequestParam(name = "u", required = false) UniversityName u,
+                                             @RequestParam(name = "s", required = false) LevelfyServiceType s,
+                                             @RequestParam(name = "p", required = false) Boolean payed){
+
+        List<Sale> saleList;
+
+        if (u!=null && s!=null) saleList = saleRepository.findSalesByEnrollment_Service_Course_CourseId_UniversityAndEnrollment_Service_ServiceType(u, s);
+        else if(u!=null) saleList = saleRepository.findSalesByEnrollment_Service_Course_CourseId_University(u);
+        else if(s!=null) saleList = saleRepository.findSalesByEnrollment_Service_ServiceType(s);
+        else saleList = saleRepository.findAll();
+
+        if (payed == null) return new ResponseEntity<>(saleList, HttpStatus.OK);
+
+        if (payed)
+            return new ResponseEntity<>(saleList.stream().filter(serv->serv.getEnrollment().getPayed()).collect(Collectors.toList()), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(saleList.stream().filter(serv->!serv.getEnrollment().getPayed()).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
