@@ -64,11 +64,14 @@ public class SaleCanceledController {
                 .orElseGet( () ->  new ResponseEntity<>(saleCanceledRepository.save(saleCanceled),OK));
     }
 
-
+    // Solve SALE CANCELED -> SOLVE TO TRUE
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SaleCanceled> updateSale(@RequestBody SaleCanceled saleCanceled) {
         return saleCanceledRepository.findById(saleCanceled.getId())
-                .map( s -> new ResponseEntity<>(saleCanceledRepository.save(saleCanceled), OK))
+                .map( s -> {
+                    s.setSolved(Boolean.TRUE);
+                    return new ResponseEntity<>(saleCanceledRepository.save(s), OK);
+                })
                 .orElseGet( () -> new ResponseEntity<>(null, BAD_REQUEST));
     }
 
