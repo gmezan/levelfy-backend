@@ -2,6 +2,7 @@ package com.uc.backend.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class Sale extends Auditable implements Serializable {
     @Column(name = "idventa")
     private int idSale;
 
-    @JsonBackReference
+    @JsonIgnoreProperties(value = {"enrollmentList", "enrollmentSessionList"})
     @ManyToOne
     @JoinColumn(name = "idclase_enroll")
     private Enrollment enrollment;
