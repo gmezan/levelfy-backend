@@ -1,6 +1,5 @@
 package com.uc.backend.util.prices;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.GenerationType;
 import java.math.BigDecimal;
