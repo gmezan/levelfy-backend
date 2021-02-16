@@ -28,7 +28,7 @@ public class ServiceController {
     LevelfyServicePriceRepository levelfyServicePriceRepository;
 
     @Autowired
-    public ServiceController(ServiceRepository serviceRepository, ServiceSessionRepository serviceSessionRepository) {
+    public ServiceController(ServiceRepository serviceRepository, ServiceSessionRepository serviceSessionRepository, LevelfyServicePriceRepository levelfyServicePriceRepository) {
         this.serviceRepository = serviceRepository;
         this.serviceSessionRepository = serviceSessionRepository;
         this.levelfyServicePriceRepository = levelfyServicePriceRepository;
