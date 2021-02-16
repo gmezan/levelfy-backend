@@ -1,24 +1,14 @@
-package com.uc.backend.mongo.document.prices;
+package com.uc.backend.util.prices;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import javax.persistence.GenerationType;
 import java.math.BigDecimal;
 
-@Document(collection = "price-asespaq")
-public class AsesPaqPriceDocument {
+public class MarPriceDocument {
 
-    public enum AsesPaqType {
-        EXAM, PC
-    }
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String university;
-    @Enumerated(EnumType.STRING)
-    private AsesPaqType type;
     private int hours;
     private BigDecimal price;
 
@@ -52,13 +42,5 @@ public class AsesPaqPriceDocument {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public AsesPaqType getType() {
-        return type;
-    }
-
-    public void setType(AsesPaqType type) {
-        this.type = type;
     }
 }
