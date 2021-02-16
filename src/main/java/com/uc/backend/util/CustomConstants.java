@@ -1,22 +1,26 @@
 package com.uc.backend.util;
 
+import com.uc.backend.entity.Service;
+import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
+import com.uc.backend.util.prices.AsesPaqPriceDocument;
+import com.uc.backend.util.prices.AsesPerPriceDocument;
+import com.uc.backend.util.prices.MarPriceDocument;
+import com.uc.backend.util.prices.ServicePriceDocument;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class CustomConstants {
     // HashMaps:
-    public final static HashMap<Integer, String> DAYS = new HashMap<>();
-    public final static HashMap<Integer, String> EVALUATIONS = new HashMap<>();
     public final static HashMap<UniversityName, String> UNIVERSITIES = new HashMap<>();
+    public final static HashMap<UniversityName, HashMap<LevelfyServiceType, List<ServicePriceDocument>>> PRICES = new HashMap<>();
 
     /// Amazon S3
-
-
     public final static String BUCKET_NAME = "myuniversityclass";
-
     public final static String FOLDER_NAME = "foro";
-
     public final static String FILE_NAME = "probando.jpeg";
 
 
@@ -24,27 +28,6 @@ public abstract class CustomConstants {
     public final static String AMAZON_KEY_S3="AKIAVFA75GPQ36NIXBUH";
     public final static String AMAZON_SEC_S3="1nbJ9iFRZbvc7wUNqWa4BFhmREpNwqAT8YQbe3l8";
 
-
-    public final static int DIA_DOMINGO=7;
-    public final static int DIA_LUNES=1;
-    public final static int DIA_MARTES=2;
-    public final static int DIA_MIERCOLES=3;
-    public final static int DIA_JUEVES=4;
-    public final static int DIA_VIERNES=5;
-    public final static int DIA_SABADO=6;
-
-    public final static int EVALUACION_PC1 = 1;
-    public final static int EVALUACION_PC2 = 2;
-    public final static int EVALUACION_PC3= 3;
-    public final static int EVALUACION_PC4 = 4;
-    public final static int EVALUACION_PC5 = 5;
-    public final static int EVALUACION_EX_PARCIAL = 6;
-    public final static int EVALUACION_EX_FINAL = 7;
-    public final static int EVALUACION_EX_1 = 8;
-    public final static int EVALUACION_EX_2 = 9;
-    public final static int EVALUACION_EX_3 = 10;
-    public final static int EVALUACION_EX_4 = 11;
-    public final static int EVALUACION_EX_ESPECIAL = 12;
 
     public static final int MINUTES_EXPIRATION_TIME_FOR_ASES_PER=240;
 
@@ -54,30 +37,6 @@ public abstract class CustomConstants {
 
     static{
 
-        // Table DIA
-        DAYS.put(1,"Lunes");
-        DAYS.put(2,"Martes");
-        DAYS.put(3,"Miércoles");
-        DAYS.put(4,"Jueves");
-        DAYS.put(5,"Viernes");
-        DAYS.put(6,"Sábado");
-        DAYS.put(7,"Domingo");
-
-        // Table Evaluación
-        EVALUATIONS.put(1,"PC1");
-        EVALUATIONS.put(2,"PC2");
-        EVALUATIONS.put(3,"PC3");
-        EVALUATIONS.put(4,"PC4");
-        EVALUATIONS.put(5,"PC5");
-        EVALUATIONS.put(6,"Examen Parcial");
-        EVALUATIONS.put(7,"Examen Final");
-        EVALUATIONS.put(8,"Examen 1");
-        EVALUATIONS.put(9,"Examen 2");
-        EVALUATIONS.put(10,"Examen 3");
-        EVALUATIONS.put(11,"Examen 4");
-        EVALUATIONS.put(12,"Examen Especial");
-        EVALUATIONS.put(13,"Libre");
-
         //Table UNIVERSIDAD
         UNIVERSITIES.put(UniversityName.PUCP,"Pontificia Universidad Católica del Perú");
         UNIVERSITIES.put(UniversityName.UPC, "Universidad Peruana de Ciencias Aplicadas");
@@ -86,11 +45,75 @@ public abstract class CustomConstants {
         UNIVERSITIES.put(UniversityName.OPEN,"Libre");
 
 
-        //Table TIEMPOCLASE (tiempo de suscripción)
-        //TIEMPOCLASE.put(1,7); //una semana
-        //TIEMPOCLASE.put(2,30); // un mes
-        //TIEMPOCLASE.put(3,60); //dos meses
 
+        PRICES.put(UniversityName.PUCP, new HashMap<LevelfyServiceType, List<ServicePriceDocument>>(){{
+                put(LevelfyServiceType.ASES_PAQ, new ArrayList<ServicePriceDocument>(){{
+                    add(new AsesPaqPriceDocument(BigDecimal.valueOf(80), 7, ServicePriceDocument.LevelfyGeneralServiceType.EXAM));
+                    add(new AsesPaqPriceDocument(BigDecimal.valueOf(40), 5, ServicePriceDocument.LevelfyGeneralServiceType.PC));
+                }});
+                put(LevelfyServiceType.MAR, new ArrayList<ServicePriceDocument>(){{
+                    add(new MarPriceDocument(BigDecimal.valueOf(30), 3));
+                }});
+                put(LevelfyServiceType.ASES_PER, new ArrayList<ServicePriceDocument>(){{
+                    add(new AsesPerPriceDocument(BigDecimal.valueOf(24), 1));
+                    add(new AsesPerPriceDocument(BigDecimal.valueOf(19), 2));
+                    add(new AsesPerPriceDocument(BigDecimal.valueOf(16), 3));
+                    add(new AsesPerPriceDocument(BigDecimal.valueOf(14), 4));
+                    add(new AsesPerPriceDocument(BigDecimal.valueOf(12), 5));
+                }});
+            }}
+        );
+        PRICES.put(UniversityName.UL, new HashMap<LevelfyServiceType, List<ServicePriceDocument>>(){{
+                    put(LevelfyServiceType.ASES_PAQ, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(80), 7, ServicePriceDocument.LevelfyGeneralServiceType.EXAM));
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(40), 5, ServicePriceDocument.LevelfyGeneralServiceType.PC));
+                    }});
+                    put(LevelfyServiceType.MAR, new ArrayList<ServicePriceDocument>(){{
+                        add(new MarPriceDocument(BigDecimal.valueOf(30), 3));
+                    }});
+                    put(LevelfyServiceType.ASES_PER, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(24), 1));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(19), 2));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(16), 3));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(14), 4));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(12), 5));
+                    }});
+                }}
+        );
+        PRICES.put(UniversityName.UDEP, new HashMap<LevelfyServiceType, List<ServicePriceDocument>>(){{
+                    put(LevelfyServiceType.ASES_PAQ, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(80), 7, ServicePriceDocument.LevelfyGeneralServiceType.EXAM));
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(40), 5, ServicePriceDocument.LevelfyGeneralServiceType.PC));
+                    }});
+                    put(LevelfyServiceType.MAR, new ArrayList<ServicePriceDocument>(){{
+                        add(new MarPriceDocument(BigDecimal.valueOf(30), 3));
+                    }});
+                    put(LevelfyServiceType.ASES_PER, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(24), 1));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(19), 2));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(16), 3));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(14), 4));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(12), 5));
+                    }});
+                }}
+        );
+        PRICES.put(UniversityName.UPCH, new HashMap<LevelfyServiceType, List<ServicePriceDocument>>(){{
+                    put(LevelfyServiceType.ASES_PAQ, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(80), 7, ServicePriceDocument.LevelfyGeneralServiceType.EXAM));
+                        add(new AsesPaqPriceDocument(BigDecimal.valueOf(40), 5, ServicePriceDocument.LevelfyGeneralServiceType.PC));
+                    }});
+                    put(LevelfyServiceType.MAR, new ArrayList<ServicePriceDocument>(){{
+                        add(new MarPriceDocument(BigDecimal.valueOf(30), 3));
+                    }});
+                    put(LevelfyServiceType.ASES_PER, new ArrayList<ServicePriceDocument>(){{
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(24), 1));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(19), 2));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(16), 3));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(14), 4));
+                        add(new AsesPerPriceDocument(BigDecimal.valueOf(12), 5));
+                    }});
+                }}
+        );
 
 
     }

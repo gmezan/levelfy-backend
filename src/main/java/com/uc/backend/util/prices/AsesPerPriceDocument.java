@@ -5,33 +5,15 @@ import javax.persistence.GenerationType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class AsesPerPriceDocument {
+public class AsesPerPriceDocument extends ServicePriceDocument {
 
-    private String id;
-    private String university;
-    private ArrayList<BigDecimal> clientsPrice;
+    protected Integer clients;
 
-    public String getId() {
-        return id;
+    public AsesPerPriceDocument(BigDecimal price, Integer clients) {
+        this.price = price;
+        this.clients = clients;
+        this.hours = 1;
+        this.type = ServicePriceDocument.LevelfyGeneralServiceType.ANY;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    public ArrayList<BigDecimal> getClientsPrice() {
-        return clientsPrice;
-    }
-
-    public void setClientsPrice(ArrayList<BigDecimal> clientsPrice) {
-        this.clientsPrice = clientsPrice;
-    }
 }

@@ -31,7 +31,7 @@ public class PaymentDto {
         this.idclase = idclase;
     }
 
-    public boolean validatePayment(){
+    public boolean validatePayment() {
         boolean ver = true;
         ver = date != null && persona != null;
         ver = ver && (amount !=null) && (amount.compareTo(BigDecimal.ZERO)>0) && (amount.intValue()<9999999)

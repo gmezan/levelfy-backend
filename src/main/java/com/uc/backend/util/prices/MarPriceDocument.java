@@ -1,42 +1,12 @@
 package com.uc.backend.util.prices;
 import java.math.BigDecimal;
 
-public class MarPriceDocument {
+public class MarPriceDocument extends ServicePriceDocument {
 
-    private String id;
-    private String university;
-    private int hours;
-    private BigDecimal price;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
+    public MarPriceDocument(BigDecimal price, Integer hours) {
         this.price = price;
+        this.hours = hours;
+        this.type = LevelfyGeneralServiceType.ANY;
     }
+
 }

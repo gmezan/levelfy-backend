@@ -8,6 +8,7 @@ import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.ServiceSessionRepository;
+import com.uc.backend.service.prices.LevelfyServicePriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,11 +25,13 @@ public class ServiceController {
 
     ServiceRepository serviceRepository;
     ServiceSessionRepository serviceSessionRepository;
+    LevelfyServicePriceRepository levelfyServicePriceRepository;
 
     @Autowired
     public ServiceController(ServiceRepository serviceRepository, ServiceSessionRepository serviceSessionRepository) {
         this.serviceRepository = serviceRepository;
         this.serviceSessionRepository = serviceSessionRepository;
+        this.levelfyServicePriceRepository = levelfyServicePriceRepository;
     }
 
     // Web Service for forms
@@ -40,6 +43,14 @@ public class ServiceController {
         CourseId courseId = new CourseId(idCourse, university);
         return new ResponseEntity<>(
                 serviceRepository.findServiceByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping(value = "get-prices", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getPrices() {
+        return new ResponseEntity(
+                levelfyServicePriceRepository.getAllPrices(),
                 HttpStatus.OK
         );
     }
