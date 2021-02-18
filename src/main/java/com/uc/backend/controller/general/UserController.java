@@ -68,18 +68,6 @@ public class UserController {
 
         RoleName userRoleName = Objects.requireNonNull(currentUser.getRole().stream().findFirst().orElse(null)).getName();
 
-        switch (userRoleName) {
-            case mod:
-                break;
-            case admin:
-                break;
-            case teach:
-                userList = userList.stream().filter(thisUser -> thisUser.getIdUser() == currentUser.getIdUser()).collect(Collectors.toList());
-                break;
-            default:
-                return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
-        }
-
         return new ResponseEntity<>(userList, OK);
     }
 
