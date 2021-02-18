@@ -15,11 +15,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @CrossOrigin
 @RestController
@@ -39,13 +39,12 @@ public class UserController {
 
     @GetMapping(value = "me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getCurrentUser() {
-
         return userService.getCurrentUser()
                 .map(user -> new ResponseEntity<>(user, OK))
                 .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
-
     }
 
+    // TODO: validate which role can access each of every service
 
     // RESTFUL
 
@@ -54,22 +53,34 @@ public class UserController {
             @RequestParam(name = "u", required = false) UniversityName u,
             @RequestParam(name = "r", required = false) RoleName r
     ) {
-        Role role =  null;
-        if (r!=null) role = roleRepository.findByName(r).orElse(null);
+        final Role role = (r!=null)? roleRepository.findByName(r).orElse(null) : null;
+        List<User> userList = null;
+        User currentUser = userService.getCurrentUser().orElse(null);
+        if (currentUser==null) return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
 
-        if (u!=null && role!=null){
-            Role finalRole = role;
-            return new ResponseEntity<>(userRepository.findUsersByUniversity(u).stream()
-                    .filter(user -> user.getRole().contains(finalRole)).collect(Collectors.toList()), OK);
+        if (u!=null && role!=null)
+            userList = userRepository.findUsersByUniversity(u).stream().filter(user -> user.getRole().contains(role)).collect(Collectors.toList());
+        else if (u!=null)
+            userList = userRepository.findUsersByUniversity(u);
+        else if (role!=null)
+            userList = userRepository.findAll().stream().filter(user -> user.getRole().contains(role)).collect(Collectors.toList());
+        else userList = userRepository.findAll();
+
+        RoleName userRoleName = Objects.requireNonNull(currentUser.getRole().stream().findFirst().orElse(null)).getName();
+
+        switch (userRoleName) {
+            case mod:
+                break;
+            case admin:
+                break;
+            case teach:
+                userList = userList.stream().filter(thisUser -> thisUser.getIdUser() == currentUser.getIdUser()).collect(Collectors.toList());
+                break;
+            default:
+                return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR);
         }
-        else if (u!=null){
-            return new ResponseEntity<>(userRepository.findUsersByUniversity(u), OK);
-        }
-        else if (role!=null){
-            Role finalRole = role;
-            return new ResponseEntity<>(userRepository.findAll().stream()
-                    .filter(user -> user.getRole().contains(finalRole)).collect(Collectors.toList()), OK);
-        } else return new ResponseEntity<>(userRepository.findAll(), OK);
+
+        return new ResponseEntity<>(userList, OK);
     }
 
     @GetMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)
