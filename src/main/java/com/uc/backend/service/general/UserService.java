@@ -1,13 +1,11 @@
-package com.uc.backend.service;
+package com.uc.backend.service.general;
 
-import com.uc.backend.controller.OAuthController;
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

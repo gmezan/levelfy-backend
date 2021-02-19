@@ -1,4 +1,4 @@
-package com.uc.backend.service;
+package com.uc.backend.service.general;
 
 import com.uc.backend.entity.Role;
 import com.uc.backend.enums.RoleName;
@@ -13,8 +13,12 @@ import java.util.Optional;
 @Transactional
 public class RoleService {
 
-    @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     public Optional<Role> getByName(RoleName name) {
         return  roleRepository.findByName(name);

@@ -1,7 +1,6 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.entity.Course;
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.entity.User;
@@ -10,7 +9,8 @@ import com.uc.backend.enums.RoleName;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.ServiceSessionRepository;
-import com.uc.backend.service.UserService;
+import com.uc.backend.service.general.ServiceService;
+import com.uc.backend.service.general.UserService;
 import com.uc.backend.service.prices.LevelfyServicePriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,14 +31,17 @@ public class ServiceController {
     ServiceSessionRepository serviceSessionRepository;
     LevelfyServicePriceRepository levelfyServicePriceRepository;
     UserService userService;
+    ServiceService serviceService;
 
     @Autowired
     public ServiceController(ServiceRepository serviceRepository, ServiceSessionRepository serviceSessionRepository,
-                             LevelfyServicePriceRepository levelfyServicePriceRepository, UserService userService) {
+                             LevelfyServicePriceRepository levelfyServicePriceRepository, UserService userService,
+                             ServiceService serviceService) {
         this.serviceRepository = serviceRepository;
         this.serviceSessionRepository = serviceSessionRepository;
         this.levelfyServicePriceRepository = levelfyServicePriceRepository;
         this.userService = userService;
+        this.serviceService = serviceService;
     }
 
     // Web Service for forms
@@ -102,34 +105,26 @@ public class ServiceController {
     }
 
     @GetMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Service> getCourse(@PathVariable("s") int id) {
+    public ResponseEntity<Service> getService(@PathVariable("s") int id) {
         return serviceRepository.findById(id)
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Service> newCourse(@RequestBody Service service) {
-        return serviceRepository.findById(service.getIdService())
-                .map(value -> new ResponseEntity<>(value, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    List<ServiceSession> serviceSessionList = service.getServiceSessionList();
-                    Service newService = serviceRepository.save(service);
-                    serviceSessionList.forEach(sl->sl.setService(newService));
-                    serviceSessionRepository.saveAll(serviceSessionList);
-                    return new ResponseEntity<>(newService, HttpStatus.OK);
-                });
+    public ResponseEntity<Service> newService(@RequestBody Service service) {
+        return serviceService.createService(service);
     }
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Service> updateCourse(@RequestBody Service service) {
+    public ResponseEntity<Service> updateService(@RequestBody Service service) {
         return serviceRepository.findById(service.getIdService())
                 .map(value -> new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
     @DeleteMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity deleteCourse(@PathVariable("s") int id) {
+    public ResponseEntity deleteService(@PathVariable("s") int id) {
         return serviceRepository.findById(id)
                 .map(value -> {
                     serviceSessionRepository.deleteAll(value.getServiceSessionList());
