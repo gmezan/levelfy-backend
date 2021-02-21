@@ -38,15 +38,17 @@ public class CourseSuggestionController {
 
     @PostMapping(value = "open",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CourseSuggestion> newCourseSuggestion(@RequestBody CourseSuggestion courseSuggestion) {
+
+        if (!(courseSuggestion.getUser() != null &&
+            userRepository.findById(courseSuggestion.getUser().getIdUser()).isPresent())
+        ) {
+            courseSuggestion.setUser(null);
+        }
+
         return courseSuggestionRepository.findById(courseSuggestion.getIdSuggestion())
                 .map( (value) -> new ResponseEntity<>(value, BAD_REQUEST))
                 .orElseGet( () ->
-                        userRepository.findById(courseSuggestion.getUser().getIdUser())
-                                .map( (user) -> {
-                                    courseSuggestion.setUser(user);
-                                    return new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK);
-                                })
-                                .orElseGet( () ->  new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK))
+                         new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK)
                 );
     }
 
