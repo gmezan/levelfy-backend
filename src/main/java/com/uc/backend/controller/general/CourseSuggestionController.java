@@ -15,6 +15,7 @@ import static java.lang.Enum.valueOf;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+@CrossOrigin
 @RestController
 @RequestMapping("model/course-suggestion")
 public class CourseSuggestionController {
@@ -35,7 +36,7 @@ public class CourseSuggestionController {
                 .orElseGet( () -> new ResponseEntity<>(null,BAD_REQUEST));
     }
 
-    @PostMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "open",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CourseSuggestion> newCourseSuggestion(@RequestBody CourseSuggestion courseSuggestion) {
         return courseSuggestionRepository.findById(courseSuggestion.getIdSuggestion())
                 .map( (value) -> new ResponseEntity<>(value, BAD_REQUEST))
@@ -45,7 +46,7 @@ public class CourseSuggestionController {
                                     courseSuggestion.setUser(user);
                                     return new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK);
                                 })
-                                .orElseGet( () ->  new ResponseEntity<>(null, BAD_REQUEST))
+                                .orElseGet( () ->  new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK))
                 );
     }
 

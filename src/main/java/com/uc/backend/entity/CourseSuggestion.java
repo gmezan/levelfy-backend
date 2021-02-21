@@ -20,7 +20,7 @@ public class CourseSuggestion extends Auditable implements Serializable {
     @Column(nullable = false, name="nombre")
     private String name;
 
-    @Column(nullable = false, name="servicio")
+    @Column(nullable = true, name="servicio")
     private String service;
 
 

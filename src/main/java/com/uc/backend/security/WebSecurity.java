@@ -61,7 +61,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/course/list").permitAll() // To list available courses
                 .antMatchers("/model/service/form").permitAll()
-                .antMatchers("/mongo/course").permitAll()
+                .antMatchers("/model/course-suggestion/open").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
