@@ -53,8 +53,12 @@ public class ServiceService {
                                             Service newService = serviceRepository.save(service);
                                             serviceSessionList.forEach(sl->sl.setService(newService));
                                             serviceAgendaList.forEach(sl->sl.setService(newService));
-                                            serviceSessionRepository.saveAll(serviceSessionList);
-                                            serviceAgendaRepository.saveAll(serviceAgendaList);
+
+                                            if (!serviceSessionList.isEmpty())
+                                                serviceSessionRepository.saveAll(serviceSessionList);
+                                            if (!serviceAgendaList.isEmpty())
+                                                serviceAgendaRepository.saveAll(serviceAgendaList);
+
                                             return new ResponseEntity<>(newService, HttpStatus.OK);
                                             })
                                             .orElseGet(()->new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
