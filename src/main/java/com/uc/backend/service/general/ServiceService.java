@@ -52,6 +52,7 @@ public class ServiceService {
                                             List<ServiceAgenda> serviceAgendaList = service.getServiceAgendaList();
                                             Service newService = serviceRepository.save(service);
                                             serviceSessionList.forEach(sl->sl.setService(newService));
+                                            serviceAgendaList.forEach(sl->sl.setService(newService));
                                             serviceSessionRepository.saveAll(serviceSessionList);
                                             serviceAgendaRepository.saveAll(serviceAgendaList);
                                             return new ResponseEntity<>(newService, HttpStatus.OK);
