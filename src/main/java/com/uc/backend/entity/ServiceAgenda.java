@@ -13,10 +13,10 @@ public class ServiceAgenda {
     @Column(name = "idclase_temario")
     private Integer id;
 
-    @Column(name = "key", nullable = false)
+    @Column(name = "key_temario", nullable = false)
     private String key;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description_temario", nullable = false)
     private String description;
 
     @JsonBackReference
