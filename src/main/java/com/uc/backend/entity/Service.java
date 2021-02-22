@@ -69,6 +69,9 @@ public class Service extends Auditable implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
     private List<ServiceSession> serviceSessionList;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
+    private List<ServiceAgenda> serviceAgendaList;
+
     public int getIdService() {
         return idService;
     }
@@ -171,5 +174,13 @@ public class Service extends Auditable implements Serializable {
 
     public void setServiceSessionList(List<ServiceSession> serviceSessionList) {
         this.serviceSessionList = serviceSessionList;
+    }
+
+    public List<ServiceAgenda> getServiceAgendaList() {
+        return serviceAgendaList;
+    }
+
+    public void setServiceAgendaList(List<ServiceAgenda> serviceAgendaList) {
+        this.serviceAgendaList = serviceAgendaList;
     }
 }

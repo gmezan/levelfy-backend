@@ -118,20 +118,12 @@ public class ServiceController {
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Service> updateService(@RequestBody Service service) {
-        return serviceRepository.findById(service.getIdService())
-                .map(value -> new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+        return serviceService.updateService(service);
     }
 
     @DeleteMapping(value = "{s}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteService(@PathVariable("s") int id) {
-        return serviceRepository.findById(id)
-                .map(value -> {
-                    serviceSessionRepository.deleteAll(value.getServiceSessionList());
-                    serviceRepository.delete(value);
-                    return new ResponseEntity(HttpStatus.OK);
-                })
-                .orElseGet(() -> new ResponseEntity(HttpStatus.BAD_REQUEST));
+        return serviceService.deleteService(id);
     }
 
 }
