@@ -82,11 +82,16 @@ public class ServiceService {
         return serviceRepository.findById(service.getIdService())
                 .map(value -> {
                     // TODO: Update only updatable attributes
+                    List<ServiceAgenda> serviceAgendaList = service.getServiceAgendaList();
                     service.setCourse(value.getCourse());
                     service.setTeacher(value.getTeacher());
                     service.setServiceType(value.getServiceType());
+                    Service updatedService = serviceRepository.save(service);
+                    serviceAgendaList.forEach(sa->sa.setService(updatedService));
+                    if (!serviceAgendaList.isEmpty())
+                        serviceAgendaRepository.saveAll(serviceAgendaList);
                     serviceAgendaRepository.saveAll(service.getServiceAgendaList());
-                    return new ResponseEntity<>(serviceRepository.save(service), HttpStatus.OK);
+                    return new ResponseEntity<>(updatedService, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
