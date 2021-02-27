@@ -2,6 +2,6 @@ package com.uc.backend.enums;
 
 public enum RoleName {
 
-    client, teach, mod, admin
+    ROLE_CLIENT, ROLE_TEACH, ROLE_MOD, ROLE_ADMIN
 
 }

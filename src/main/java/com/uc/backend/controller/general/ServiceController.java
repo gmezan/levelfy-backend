@@ -2,7 +2,6 @@ package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
-import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.RoleName;
@@ -84,14 +83,14 @@ public class ServiceController {
         RoleName userRoleName = Objects.requireNonNull(currentUser.getRole().stream().findFirst().orElse(null)).getName();
 
         switch (userRoleName) {
-            case mod: // verify
+            case ROLE_MOD: // verify
                 serviceList = serviceList.stream().filter(element->element.getCourse().getCourseId().getUniversity()
                         .equals(currentUser.getUniversity())).collect(Collectors.toList());
                 break;
-            case teach:
+            case ROLE_TEACH:
                 serviceList = serviceList.stream().filter(element->element.getTeacher().getIdUser()==currentUser.getIdUser()).collect(Collectors.toList());
                 break;
-            case client:
+            case ROLE_CLIENT:
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 

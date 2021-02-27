@@ -130,7 +130,7 @@ public class OAuthController {
         user.setLastname("");
         user.setName("Mock name");
         user.setPassword(passwordEncoder.encode(secretPsw));
-        Role role = roleService.getByName(RoleName.client).get();
+        Role role = roleService.getByName(RoleName.ROLE_CLIENT).get();
         Set<Role> roles =  new HashSet<>(); roles.add(role);
         user.setRole(roles);
 

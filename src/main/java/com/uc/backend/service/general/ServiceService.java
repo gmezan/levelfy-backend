@@ -1,6 +1,5 @@
 package com.uc.backend.service.general;
 
-import com.uc.backend.entity.Role;
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.ServiceAgenda;
 import com.uc.backend.entity.ServiceSession;
@@ -44,7 +43,7 @@ public class ServiceService {
                 .orElseGet(() ->
                         courseRepository.findById(service.getCourse().getCourseId())
                             .map(course ->
-                                    userRepository.findByIdUserAndRoleContains(service.getTeacher().getIdUser(), roleRepository.findByName(RoleName.teach).orElse(null))
+                                    userRepository.findByIdUserAndRoleContains(service.getTeacher().getIdUser(), roleRepository.findByName(RoleName.ROLE_TEACH).orElse(null))
                                         .map(teacher-> {
                                             service.setTeacher(teacher);
                                             service.setCourse(course);
@@ -90,7 +89,6 @@ public class ServiceService {
                     serviceAgendaList.forEach(sa->sa.setService(updatedService));
                     if (!serviceAgendaList.isEmpty())
                         serviceAgendaRepository.saveAll(serviceAgendaList);
-                    serviceAgendaRepository.saveAll(service.getServiceAgendaList());
                     return new ResponseEntity<>(updatedService, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
