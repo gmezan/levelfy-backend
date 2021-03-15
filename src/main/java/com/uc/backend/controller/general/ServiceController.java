@@ -43,7 +43,12 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    // Web Service for forms
+    /*
+
+         Web Service for forms: Sirve para listar los servicios que ofrece
+         un "Paquete de Asesoría" o una "Maratón".
+
+     */
     @GetMapping(value = "form", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getListOfServicesForForm(
             @RequestParam("serviceType") LevelfyServiceType serviceType,
