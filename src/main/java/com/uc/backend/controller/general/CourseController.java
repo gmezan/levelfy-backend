@@ -33,7 +33,7 @@ public class CourseController {
     // List available courses
     @GetMapping(value = "course/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getServicesList(
-            @RequestParam(name = "serviceType", required = true) LevelfyServiceType serviceType) {
+            @RequestParam("serviceType") LevelfyServiceType serviceType) {
         return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType.toString()), HttpStatus.OK);
     }
 
