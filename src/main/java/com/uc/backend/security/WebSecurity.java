@@ -60,15 +60,28 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/course/list").permitAll() // To list available courses
-                .antMatchers("/model/service/form").permitAll() // FIX
+                .antMatchers("/model/service/form").permitAll() // to list ASES_PAQ, MAR
                 .antMatchers("/model/course-suggestion/open").permitAll()
 
                 .antMatchers("/model/user/me").authenticated()
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
+                .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/sale", "/model/sale/*", "/model/sale/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/service", "/model/service/*", "/model/service/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/sale-canceled", "/model/sale-canceled/*", "/model/sale-canceled/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/service-session", "/model/service-session/*", "/model/service-session/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/enrollment", "/model/enrollment/*", "/model/enrollment/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/course-suggestion", "/model/course-suggestion/*", "/model/course-suggestion/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("ADMIN")
 
-                .anyRequest().authenticated()
+
+                .antMatchers("s3/*", "s3/**").hasAnyRole("ADMIN", "MOD")
+
+
+                .anyRequest().hasRole("ADMIN")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
