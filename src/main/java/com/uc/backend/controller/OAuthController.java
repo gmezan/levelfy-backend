@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -83,6 +84,7 @@ public class OAuthController {
         com.uc.backend.entity.User user =  new com.uc.backend.entity.User();
         if (userService.existsByEmail(payload.getEmail())) // If it is already registered
         {
+
             logger.info("Registered user");
             user = userService.getByEmailOrThrow(payload.getEmail());
             if (user.getRole().isEmpty())
@@ -91,9 +93,9 @@ public class OAuthController {
         }
         else // if is a new user
         {
+
             logger.info("New user");
             user = saveUser(payload);
-
 
         }
 
