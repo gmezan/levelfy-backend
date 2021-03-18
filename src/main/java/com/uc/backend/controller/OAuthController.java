@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.uc.backend.dto.TokenDto;
 import com.uc.backend.entity.Role;
+import com.uc.backend.entity.User;
 import com.uc.backend.enums.RoleName;
 import com.uc.backend.security.jwt.JwtProvider;
 import com.uc.backend.service.general.RoleService;
@@ -84,7 +85,8 @@ public class OAuthController {
         {
             logger.info("Registered user");
             user = userService.getByEmailOrThrow(payload.getEmail());
-            saveUser(payload);
+            if (user.getRole().isEmpty())
+                userService.save(setClientRole(user));
 
         }
         else // if is a new user
@@ -137,6 +139,12 @@ public class OAuthController {
         user.setName((String) payload.get("name"));
         user.setPhoto((String) payload.get("picture"));
         user.setPassword(passwordEncoder.encode(secretPsw));
+
+        return userService.save(setClientRole(user));
+
+    }
+
+    private com.uc.backend.entity.User setClientRole(com.uc.backend.entity.User user) {
         Optional<Role> optionalRole = roleService.getByName(RoleName.ROLE_CLIENT);
 
         if (optionalRole.isPresent()) {
@@ -144,8 +152,7 @@ public class OAuthController {
             user.setRole(roles);
         } else user = null;
 
-        return userService.save(user);
-
+        return user;
     }
 
 
