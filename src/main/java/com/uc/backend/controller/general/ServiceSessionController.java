@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestController
-@RequestMapping("model/enrollment-session")
+@RequestMapping("model/service-session")
 public class ServiceSessionController {
     @Autowired
     ServiceSessionRepository serviceSessionRepository;

@@ -4,6 +4,7 @@ package com.uc.backend.controller.general;
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.FileUploadDto;
 import com.uc.backend.entity.*;
+import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.*;
 import com.uc.backend.service.aws.AwsResourceService;
@@ -28,8 +29,8 @@ public class CourseController {
     // List available courses
     @GetMapping(value = "course/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getServicesList(
-            @RequestParam(name = "serviceType", required = true) String serviceType) {
-        return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType), HttpStatus.OK);
+            @RequestParam("serviceType") LevelfyServiceType serviceType) {
+        return new ResponseEntity<>(courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(serviceType.toString()), HttpStatus.OK);
     }
 
 

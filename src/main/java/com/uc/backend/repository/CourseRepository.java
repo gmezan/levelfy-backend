@@ -2,6 +2,7 @@ package com.uc.backend.repository;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Course;
+import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +22,8 @@ public interface CourseRepository extends JpaRepository<Course, CourseId> {
      */
 
     // Available must be true
-    @Query(value = "select distinct c.* from curso c inner join clase cl on (cl.idcurso = c.idcurso)\n" +
-            "where cl.tipo_servicio = ?1 and cl.disponible=1", nativeQuery = true)
+    @Query(value = "select distinct c.* from curso c inner join clase cl on (cl.idcurso = c.idcurso and cl.universidad = c.universidad) " +
+            "where cl.tipo_servicio=?1 and cl.disponible=1", nativeQuery = true)
     List<Course> findCoursesAvailableByServiceTypeAndAvailableIsTrue(String serviceType);
 
     List<Course> findCourseByCourseId_University(UniversityName courseId_university);

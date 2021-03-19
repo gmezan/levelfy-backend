@@ -30,6 +30,15 @@ public class UserService {
         return  userRepository.findByEmail(email);
     }
 
+    public User getByEmailOrThrow(String email) throws IllegalArgumentException {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isPresent())
+            return optionalUser.get();
+        else throw new IllegalArgumentException("Error retrieving User");
+
+    }
+
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
