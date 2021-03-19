@@ -52,7 +52,6 @@ public class ServiceService {
                                             Service newService = serviceRepository.save(service);
                                             serviceSessionList.forEach(sl->sl.setService(newService));
                                             serviceAgendaList.forEach(sa->sa.setService(newService));
-
                                             if (!serviceSessionList.isEmpty())
                                                 serviceSessionRepository.saveAll(serviceSessionList);
                                             if (!serviceAgendaList.isEmpty())
