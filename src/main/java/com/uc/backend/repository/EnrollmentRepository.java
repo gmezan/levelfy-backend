@@ -42,4 +42,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     List<Enrollment> findEnrollmentsByService_ServiceType(LevelfyServiceType service_serviceType);
 
     List<Enrollment> findEnrollmentsByService_ServiceTypeAndService_Course_CourseId_University(LevelfyServiceType service_serviceType, UniversityName service_course_courseId_university);
+
+    // For Enrollment Service
+    List<Enrollment> findEnrollmentsByStudent_IdUser(int student_idUser);
+    List<Enrollment> findEnrollmentsByStudent_IdUser_AndService_ServiceType(int student_idUser, LevelfyServiceType service_serviceType);
+
 }

@@ -3,8 +3,6 @@ package com.uc.backend.controller.roles.client;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/c")
 public class ClaseController {
 
     /*

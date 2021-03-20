@@ -67,7 +67,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
                 .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/sale", "/model/sale/*", "/model/sale/**").hasAnyRole("ADMIN")
-                .antMatchers("/model/service", "/model/service/*", "/model/service/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/service", "/model/service/*", "/model/service/**").hasAnyRole("ADMIN", "MOD", "TEACH")
                 .antMatchers("/model/sale-canceled", "/model/sale-canceled/*", "/model/sale-canceled/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/service-session", "/model/service-session/*", "/model/service-session/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/enrollment", "/model/enrollment/*", "/model/enrollment/**").hasAnyRole("ADMIN")
@@ -76,6 +76,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("s3/*", "s3/**").hasAnyRole("ADMIN", "MOD")
+
+                .antMatchers("/c", "/c/*","/c/**").hasRole("CLIENT")
 
 
                 .anyRequest().hasRole("ADMIN")
