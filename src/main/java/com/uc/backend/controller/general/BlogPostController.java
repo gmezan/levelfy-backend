@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 @CrossOrigin
 @RestController
-@RequestMapping("/blog")
+@RequestMapping("/model/blog")
 public class BlogPostController {
 
     BlogRepository blogRepository;
@@ -24,6 +24,7 @@ public class BlogPostController {
         this.blogRepository = blogRepository;
     }
 
+
     // RESTFUL
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,7 +33,7 @@ public class BlogPostController {
     }
 
     @GetMapping(value = "{i}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BlogPost> getBlogElement(@RequestParam(value = "i") int idBlog) {
+    public ResponseEntity<BlogPost> getBlogElement(@PathVariable("i") int idBlog) {
         return blogRepository.findById(idBlog).map((value)-> new ResponseEntity<>(value,OK))
                 .orElseGet(() -> new ResponseEntity<>(null,BAD_REQUEST));
     }
