@@ -12,26 +12,27 @@ import java.time.*;
 public class BlogPost extends Auditable implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name="idblogPost",nullable = false)
-        private int idblogPost;
+        @Column(name="idblog_post",nullable = false)
+        private int id;
+
         @Column(name="title",nullable = false)
         private String title;
         @Column(name="thumbnail",nullable = false)
         private String thumbnail;
         @Column(name="author",nullable = false)
         private String author;
-        @Column(name="photoAuthor",nullable = false)
+        @Column(name="photo_author",nullable = false)
         private String photoAuthor;
         @Column(name="body",nullable = false)
         private String body;
-        @Column(name="dateTime",nullable = false)
-        private DateTime dateTime;
-        @Column(name="timeRead",nullable = false)
-        private LocalTime timeRead;
+        @Column(name="date_time",nullable = false)
+        private LocalDateTime dateTime;
+        @Column(name="time_read",nullable = false)
+        private Integer timeRead;
 
 
-        public int getIdblogPost() { return idblogPost; }
-        public void setIdblogPost(int value) { this.idblogPost = value; }
+        public int getId() { return id; }
+        public void setId(int value) { this.id = value; }
 
         public String getTitle() { return title; }
         public void setTitle(String value) { this.title = value; }
@@ -49,21 +50,21 @@ public class BlogPost extends Auditable implements Serializable {
         public void setBody(String value) { this.body = value; }
 
 
-        public DateTime getDateTime() {
-                return dateTime;
-        }
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
 
-        public void setDateTime(DateTime dateTime) {
-                this.dateTime = dateTime;
-        }
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
-        public LocalTime getTimeRead() {
-                return timeRead;
-        }
+    public Integer getTimeRead() {
+        return timeRead;
+    }
 
-        public void setTimeRead(LocalTime timeRead) {
-                this.timeRead = timeRead;
-        }
+    public void setTimeRead(Integer timeRead) {
+        this.timeRead = timeRead;
+    }
 }
 
 
