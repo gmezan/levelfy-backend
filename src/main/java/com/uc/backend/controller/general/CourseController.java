@@ -24,12 +24,8 @@ import java.util.Optional;
 @RequestMapping("model")
 public class CourseController {
 
-
-
     @Autowired
     CourseRepository courseRepository;
-
-
     // List available courses
     @GetMapping(value = "course/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getServicesList(

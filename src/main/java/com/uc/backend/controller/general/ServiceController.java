@@ -117,8 +117,7 @@ public class ServiceController {
 
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Service> newService(@RequestBody Service service) {
-        return serviceService.createService(service);
-    }
+        return serviceService.createService(service); }
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Service> updateService(@RequestBody Service service) {
