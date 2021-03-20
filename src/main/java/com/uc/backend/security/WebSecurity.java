@@ -63,7 +63,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/service/form").permitAll() // to list ASES_PAQ, MAR
                 .antMatchers("/model/course-suggestion/open").permitAll()
                 .antMatchers("/blog/list").permitAll()
-                .anyRequest().authenticated()
 
                 .antMatchers("/model/user/me").authenticated()
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")

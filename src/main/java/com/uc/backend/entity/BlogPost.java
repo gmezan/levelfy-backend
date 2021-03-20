@@ -3,12 +3,13 @@ package com.uc.backend.entity;
 import com.google.api.client.util.DateTime;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.*;
 
 
 @Entity
 @Table(name="blog_post")
-public class Blog {
+public class BlogPost extends Auditable implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name="idblogPost",nullable = false)
