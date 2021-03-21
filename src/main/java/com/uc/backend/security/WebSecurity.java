@@ -59,8 +59,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
-                .antMatchers("/model/course/list").permitAll() // To list available courses
                 .antMatchers("/model/service/form").permitAll() // to list ASES_PAQ, MAR
+                .antMatchers("/model/service/get-prices").hasAnyRole("ADMIN", "MOD", "TEACH") // Prices info
                 .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenController
                 .antMatchers("/model/blog").permitAll()
 

@@ -43,23 +43,6 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    /*
-
-         Web Service for forms: Sirve para listar los servicios que ofrece
-         un "Paquete de Asesoría" o una "Maratón".
-
-     */
-    @GetMapping(value = "form", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Service>> getListOfServicesForForm(
-            @RequestParam("serviceType") LevelfyServiceType serviceType,
-            @RequestParam("i") String idCourse,
-            @RequestParam("u") UniversityName university) {
-        CourseId courseId = new CourseId(idCourse, university);
-        return new ResponseEntity<>(
-                serviceRepository.findServicesByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId),
-                HttpStatus.OK
-        );
-    }
 
     @GetMapping(value = "get-prices", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getPrices() {

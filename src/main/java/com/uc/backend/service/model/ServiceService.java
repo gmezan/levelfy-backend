@@ -1,8 +1,10 @@
 package com.uc.backend.service.model;
 
+import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.ServiceAgenda;
 import com.uc.backend.entity.ServiceSession;
+import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.RoleName;
 import com.uc.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,4 +94,9 @@ public class ServiceService {
                 })
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
+
+    public List<Service> getServiceFormByCourse(LevelfyServiceType serviceType, CourseId courseId) {
+        return serviceRepository.findServicesByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId);
+    }
+
 }
