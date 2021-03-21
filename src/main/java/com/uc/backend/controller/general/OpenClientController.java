@@ -1,7 +1,8 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.dto.ServiceTeachDto;
+import com.uc.backend.dto.CourseInfoDto;
+import com.uc.backend.dto.UserInfoDto;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.entity.Service;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -63,9 +65,9 @@ public class OpenClientController {
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ServiceTeachDto>> getTeachListByService(
+    public ResponseEntity<Map<UserInfoDto, List<CourseInfoDto>>> getTeachListByService(
             @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(userService.getServiceListByTeach(), OK);
+        return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString()), OK);
     }
 
     // ----------------------------------------------------------

@@ -1,6 +1,8 @@
 package com.uc.backend.service.model;
 
 import com.uc.backend.dto.ServiceTeachDto;
+import com.uc.backend.dto.CourseInfoDto;
+import com.uc.backend.dto.UserInfoDto;
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.UserRepository;
 import org.slf4j.Logger;
@@ -10,8 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -26,8 +27,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<ServiceTeachDto> getServiceListByTeach() {
-        return this.userRepository.getServiceListByTeach();
+    public Map<UserInfoDto, List<CourseInfoDto>> getServiceListByTeach(String s) {
+        Map<UserInfoDto, List<CourseInfoDto>> map = new HashMap<>();
+        List<ServiceTeachDto> list = this.userRepository.getServiceListByTeach(s);
+
+        list.forEach(serviceTeachDto -> {
+            UserInfoDto userInfoDto = new UserInfoDto(serviceTeachDto);
+            CourseInfoDto courseInfoDto = new CourseInfoDto(serviceTeachDto);
+
+            if (!map.containsKey(userInfoDto))
+                map.put(userInfoDto, new ArrayList<CourseInfoDto>(){{add(courseInfoDto);}});
+            else if (!map.get(userInfoDto).contains(courseInfoDto))
+                map.get(userInfoDto).add(courseInfoDto);
+
+        });
+
+        return map;
     }
 
     public Optional<User> getCurrentUser() {
