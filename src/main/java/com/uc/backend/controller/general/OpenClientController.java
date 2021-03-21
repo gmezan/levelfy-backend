@@ -1,6 +1,7 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
+import com.uc.backend.dto.ServiceTeachDto;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.entity.Service;
@@ -62,9 +63,9 @@ public class OpenClientController {
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Course>> getTeachListByService(
+    public ResponseEntity<List<ServiceTeachDto>> getTeachListByService(
             @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(courseService.getCoursesOfAvailableServicesByServiceType(serviceType), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getServiceListByTeach(), OK);
     }
 
     // ----------------------------------------------------------
@@ -79,24 +80,18 @@ public class OpenClientController {
     */
     @GetMapping(value = "service/form-by-course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getListOfServicesForFormByCourse(
-            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam("serviceType") LevelfyServiceType st,
             @RequestParam("i") String idCourse,
             @RequestParam("u") UniversityName university) {
-        CourseId courseId = new CourseId(idCourse, university);
-        return new ResponseEntity<>(serviceService.getServiceFormByCourse(serviceType,courseId),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(serviceService.getServiceFormByCourse(st, new CourseId(idCourse, university)), OK);
     }
 
     @GetMapping(value = "service/form-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getListOfServicesForFormByTeach(
-            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam("serviceType") LevelfyServiceType st,
             @RequestParam("i") String idCourse,
             @RequestParam("u") UniversityName university) {
-        CourseId courseId = new CourseId(idCourse, university);
-        return new ResponseEntity<>(serviceService.getServiceFormByCourse(serviceType,courseId),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(serviceService.getServiceFormByCourse(st, new CourseId(idCourse, university)), OK);
     }
 
 

@@ -86,13 +86,15 @@ public class OAuthController {
             user = userService.getByEmailOrThrow(payload.getEmail());
             if (user.getRole().isEmpty())
                 userService.save(setClientRole(user));
+            if (!user.isActive())
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
         }
         else // if is a new user
         {
 
             logger.info("New user");
-            user = saveUser(payload);
+            user = saveNewUser(payload);
 
         }
 
@@ -131,13 +133,14 @@ public class OAuthController {
         return tokenDto;
     }
 
-    private com.uc.backend.entity.User saveUser(GoogleIdToken.Payload payload){
+    private com.uc.backend.entity.User saveNewUser(GoogleIdToken.Payload payload){
         com.uc.backend.entity.User user =  new com.uc.backend.entity.User();
         user.setEmail(payload.getEmail());
         user.setLastname("");
         user.setName((String) payload.get("name"));
         user.setPhoto((String) payload.get("picture"));
         user.setPassword(passwordEncoder.encode(secretPsw));
+        user.setActive(true);
 
         return userService.save(setClientRole(user));
 
