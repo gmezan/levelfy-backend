@@ -1,4 +1,4 @@
-package com.uc.backend.service.general;
+package com.uc.backend.service.model;
 
 import com.uc.backend.entity.Role;
 import com.uc.backend.enums.RoleName;

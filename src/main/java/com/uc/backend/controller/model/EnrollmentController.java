@@ -1,4 +1,4 @@
-package com.uc.backend.controller.general;
+package com.uc.backend.controller.model;
 
 import com.uc.backend.entity.Enrollment;
 import com.uc.backend.enums.LevelfyServiceType;
@@ -6,7 +6,6 @@ import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.EnrollmentRepository;
 import com.uc.backend.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

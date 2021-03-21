@@ -1,4 +1,4 @@
-package com.uc.backend.service.general;
+package com.uc.backend.service.model;
 
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.UserRepository;
@@ -48,4 +48,7 @@ public class UserService {
     }
 
 
+    public Optional<User> findById(int idUser) {
+        return userRepository.findById(idUser);
+    }
 }

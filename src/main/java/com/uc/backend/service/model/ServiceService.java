@@ -1,4 +1,4 @@
-package com.uc.backend.service.general;
+package com.uc.backend.service.model;
 
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.ServiceAgenda;

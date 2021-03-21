@@ -61,7 +61,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/course/list").permitAll() // To list available courses
                 .antMatchers("/model/service/form").permitAll() // to list ASES_PAQ, MAR
-                .antMatchers("/model/course-suggestion/open").permitAll()
+                .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenController
                 .antMatchers("/model/blog").permitAll()
 
                 .antMatchers("/model/user/me").authenticated()

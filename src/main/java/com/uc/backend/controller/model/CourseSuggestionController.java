@@ -1,4 +1,4 @@
-package com.uc.backend.controller.general;
+package com.uc.backend.controller.model;
 
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.repository.CourseSuggestionRepository;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static java.lang.Enum.valueOf;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -36,21 +35,6 @@ public class CourseSuggestionController {
                 .orElseGet( () -> new ResponseEntity<>(null,BAD_REQUEST));
     }
 
-    @PostMapping(value = "open",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CourseSuggestion> newCourseSuggestion(@RequestBody CourseSuggestion courseSuggestion) {
-
-        if (!(courseSuggestion.getUser() != null &&
-            userRepository.findById(courseSuggestion.getUser().getIdUser()).isPresent())
-        ) {
-            courseSuggestion.setUser(null);
-        }
-
-        return courseSuggestionRepository.findById(courseSuggestion.getIdSuggestion())
-                .map( (value) -> new ResponseEntity<>(value, BAD_REQUEST))
-                .orElseGet( () ->
-                         new ResponseEntity<>(courseSuggestionRepository.save(courseSuggestion),OK)
-                );
-    }
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CourseSuggestion> updateCourseSuggestion(@RequestBody CourseSuggestion courseSuggestion) {

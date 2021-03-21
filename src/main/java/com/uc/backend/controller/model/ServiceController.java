@@ -1,4 +1,4 @@
-package com.uc.backend.controller.general;
+package com.uc.backend.controller.model;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
@@ -8,8 +8,8 @@ import com.uc.backend.enums.RoleName;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.ServiceSessionRepository;
-import com.uc.backend.service.general.ServiceService;
-import com.uc.backend.service.general.UserService;
+import com.uc.backend.service.model.ServiceService;
+import com.uc.backend.service.model.UserService;
 import com.uc.backend.service.prices.LevelfyServicePriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

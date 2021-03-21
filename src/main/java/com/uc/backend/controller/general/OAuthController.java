@@ -1,4 +1,4 @@
-package com.uc.backend.controller;
+package com.uc.backend.controller.general;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -6,11 +6,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.uc.backend.dto.TokenDto;
 import com.uc.backend.entity.Role;
-import com.uc.backend.entity.User;
 import com.uc.backend.enums.RoleName;
 import com.uc.backend.security.jwt.JwtProvider;
-import com.uc.backend.service.general.RoleService;
-import com.uc.backend.service.general.UserService;
+import com.uc.backend.service.model.RoleService;
+import com.uc.backend.service.model.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;

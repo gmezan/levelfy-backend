@@ -1,11 +1,9 @@
 package com.uc.backend.controller.roles.client;
 
-import com.uc.backend.entity.Course;
 import com.uc.backend.entity.Enrollment;
-import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
-import com.uc.backend.service.general.EnrollmentService;
-import com.uc.backend.service.general.UserService;
+import com.uc.backend.service.model.EnrollmentService;
+import com.uc.backend.service.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController

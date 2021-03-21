@@ -1,8 +1,7 @@
-package com.uc.backend.controller.general;
+package com.uc.backend.controller.model;
 
 import com.uc.backend.entity.Sale;
 import com.uc.backend.entity.SaleCanceled;
-import com.uc.backend.entity.Service;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.EnrollmentRepository;

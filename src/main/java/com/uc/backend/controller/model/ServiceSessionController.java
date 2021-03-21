@@ -1,4 +1,4 @@
-package com.uc.backend.controller.general;
+package com.uc.backend.controller.model;
 
 import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.repository.ServiceSessionRepository;
