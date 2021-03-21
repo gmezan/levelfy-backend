@@ -16,6 +16,7 @@ public class UserInfoDto {
     }
 
     public UserInfoDto(ServiceTeachDto serviceTeachDto, CourseInfoDto courseInfoDto) {
+        this.userId = serviceTeachDto.getUserId();
         this.fullName = serviceTeachDto.getFullName();
         this.photo = serviceTeachDto.getPhoto();
         this.courseInfoDtoList = new ArrayList<CourseInfoDto>(){{add(courseInfoDto);}};
