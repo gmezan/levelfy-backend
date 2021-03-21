@@ -65,7 +65,7 @@ public class OpenClientController {
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<UserInfoDto, List<CourseInfoDto>>> getTeachListByService(
+    public ResponseEntity<Map<Integer, UserInfoDto>> getTeachListByService(
             @RequestParam("serviceType") LevelfyServiceType serviceType) {
         return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString()), OK);
     }

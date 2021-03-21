@@ -1,9 +1,13 @@
 package com.uc.backend.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserInfoDto {
     private Integer userId;
     private String fullName;
     private String photo;
+    List<CourseInfoDto> courseInfoDtoList;
 
     public UserInfoDto(Integer userId, String fullName, String photo) {
         this.userId = userId;
@@ -11,18 +15,18 @@ public class UserInfoDto {
         this.photo = photo;
     }
 
-    public UserInfoDto(ServiceTeachDto serviceTeachDto) {
-        this.userId = serviceTeachDto.getUserId();
+    public UserInfoDto(ServiceTeachDto serviceTeachDto, CourseInfoDto courseInfoDto) {
         this.fullName = serviceTeachDto.getFullName();
         this.photo = serviceTeachDto.getPhoto();
+        this.courseInfoDtoList = new ArrayList<CourseInfoDto>(){{add(courseInfoDto);}};
     }
 
-    public Integer getUserId() {
-        return userId;
+    public List<CourseInfoDto> getCourseInfoDtoList() {
+        return courseInfoDtoList;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCourseInfoDtoList(List<CourseInfoDto> courseInfoDtoList) {
+        this.courseInfoDtoList = courseInfoDtoList;
     }
 
     public String getFullName() {
@@ -39,5 +43,13 @@ public class UserInfoDto {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

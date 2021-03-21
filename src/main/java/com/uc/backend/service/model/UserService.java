@@ -27,18 +27,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Map<UserInfoDto, List<CourseInfoDto>> getServiceListByTeach(String s) {
-        Map<UserInfoDto, List<CourseInfoDto>> map = new HashMap<>();
+    public Map<Integer, UserInfoDto> getServiceListByTeach(String s) {
+        Map<Integer, UserInfoDto> map = new HashMap<>();
         List<ServiceTeachDto> list = this.userRepository.getServiceListByTeach(s);
 
         list.forEach(serviceTeachDto -> {
-            UserInfoDto userInfoDto = new UserInfoDto(serviceTeachDto);
+
             CourseInfoDto courseInfoDto = new CourseInfoDto(serviceTeachDto);
 
-            if (!map.containsKey(userInfoDto))
-                map.put(userInfoDto, new ArrayList<CourseInfoDto>(){{add(courseInfoDto);}});
-            else if (!map.get(userInfoDto).contains(courseInfoDto))
-                map.get(userInfoDto).add(courseInfoDto);
+            if (!map.containsKey(serviceTeachDto.getUserId()))
+                map.put(serviceTeachDto.getUserId(), new UserInfoDto(serviceTeachDto, courseInfoDto));
+            else if (!map.get(serviceTeachDto.getUserId()).getCourseInfoDtoList().contains(courseInfoDto))
+                map.get(serviceTeachDto.getUserId()).getCourseInfoDtoList().add(courseInfoDto);
 
         });
 

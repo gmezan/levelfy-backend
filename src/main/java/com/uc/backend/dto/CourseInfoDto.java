@@ -4,6 +4,7 @@ import com.uc.backend.enums.UniversityName;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class CourseInfoDto {
@@ -16,6 +17,21 @@ public class CourseInfoDto {
         this.courseId = serviceTeachDto.getCourseId();
         this.courseName = serviceTeachDto.getCourseName();
         this.university = serviceTeachDto.getUniversity();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourseInfoDto that = (CourseInfoDto) o;
+        return Objects.equals(courseName, that.courseName) &&
+                Objects.equals(courseId, that.courseId) &&
+                university == that.university;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseName, courseId, university);
     }
 
     public String getCourseName() {
