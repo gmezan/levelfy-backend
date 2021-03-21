@@ -1,8 +1,7 @@
 package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
-import com.uc.backend.dto.CourseInfoDto;
-import com.uc.backend.dto.UserInfoDto;
+import com.uc.backend.dto.TeacherCoursesInfoDto;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.entity.Service;
@@ -65,7 +64,7 @@ public class OpenClientController {
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<Integer, UserInfoDto>> getTeachListByService(
+    public ResponseEntity<List<TeacherCoursesInfoDto>> getTeachListByService(
             @RequestParam("serviceType") LevelfyServiceType serviceType) {
         return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString()), OK);
     }

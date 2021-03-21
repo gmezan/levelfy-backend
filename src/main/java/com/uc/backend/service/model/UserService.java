@@ -2,7 +2,7 @@ package com.uc.backend.service.model;
 
 import com.uc.backend.dto.ServiceTeachDto;
 import com.uc.backend.dto.CourseInfoDto;
-import com.uc.backend.dto.UserInfoDto;
+import com.uc.backend.dto.TeacherCoursesInfoDto;
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.UserRepository;
 import org.slf4j.Logger;
@@ -27,8 +27,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Map<Integer, UserInfoDto> getServiceListByTeach(String s) {
-        Map<Integer, UserInfoDto> map = new HashMap<>();
+    public List<TeacherCoursesInfoDto> getServiceListByTeach(String s) {
+        Map<Integer, TeacherCoursesInfoDto> map = new HashMap<>();
         List<ServiceTeachDto> list = this.userRepository.getServiceListByTeach(s);
 
         list.forEach(serviceTeachDto -> {
@@ -36,13 +36,13 @@ public class UserService {
             CourseInfoDto courseInfoDto = new CourseInfoDto(serviceTeachDto);
 
             if (!map.containsKey(serviceTeachDto.getUserId()))
-                map.put(serviceTeachDto.getUserId(), new UserInfoDto(serviceTeachDto, courseInfoDto));
+                map.put(serviceTeachDto.getUserId(), new TeacherCoursesInfoDto(serviceTeachDto, courseInfoDto));
             else if (!map.get(serviceTeachDto.getUserId()).getCourseInfoDtoList().contains(courseInfoDto))
                 map.get(serviceTeachDto.getUserId()).getCourseInfoDtoList().add(courseInfoDto);
 
         });
 
-        return map;
+        return new ArrayList<TeacherCoursesInfoDto>(map.values());
     }
 
     public Optional<User> getCurrentUser() {

@@ -3,19 +3,19 @@ package com.uc.backend.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserInfoDto {
+public class TeacherCoursesInfoDto {
     private Integer userId;
     private String fullName;
     private String photo;
     List<CourseInfoDto> courseInfoDtoList;
 
-    public UserInfoDto(Integer userId, String fullName, String photo) {
+    public TeacherCoursesInfoDto(Integer userId, String fullName, String photo) {
         this.userId = userId;
         this.fullName = fullName;
         this.photo = photo;
     }
 
-    public UserInfoDto(ServiceTeachDto serviceTeachDto, CourseInfoDto courseInfoDto) {
+    public TeacherCoursesInfoDto(ServiceTeachDto serviceTeachDto, CourseInfoDto courseInfoDto) {
         this.userId = serviceTeachDto.getUserId();
         this.fullName = serviceTeachDto.getFullName();
         this.photo = serviceTeachDto.getPhoto();
