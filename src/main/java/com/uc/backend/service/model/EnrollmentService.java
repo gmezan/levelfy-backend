@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -50,6 +51,10 @@ public class EnrollmentService {
 
         return ( serviceType == null )? enrollmentRepository.findEnrollmentsByStudent_IdUser(userId)
                 : enrollmentRepository.findEnrollmentsByStudent_IdUser_AndService_ServiceType(userId, serviceType);
+    }
+
+    public Optional<Enrollment> getEnrollmentById(User user, Integer id) {
+        return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(id, user.getIdUser());
     }
 
 }
