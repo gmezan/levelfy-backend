@@ -46,8 +46,8 @@ public class ClientController {
 
     }
 
-    @GetMapping(value = "enrollment/:id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Enrollment> getServiceById(@RequestParam("id") Integer id) {
+    @GetMapping(value = "enrollment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Enrollment> getServiceById(@PathVariable("id") Integer id) {
         return userService.getCurrentUser()
                 .map(user -> enrollmentService.getEnrollmentById(user, id)
                         .map( enrollment -> new ResponseEntity<>(enrollment, HttpStatus.OK))
