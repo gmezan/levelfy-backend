@@ -35,18 +35,6 @@ public class EnrollmentService {
         enrollmentRepository.delete(enrollment);
     }
 
-    public Enrollment saveEnrollment(Enrollment enrollment) {
-        return enrollmentRepository.save(enrollment);
-    }
-
-    public Enrollment updateEnrollment(Enrollment enrollment) {
-        return enrollmentRepository.save(enrollment);
-    }
-
-    public Enrollment getEnrollment(Integer id) {
-        return enrollmentRepository.findById(id).orElse(null);
-    }
-
     public List<Enrollment> getEnrollments(User user, LevelfyServiceType serviceType) {
 
         int userId = user.getIdUser();
@@ -62,6 +50,7 @@ public class EnrollmentService {
     public Enrollment createEnrollment(Enrollment enrollment, User user) {
 
         enrollment.setStudent(user);
+        enrollment.setActive(Boolean.TRUE);
 
         return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getService().getIdService())
                 .map(service -> {
