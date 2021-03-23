@@ -60,9 +60,10 @@ public class EnrollmentService {
     }
 
     public Enrollment createEnrollment(Enrollment enrollment, User user) {
+
         enrollment.setStudent(user);
 
-        return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getIdEnrollment())
+        return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getService().getIdService())
                 .map(service -> {
                     enrollment.setService(service);
                     return enrollmentRepository.save(enrollment);

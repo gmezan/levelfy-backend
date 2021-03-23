@@ -30,7 +30,7 @@ public class ClientController {
     @PostMapping(value = "is-enrolled", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Enrollment> isAlreadyEnrolled(@RequestBody Enrollment enrollment) {
         return userService.getCurrentUser()
-                .map(user -> new ResponseEntity<>(enrollmentService.createEnrollment(enrollment, user), HttpStatus.OK))
+                .map(user -> new ResponseEntity<>(enrollmentService.exists(enrollment, user), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
