@@ -1,12 +1,14 @@
 package com.uc.backend.service.model;
 
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.Service;
 import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.repository.EnrollmentRepository;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -57,4 +59,22 @@ public class EnrollmentService {
         return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(id, user.getIdUser());
     }
 
+    public Enrollment createEnrollment(Enrollment enrollment, User user) {
+        enrollment.setStudent(user);
+
+        return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getIdEnrollment())
+                .map(service -> {
+                    enrollment.setService(service);
+                    return enrollmentRepository.save(enrollment);
+                }).orElseGet(()-> null
+        );
+
+    }
+
+
+    public Enrollment exists(Enrollment enrollment, User user) {
+        return enrollmentRepository.
+                findEnrollmentByService_IdServiceAndStudent_IdUser(enrollment.getService().getIdService(),
+                        user.getIdUser()).orElse(null);
+    }
 }
