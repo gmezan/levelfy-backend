@@ -48,6 +48,7 @@ public class AndroidController {
                     userRepository.findByEmail("jlopezc@pucp.edu.pe")
                             .map((user) -> {
                                 newEnrollment.setStudent(user);
+                                newEnrollment.setPayed(false);
                                 return new ResponseEntity<>(enrollmentRepository.save(newEnrollment), OK);
                             })
                             .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
