@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin
 @RestController
-@RequestMapping("android/enrollment")
+@RequestMapping("android")
 public class AndroidController {
 
     EnrollmentRepository enrollmentRepository;
@@ -62,7 +62,7 @@ public class AndroidController {
 
 
 
-    @DeleteMapping(value = "{e}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "enrollment/{e}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteEnrollment(@PathVariable("e") int enrollmentId) {
         return enrollmentRepository.findById(enrollmentId)
                 .map( (value) -> {
