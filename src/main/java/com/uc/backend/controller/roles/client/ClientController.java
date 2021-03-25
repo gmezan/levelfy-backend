@@ -1,8 +1,11 @@
 package com.uc.backend.controller.roles.client;
 
+import com.uc.backend.dto.PaymentDto;
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.Sale;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.service.model.EnrollmentService;
+import com.uc.backend.service.model.SaleService;
 import com.uc.backend.service.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,14 @@ public class ClientController {
 
     EnrollmentService enrollmentService;
     UserService userService;
+    SaleService saleService;
 
     @Autowired
-    public ClientController(EnrollmentService enrollmentService, UserService userService) {
+    public ClientController(EnrollmentService enrollmentService, UserService userService,
+                            SaleService saleService) {
         this.enrollmentService = enrollmentService;
         this.userService = userService;
+        this.saleService = saleService;
     }
 
 
@@ -77,6 +83,17 @@ public class ClientController {
                         .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST)))
                 .orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
 
+    }
+
+    @PostMapping(value = "register-payment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Sale> registerPayment(@RequestBody PaymentDto paymentDto) {
+        return userService.getCurrentUser()
+                .map(user -> enrollmentService.exists(paymentDto.getIdService(), user)
+                        .map( enrollment ->
+                             new ResponseEntity(saleService.registerClientPayment(paymentDto), HttpStatus.OK)
+                        )
+                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST)))
+                .orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
     }
 
 

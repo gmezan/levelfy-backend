@@ -67,4 +67,11 @@ public class EnrollmentService {
                 findEnrollmentByService_IdServiceAndStudent_IdUser(enrollment.getService().getIdService(),
                         user.getIdUser()).orElse(null);
     }
+
+    public Optional<Enrollment> exists(Integer idService, User user) {
+        return enrollmentRepository.
+                findEnrollmentByService_IdServiceAndStudent_IdUser(idService,
+                        user.getIdUser());
+    }
+
 }
