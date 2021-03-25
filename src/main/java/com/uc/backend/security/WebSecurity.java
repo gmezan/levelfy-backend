@@ -63,7 +63,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenClientController
                 .antMatchers("/model/blog").permitAll()
 
-                .antMatchers("/model/user/me").authenticated()
+                .antMatchers("/").authenticated()
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
                 .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/sale", "/model/sale/*", "/model/sale/**").hasAnyRole("ADMIN")

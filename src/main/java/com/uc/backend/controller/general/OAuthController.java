@@ -74,10 +74,8 @@ public class OAuthController {
 
         //return  new ResponseEntity<>(payload, HttpStatus.OK);
 
-        /*
-            TODO: Verify if the user is Enabled/Active
-
-        */
+        /*            TODO: Verify if the user is Enabled/Active
+ */
         com.uc.backend.entity.User user =  new com.uc.backend.entity.User();
         if (userService.existsByEmail(payload.getEmail())) // If it is already registered
         {
