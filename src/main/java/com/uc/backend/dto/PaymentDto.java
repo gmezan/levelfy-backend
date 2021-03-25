@@ -15,7 +15,7 @@ public class PaymentDto {
     private String message;
     private BigDecimal amount;
     private Integer method;
-    private Integer idclase;
+    private Integer idService;
     private String coupon;
 
 
@@ -23,12 +23,12 @@ public class PaymentDto {
         return METODOS_DE_PAGO[method];
     }
 
-    public Integer getIdclase() {
-        return idclase;
+    public Integer getIdService() {
+        return idService;
     }
 
-    public void setIdclase(Integer idclase) {
-        this.idclase = idclase;
+    public void setIdService(Integer idService) {
+        this.idService = idService;
     }
 
     public boolean validatePayment() {
@@ -36,7 +36,7 @@ public class PaymentDto {
         ver = date != null && persona != null;
         ver = ver && (amount !=null) && (amount.compareTo(BigDecimal.ZERO)>0) && (amount.intValue()<9999999)
                 && (amount.subtract(new BigDecimal(amount.intValue())).toPlainString().length()<=4);
-        ver = ver && method !=null && (method >=0 && method <=4) && (idclase!=null);
+        ver = ver && method !=null && (method >=0 && method <=4) && (idService !=null);
         return ver;
     }
 
