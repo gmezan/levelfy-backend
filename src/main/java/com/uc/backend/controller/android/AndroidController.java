@@ -51,6 +51,7 @@ public class AndroidController {
                             .map((user) -> {
                                 newEnrollment.setStudent(user);
                                 newEnrollment.setPayed(false);
+                                newEnrollment.setActive(true);
                                 return new ResponseEntity<>(enrollmentRepository.save(newEnrollment), OK);
                             })
                             .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
