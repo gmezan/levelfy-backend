@@ -7,6 +7,7 @@ import com.uc.backend.repository.EnrollmentRepository;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
 import com.uc.backend.security.jwt.JwtProvider;
+import com.uc.backend.service.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class AndroidController {
     EnrollmentRepository enrollmentRepository;
     ServiceRepository serviceRepository;
     UserRepository userRepository;
+    UserService userService;
 
 
     @Autowired
@@ -45,7 +47,7 @@ public class AndroidController {
           serviceRepository.findById(idClase)
                 .map((service) -> {
                     newEnrollment.setService(service);
-                    userRepository.findByEmail("jlopezc@pucp.edu.pe")
+                    userService.getCurrentUser()
                             .map((user) -> {
                                 newEnrollment.setStudent(user);
                                 newEnrollment.setPayed(false);
