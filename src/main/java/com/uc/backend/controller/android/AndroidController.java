@@ -41,13 +41,14 @@ public class AndroidController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Enrollment> newEnrollment(@RequestParam(name = "i", required = false) int idClase
         ) {
-        Enrollment newEnrollment=new Enrollment();
 
 
-          serviceRepository.findById(idClase)
+
+       return   serviceRepository.findById(idClase)
                 .map((service) -> {
+                    Enrollment newEnrollment=new Enrollment();
                     newEnrollment.setService(service);
-                    userService.getCurrentUser()
+                    return userService.getCurrentUser()
                             .map((user) -> {
                                 newEnrollment.setStudent(user);
                                 newEnrollment.setPayed(false);
@@ -55,13 +56,13 @@ public class AndroidController {
                                 return new ResponseEntity<>(enrollmentRepository.save(newEnrollment), OK);
                             })
                             .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
-                 return new ResponseEntity<>(null, BAD_REQUEST);
+
 
                 })
                   .orElseGet( ()-> new ResponseEntity<>(null, BAD_REQUEST));
 
 
-        return new ResponseEntity<>(null, BAD_REQUEST);
+
     }
 
 
