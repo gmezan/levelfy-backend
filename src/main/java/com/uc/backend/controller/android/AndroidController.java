@@ -26,14 +26,14 @@ public class AndroidController {
 
     EnrollmentRepository enrollmentRepository;
     ServiceRepository serviceRepository;
-    UserRepository userRepository;
     UserService userService;
 
 
     @Autowired
-    public AndroidController(EnrollmentRepository enrollmentRepository, ServiceRepository serviceRepository) {
+    public AndroidController(EnrollmentRepository enrollmentRepository, ServiceRepository serviceRepository, UserService userService) {
         this.enrollmentRepository = enrollmentRepository;
         this.serviceRepository = serviceRepository;
+        this.userService=userService;
     }
 
 
@@ -42,7 +42,7 @@ public class AndroidController {
     public ResponseEntity<Enrollment> newEnrollment(@RequestParam(name = "i", required = false) int idClase
         ) {
         Enrollment newEnrollment=new Enrollment();
-        JwtProvider jwtProvider=new JwtProvider();
+
 
           serviceRepository.findById(idClase)
                 .map((service) -> {
@@ -57,7 +57,7 @@ public class AndroidController {
                  return new ResponseEntity<>(null, BAD_REQUEST);
 
                 })
-                  .orElseGet( ()->new ResponseEntity<>(null, BAD_REQUEST));
+                  .orElseGet( ()-> new ResponseEntity<>(null, BAD_REQUEST));
 
 
         return new ResponseEntity<>(null, BAD_REQUEST);
