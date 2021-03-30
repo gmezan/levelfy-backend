@@ -26,14 +26,14 @@ public class AndroidController {
 
     EnrollmentRepository enrollmentRepository;
     ServiceRepository serviceRepository;
-    UserRepository userRepository;
     UserService userService;
 
 
     @Autowired
-    public AndroidController(EnrollmentRepository enrollmentRepository, ServiceRepository serviceRepository) {
+    public AndroidController(EnrollmentRepository enrollmentRepository, ServiceRepository serviceRepository, UserService userService) {
         this.enrollmentRepository = enrollmentRepository;
         this.serviceRepository = serviceRepository;
+        this.userService=userService;
     }
 
 
@@ -41,26 +41,28 @@ public class AndroidController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Enrollment> newEnrollment(@RequestParam(name = "i", required = false) int idClase
         ) {
-        Enrollment newEnrollment=new Enrollment();
-        JwtProvider jwtProvider=new JwtProvider();
 
-          serviceRepository.findById(idClase)
+
+
+       return   serviceRepository.findById(idClase)
                 .map((service) -> {
+                    Enrollment newEnrollment=new Enrollment();
                     newEnrollment.setService(service);
-                    userService.getCurrentUser()
+                    return userService.getCurrentUser()
                             .map((user) -> {
                                 newEnrollment.setStudent(user);
                                 newEnrollment.setPayed(false);
+                                newEnrollment.setActive(true);
                                 return new ResponseEntity<>(enrollmentRepository.save(newEnrollment), OK);
                             })
                             .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
-                 return new ResponseEntity<>(null, BAD_REQUEST);
+
 
                 })
-                  .orElseGet( ()->new ResponseEntity<>(null, BAD_REQUEST));
+                  .orElseGet( ()-> new ResponseEntity<>(null, BAD_REQUEST));
 
 
-        return new ResponseEntity<>(null, BAD_REQUEST);
+
     }
 
 

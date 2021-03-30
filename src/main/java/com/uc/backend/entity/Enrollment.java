@@ -31,7 +31,7 @@ public class Enrollment extends Auditable implements Serializable {
     @Column(name = "pago_confirmado",nullable = false)
     private Boolean payed;
 
-    @Column(name = "activo")
+    @Column(name = "activo", nullable = false)
     private Boolean active;
 
     //For "ASES-PER"
