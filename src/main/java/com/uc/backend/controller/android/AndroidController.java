@@ -8,6 +8,7 @@ import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
 import com.uc.backend.security.jwt.JwtProvider;
 import com.uc.backend.service.model.UserService;
+import com.uc.backend.util.EnrollmentVerify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +39,10 @@ public class AndroidController {
 
 
 
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "enroll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Enrollment> newEnrollment(@RequestParam(name = "i", required = false) int idClase
         ) {
-
-
-
-       return   serviceRepository.findById(idClase)
+        return   serviceRepository.findById(idClase)
                 .map((service) -> {
                     Enrollment newEnrollment=new Enrollment();
                     newEnrollment.setService(service);
@@ -66,15 +64,20 @@ public class AndroidController {
     }
 
 
+    @GetMapping(value = "verifyEnrollemnt", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EnrollmentVerify> verifyEnrollment(@RequestParam(name = "i", required = false) int idClase
+    ) {
+        EnrollmentVerify enrollmentVerify=new EnrollmentVerify();
+        return userService.getCurrentUser().map(user -> {
+           return enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
+                enrollmentVerify.setEnroll(true);
+                return new ResponseEntity<>( enrollmentVerify , OK); }  )
+                    .orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK));
 
-    @DeleteMapping(value = "enrollment/{e}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteEnrollment(@PathVariable("e") int enrollmentId) {
-        return enrollmentRepository.findById(enrollmentId)
-                .map( (value) -> {
-                    enrollmentRepository.deleteById(enrollmentId);
-                    return new ResponseEntity<>("Successfully deleted", OK);
-                })
-                .orElseGet( ()-> new ResponseEntity<>("Error: object doesn't exist", BAD_REQUEST));
+        } ).orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
+
+
     }
+
 
 }
