@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,8 +53,14 @@ public class EnrollmentService {
         enrollment.setStudent(user);
         enrollment.setActive(Boolean.TRUE);
 
+
         return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getService().getIdService())
                 .map(service -> {
+
+                    // If it is FREE
+                    if (service.getPrice().equals(BigDecimal.ZERO))
+                        enrollment.setPayed(Boolean.TRUE);
+
                     enrollment.setService(service);
                     return enrollmentRepository.save(enrollment);
                 }).orElseGet(()-> null
