@@ -68,13 +68,11 @@ public class AndroidController {
     public ResponseEntity<EnrollmentVerify> verifyEnrollment(@RequestParam(name = "i", required = false) int idClase
     ) {
         EnrollmentVerify enrollmentVerify=new EnrollmentVerify();
-        return userService.getCurrentUser().map(user -> {
-           return enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
-                enrollmentVerify.setEnroll(true);
-                return new ResponseEntity<>( enrollmentVerify , OK); }  )
-                    .orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK));
-
-        } ).orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
+        return userService.getCurrentUser().map(user ->
+                enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
+             enrollmentVerify.setEnroll(true);
+             return new ResponseEntity<>( enrollmentVerify , OK); }  ).orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK)))
+                .orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
 
 
     }
