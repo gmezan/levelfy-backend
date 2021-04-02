@@ -36,7 +36,7 @@ public class ForumService {
     }
 
     public Optional<CommentForum> getById(Integer id, User user) {
-        return commentForumRepository.findById(id);
+        return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(id, user.getIdUser());
     }
 
 }
