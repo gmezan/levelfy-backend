@@ -3,10 +3,9 @@ package com.uc.backend.controller.roles.client;
 import com.uc.backend.dto.PaymentDto;
 import com.uc.backend.entity.Enrollment;
 import com.uc.backend.entity.Sale;
+import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.enums.LevelfyServiceType;
-import com.uc.backend.service.model.EnrollmentService;
-import com.uc.backend.service.model.SaleService;
-import com.uc.backend.service.model.UserService;
+import com.uc.backend.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,13 +22,18 @@ public class ClientController {
     EnrollmentService enrollmentService;
     UserService userService;
     SaleService saleService;
+    ServiceService serviceService;
+    ServiceSessionService serviceSessionService;
 
     @Autowired
     public ClientController(EnrollmentService enrollmentService, UserService userService,
-                            SaleService saleService) {
+                            SaleService saleService, ServiceService serviceService,
+                            ServiceSessionService serviceSessionService) {
         this.enrollmentService = enrollmentService;
         this.userService = userService;
         this.saleService = saleService;
+        this.serviceService = serviceService;
+        this.serviceSessionService = serviceSessionService;
     }
 
 
@@ -37,7 +41,7 @@ public class ClientController {
     public ResponseEntity<Enrollment> isAlreadyEnrolled(@RequestBody Enrollment enrollment) {
         return userService.getCurrentUser()
                 .map(user -> new ResponseEntity<>(enrollmentService.exists(enrollment, user), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
 
@@ -88,14 +92,39 @@ public class ClientController {
     @PostMapping(value = "register-payment", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Sale> registerPayment(@RequestBody PaymentDto paymentDto) {
         return userService.getCurrentUser()
-                .map(user -> enrollmentService.exists(paymentDto.getIdService(), user)
+                .map(user -> enrollmentService.existsAndIsActive(paymentDto.getEnrollmentId(), user.getIdUser())
                         .map( enrollment ->
-                             new ResponseEntity(saleService.registerClientPayment(paymentDto), HttpStatus.OK)
+                             new ResponseEntity(saleService.registerClientPayment(paymentDto, user, enrollment), HttpStatus.OK)
                         )
                         .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST)))
                 .orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
     }
 
+    @GetMapping(value = "service-session", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ServiceSession>> getServiceSessionsByServiceId(
+            @RequestParam("serviceId") int serviceId) {
+
+        return userService.getCurrentUser()
+                .map( user -> enrollmentService.exists(serviceId, user)
+                    .map(enrollment -> new ResponseEntity(enrollment.getService().getServiceSessionList(),
+                            HttpStatus.OK))
+                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
+
+    }
+
+    @GetMapping(value = "sale", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Sale>> getSaleListByEnrollmentId(
+            @RequestParam(value = "enrollmentId", required = true) int enrollmentId) {
+
+        return userService.getCurrentUser()
+                .map( user -> enrollmentService.exists(enrollmentId, user.getIdUser())
+                        .map(enrollment -> new ResponseEntity(enrollment.getSaleList(),
+                                HttpStatus.OK))
+                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
+
+    }
 
 
 }

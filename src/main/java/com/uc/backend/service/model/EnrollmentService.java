@@ -81,4 +81,17 @@ public class EnrollmentService {
                         user.getIdUser());
     }
 
+    public Optional<Enrollment> existsAndIsActive(int enrollmentId, int userId) {
+        return enrollmentRepository.
+                findByIdEnrollmentAndStudent_IdUserAndActiveIsTrue(
+                        enrollmentId, userId);
+    }
+
+    public Optional<Enrollment> exists(int enrollmentId, int userId) {
+        return enrollmentRepository.
+                findByIdEnrollmentAndStudent_IdUser(
+                        enrollmentId, userId);
+    }
+
+
 }

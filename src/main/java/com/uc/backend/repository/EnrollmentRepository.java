@@ -48,6 +48,8 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
 
     Optional<Enrollment> findEnrollmentByService_IdServiceAndStudent_IdUser(int service_idService, int student_idUser);
 
+    Optional<Enrollment> findByIdEnrollmentAndStudent_IdUserAndActiveIsTrue(int service_idService, int student_idUser);
+
     // For Enrollment Service
     List<Enrollment> findEnrollmentsByStudent_IdUser(int student_idUser);
     List<Enrollment> findEnrollmentsByStudent_IdUser_AndService_ServiceType(int student_idUser, LevelfyServiceType service_serviceType);
