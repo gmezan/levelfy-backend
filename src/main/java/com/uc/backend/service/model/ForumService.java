@@ -35,7 +35,7 @@ public class ForumService {
         commentForumRepository.delete(commentForum);
     }
 
-    public Optional<CommentForum> getById(Integer id) {
+    public Optional<CommentForum> getById(Integer id, User user) {
         return commentForumRepository.findById(id);
     }
 
