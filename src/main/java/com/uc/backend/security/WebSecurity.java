@@ -64,7 +64,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/blog").permitAll()
                 .antMatchers("/android/**").permitAll()
 
-                .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "MOD")
+                .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "ADMIN")
 
 
                 .antMatchers("/model/user/me").authenticated() // To get the current User
