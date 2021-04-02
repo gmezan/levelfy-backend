@@ -29,6 +29,10 @@ public class SaleService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
+    public List<Sale> getSaleListOfEnrollment(Enrollment enrollment) {
+        return saleRepository.findSalesByEnrollment_IdEnrollment(enrollment.getIdEnrollment());
+    }
+
     public Sale registerClientPayment(PaymentDto paymentDto, User user, Enrollment enrollment) {
 
         // TODO: Simple validation

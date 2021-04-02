@@ -119,7 +119,7 @@ public class ClientController {
 
         return userService.getCurrentUser()
                 .map( user -> enrollmentService.exists(enrollmentId, user.getIdUser())
-                        .map(enrollment -> new ResponseEntity<>(enrollment.getSaleList(),
+                        .map(enrollment -> new ResponseEntity<>(saleService.getSaleListOfEnrollment(enrollment),
                                 HttpStatus.OK))
                         .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
                 ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));

@@ -4,9 +4,11 @@ import com.uc.backend.entity.Sale;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     /*
@@ -20,5 +22,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     List<Sale> findSalesByEnrollment_Service_Course_CourseId_University(UniversityName enrollment_service_course_courseId_university);
     List<Sale> findSalesByEnrollment_Service_Course_CourseId_UniversityAndEnrollment_Service_ServiceType(UniversityName enrollment_service_course_courseId_university, LevelfyServiceType enrollment_service_serviceType);
     List<Sale> findSalesByEnrollment_Service_ServiceType(LevelfyServiceType enrollment_service_serviceType);
+
+    List<Sale> findSalesByEnrollment_IdEnrollment(int enrollment_idEnrollment)
 
 }
