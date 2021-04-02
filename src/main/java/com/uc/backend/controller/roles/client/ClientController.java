@@ -115,7 +115,9 @@ public class ClientController {
 
     @GetMapping(value = "sale", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Sale>> getSaleListByEnrollmentId(
-            @RequestParam("enrollmentId") int enrollmentId) {
+            @RequestParam(value = "enrollmentId", required = true) int enrollmentId) {
+
+        System.out.println("SALE LIST");
 
         return userService.getCurrentUser()
                 .map( user -> enrollmentService.exists(enrollmentId, user)
