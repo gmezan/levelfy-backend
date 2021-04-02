@@ -41,7 +41,7 @@ public class ClientController {
     public ResponseEntity<Enrollment> isAlreadyEnrolled(@RequestBody Enrollment enrollment) {
         return userService.getCurrentUser()
                 .map(user -> new ResponseEntity<>(enrollmentService.exists(enrollment, user), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
 
@@ -92,7 +92,7 @@ public class ClientController {
     @PostMapping(value = "register-payment", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Sale> registerPayment(@RequestBody PaymentDto paymentDto) {
         return userService.getCurrentUser()
-                .map(user -> enrollmentService.exists(paymentDto.getEnrollmentId(), user.getIdUser())
+                .map(user -> enrollmentService.existsAndIsActive(paymentDto.getEnrollmentId(), user.getIdUser())
                         .map( enrollment ->
                              new ResponseEntity(saleService.registerClientPayment(paymentDto, user, enrollment), HttpStatus.OK)
                         )
@@ -111,6 +111,18 @@ public class ClientController {
                         .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
                 ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
 
+    }
+
+    @GetMapping(value = "sale", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Sale>> getSaleListByEnrollmentId(
+            @RequestParam("enrollmentId") int enrollmentId) {
+
+        return userService.getCurrentUser()
+                .map( user -> enrollmentService.exists(enrollmentId, user)
+                        .map(enrollment -> new ResponseEntity(enrollment.getSaleList(),
+                                HttpStatus.OK))
+                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
 
     }
 
