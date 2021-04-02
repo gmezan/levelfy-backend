@@ -83,13 +83,13 @@ public class EnrollmentService {
 
     public Optional<Enrollment> existsAndIsActive(int enrollmentId, int userId) {
         return enrollmentRepository.
-                findEnrollmentByService_IdServiceAndStudent_IdUserAndActiveIsTrue(
+                findByIdEnrollmentAndStudent_IdUserAndActiveIsTrue(
                         enrollmentId, userId);
     }
 
     public Optional<Enrollment> exists(int enrollmentId, int userId) {
         return enrollmentRepository.
-                findEnrollmentByService_IdServiceAndStudent_IdUser(
+                findByIdEnrollmentAndStudent_IdUser(
                         enrollmentId, userId);
     }
 
