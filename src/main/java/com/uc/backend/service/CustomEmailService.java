@@ -78,7 +78,7 @@ public class CustomEmailService {
         String mensaje =
                 "<p>Hola se ha registrado el pago con los siguientes datos:<br/>" + "Usuario: <b>" + user.getName()
                         + "</b> <br/>Mensaje o número de operación: <b>" + paymentDto.getMessage() + "</b><br/>Fecha del pago: <b>" + paymentDto.getDate() +
-                        "</b><br/>Monto: <b>" + paymentDto.getAmount() + "</b> a través de <b>" + METODOS_DE_PAGO[paymentDto.getMethod()] + "</b><br/><br/> Verficaremos los datos y procederemos a activar el curso " +
+                        "</b><br/>Monto: <b>" + paymentDto.getAmount() + "</b> a través de <b>" + paymentDto.getMethod().toLocalString() + "</b><br/><br/> Verficaremos los datos y procederemos a activar el curso " +
                         "<br/> Si confundiste alguno de los datos vuelve a registrar el pago.<br/> " +
                         "cupón usado:"+ paymentDto.getCoupon() + "</p>";
             sendHtmlMail(ADMINS, "Inscripción - Asesoría Personalizada","Registro de pago", mensaje);

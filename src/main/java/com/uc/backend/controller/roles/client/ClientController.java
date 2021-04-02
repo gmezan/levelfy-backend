@@ -92,9 +92,9 @@ public class ClientController {
     @PostMapping(value = "register-payment", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Sale> registerPayment(@RequestBody PaymentDto paymentDto) {
         return userService.getCurrentUser()
-                .map(user -> enrollmentService.exists(paymentDto.getIdService(), user)
+                .map(user -> enrollmentService.exists(paymentDto.getEnrollmentId(), user.getIdUser())
                         .map( enrollment ->
-                             new ResponseEntity(saleService.registerClientPayment(paymentDto), HttpStatus.OK)
+                             new ResponseEntity(saleService.registerClientPayment(paymentDto, user, enrollment), HttpStatus.OK)
                         )
                         .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST)))
                 .orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
