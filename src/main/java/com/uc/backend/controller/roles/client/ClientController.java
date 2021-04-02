@@ -117,10 +117,8 @@ public class ClientController {
     public ResponseEntity<List<Sale>> getSaleListByEnrollmentId(
             @RequestParam(value = "enrollmentId", required = true) int enrollmentId) {
 
-        System.out.println("SALE LIST");
-
         return userService.getCurrentUser()
-                .map( user -> enrollmentService.exists(enrollmentId, user)
+                .map( user -> enrollmentService.exists(enrollmentId, user.getIdUser())
                         .map(enrollment -> new ResponseEntity(enrollment.getSaleList(),
                                 HttpStatus.OK))
                         .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))

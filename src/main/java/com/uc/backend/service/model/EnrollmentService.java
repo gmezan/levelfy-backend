@@ -87,4 +87,11 @@ public class EnrollmentService {
                         enrollmentId, userId);
     }
 
+    public Optional<Enrollment> exists(int enrollmentId, int userId) {
+        return enrollmentRepository.
+                findEnrollmentByService_IdServiceAndStudent_IdUser(
+                        enrollmentId, userId);
+    }
+
+
 }
