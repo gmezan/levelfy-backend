@@ -4,81 +4,106 @@ import com.uc.backend.entity.CommentForum;
 import com.uc.backend.repository.CommentForumRepository;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
+import com.uc.backend.service.model.EnrollmentService;
+import com.uc.backend.service.model.ForumService;
+import com.uc.backend.service.model.ServiceService;
+import com.uc.backend.service.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+@CrossOrigin
 @RestController
 @RequestMapping("model/comment-forum")
 public class CommentForumController {
+
+    ForumService forumService;
+    UserService userService;
+    ServiceService serviceService;
+    EnrollmentService enrollmentService;
+
     @Autowired
-    CommentForumRepository commentForumRepository;
-    @Autowired
-    ServiceRepository serviceRepository;
-    @Autowired
-    UserRepository userRepository;
-
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CommentForum>> getAll(){
-        return new ResponseEntity<>(commentForumRepository.findAll(), HttpStatus.OK);
+    public CommentForumController(ForumService forumService, UserService userService,
+                                 ServiceService serviceService, EnrollmentService enrollmentService) {
+        this.forumService = forumService;
+        this.userService = userService;
+        this.serviceService = serviceService;
+        this.enrollmentService = enrollmentService;
     }
 
-    @GetMapping(value = "{cf}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentForum> getComment(@PathVariable("cf") int idComment) {
-        return commentForumRepository.findById(idComment)
-                .map( (value) -> new ResponseEntity<>(value,OK))
-                .orElseGet( () -> new ResponseEntity<>(null,BAD_REQUEST));
+
+    @GetMapping(value = "", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CommentForum>> getAllByServiceId(
+            @RequestParam("serviceId") int serviceId
+    ) {
+
+        return userService.getCurrentUser()
+                .map(user ->
+                        enrollmentService.exists(serviceId, user)
+                                .map(enrollment ->
+                                        new ResponseEntity<>(
+                                                forumService.listAll(enrollment.getService(), user), HttpStatus.OK
+                                        )
+                                )
+                                .orElseGet(() ->
+                                        new ResponseEntity<>(
+                                                new ArrayList<>(), HttpStatus.BAD_REQUEST)
+                                )
+                )
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)       // getIdUser
-    public ResponseEntity<CommentForum> newComment(@RequestBody CommentForum commentForum) {
-        return commentForumRepository.findById(commentForum.getIdComment())
-                .map( (value) -> new ResponseEntity<>(value,BAD_REQUEST))
-                .orElseGet( () ->
-                    serviceRepository.findById(commentForum.getService().getIdService())
-                            .map( (service) ->
-                                    userRepository.findById(commentForum.getUser().getIdUser())
-                                            .map( (user) -> {
-                                                commentForum.setService(service);
-                                                commentForum.setUser(user);
-                                                return  new ResponseEntity<>( commentForumRepository.save(commentForum),OK);
-                                            })
-                                            .orElseGet( () -> new ResponseEntity<>(null, BAD_REQUEST)))
-                            .orElseGet( () -> new ResponseEntity<>(null, BAD_REQUEST))
-                );
+    @GetMapping(value = "{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentForum> getCommentForumById(
+            @PathVariable("id") int id) {
+        return userService.getCurrentUser()
+                .map(user -> forumService.getById(id, user)
+                        .map(commentForum ->
+                                new ResponseEntity<>(forumService.create(commentForum), HttpStatus.OK))
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                )
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
-    @PutMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentForum> updateComment(@RequestBody CommentForum commentForum) {
-        return commentForumRepository.findById(commentForum.getIdComment())
-                .map( (value) ->
-                        serviceRepository.findById(commentForum.getService().getIdService())
-                                .map( (service) ->
-                                        userRepository.findById(commentForum.getUser().getIdUser())
-                                                .map( (user) -> {
-                                                    commentForum.setService(service);
-                                                    commentForum.setUser(user);
-                                                    return new ResponseEntity<>(commentForumRepository.save(commentForum),OK);
-                                                })
-                                                .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST)))
-                                .orElseGet(() -> new ResponseEntity<>(null,BAD_REQUEST)))
-                .orElseGet(() -> new ResponseEntity<>(null,BAD_REQUEST));
+    @PostMapping(value = "", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentForum> postCommentForum(
+            @RequestBody CommentForum commentForum) {
+        return userService.getCurrentUser()
+                .map(user ->
+                        enrollmentService.exists(commentForum.getService().getIdService(), user)
+                                .map(enrollment ->
+                                        new ResponseEntity<>(
+                                                forumService.create(commentForum), HttpStatus.OK
+                                        )
+                                )
+                                .orElseGet(() ->
+                                        new ResponseEntity<>(null, HttpStatus.BAD_REQUEST)
+                                )
+                )
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
-    @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteComment(@RequestBody CommentForum commentForum) {
-        return commentForumRepository.findById(commentForum.getIdComment())
-                .map( (value) -> {
-                    commentForumRepository.deleteById(commentForum.getIdComment());
-                    return new ResponseEntity<>("Successfully deleted", OK);
-                })
-                .orElseGet( () -> new ResponseEntity<>("Error: object doesn't exist", BAD_REQUEST));
+    @DeleteMapping(value = "{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteForum(
+            @PathVariable("id") int id) {
+
+        return userService.getCurrentUser()
+                .map(user -> forumService.getById(id, user)
+                        .map(commentForum -> {
+                            forumService.delete(commentForum);
+                            return new ResponseEntity(null, HttpStatus.OK);
+                        })
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                )
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
+
 }
