@@ -94,10 +94,10 @@ public class ClientController {
         return userService.getCurrentUser()
                 .map(user -> enrollmentService.existsAndIsActive(paymentDto.getEnrollmentId(), user.getIdUser())
                         .map( enrollment ->
-                             new ResponseEntity(saleService.registerClientPayment(paymentDto, user, enrollment), HttpStatus.OK)
+                             new ResponseEntity<>(saleService.registerClientPayment(paymentDto, user, enrollment), HttpStatus.OK)
                         )
-                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST)))
-                .orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST)))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
     @GetMapping(value = "service-session", produces = MediaType.APPLICATION_JSON_VALUE)
