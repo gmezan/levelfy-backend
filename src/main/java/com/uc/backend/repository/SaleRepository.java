@@ -23,6 +23,6 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     List<Sale> findSalesByEnrollment_Service_Course_CourseId_UniversityAndEnrollment_Service_ServiceType(UniversityName enrollment_service_course_courseId_university, LevelfyServiceType enrollment_service_serviceType);
     List<Sale> findSalesByEnrollment_Service_ServiceType(LevelfyServiceType enrollment_service_serviceType);
 
-    List<Sale> findSalesByEnrollment_IdEnrollment(int enrollment_idEnrollment)
+    List<Sale> findSalesByEnrollment_IdEnrollment(int enrollment_idEnrollment);
 
 }
