@@ -44,8 +44,8 @@ public class EnrollmentService {
                 : enrollmentRepository.findEnrollmentsByStudent_IdUser_AndService_ServiceType(userId, serviceType);
     }
 
-    public Optional<Enrollment> getEnrollmentById(User user, Integer id) {
-        return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(id, user.getIdUser());
+    public Optional<Enrollment> getEnrollmentById(User user, Integer enrollmentId) {
+        return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(enrollmentId, user.getIdUser());
     }
 
     public Enrollment createEnrollment(Enrollment enrollment, User user) {
@@ -55,17 +55,32 @@ public class EnrollmentService {
 
 
         return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getService().getIdService())
-                .map(service -> {
+                .map(service ->
+                    // Verify if is already enrolled
+                    enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser
+                            (
+                                    service.getIdService(), user.getIdUser()
+                            )
+                            .orElseGet(() -> {
+                                if (!service.getAvailable())
+                                    return null;
 
-                    // If it is FREE
-                    if (service.getPrice().equals(BigDecimal.ZERO))
-                        enrollment.setPayed(Boolean.TRUE);
+                                // If it is FREE
+                                if (service.getPrice().equals(BigDecimal.ZERO))
+                                    enrollment.setPayed(Boolean.TRUE);
 
-                    enrollment.setService(service);
-                    return enrollmentRepository.save(enrollment);
-                }).orElseGet(()-> null
+                                enrollment.setService(service);
+                                return enrollmentRepository.save(enrollment);
+                            })
+                ).orElse(null
         );
 
+    }
+
+    public Enrollment isAlreadyEnrolled(Enrollment enrollment, User user) {
+        return enrollmentRepository.
+                findEnrollmentByService_CourseAndStudentAndService_ServiceTypeAndService_EvaluationAndService_AvailableIsTrueAndActiveIsTrue(
+                        enrollment.getService().getCourse(), user, enrollment.getService().getServiceType(), enrollment.getService().getEvaluation()).orElse(null);
     }
 
 

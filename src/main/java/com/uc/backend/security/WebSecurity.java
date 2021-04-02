@@ -64,6 +64,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/blog").permitAll()
                 .antMatchers("/android/**").permitAll()
 
+                .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "ADMIN")
+
+
                 .antMatchers("/model/user/me").authenticated() // To get the current User
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
                 .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
@@ -73,7 +76,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/service-session", "/model/service-session/*", "/model/service-session/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/enrollment", "/model/enrollment/*", "/model/enrollment/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/course-suggestion", "/model/course-suggestion/*", "/model/course-suggestion/**").hasAnyRole("ADMIN")
-                .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("ADMIN")
 
 
                 .antMatchers("s3/*", "s3/**").hasAnyRole("ADMIN", "MOD")

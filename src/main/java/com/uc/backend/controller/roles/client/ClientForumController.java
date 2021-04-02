@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
-@RestController
-@RequestMapping("/c/forum")
+
 public class ClientForumController {
 
+    /*
     ForumService forumService;
     UserService userService;
     ServiceService serviceService;
@@ -99,5 +98,5 @@ public class ClientForumController {
                 )
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
-
+*/
 }
