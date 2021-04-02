@@ -44,8 +44,8 @@ public class EnrollmentService {
                 : enrollmentRepository.findEnrollmentsByStudent_IdUser_AndService_ServiceType(userId, serviceType);
     }
 
-    public Optional<Enrollment> getEnrollmentById(User user, Integer id) {
-        return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(id, user.getIdUser());
+    public Optional<Enrollment> getEnrollmentById(User user, Integer enrollmentId) {
+        return enrollmentRepository.findByIdEnrollmentAndStudent_IdUser(enrollmentId, user.getIdUser());
     }
 
     public Enrollment createEnrollment(Enrollment enrollment, User user) {
