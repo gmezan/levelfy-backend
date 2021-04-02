@@ -106,10 +106,10 @@ public class ClientController {
 
         return userService.getCurrentUser()
                 .map( user -> enrollmentService.exists(serviceId, user)
-                    .map(enrollment -> new ResponseEntity(enrollment.getService().getServiceSessionList(),
+                    .map(enrollment -> new ResponseEntity<>(enrollment.getService().getServiceSessionList(),
                             HttpStatus.OK))
-                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
-                ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
 
     }
 
@@ -119,10 +119,10 @@ public class ClientController {
 
         return userService.getCurrentUser()
                 .map( user -> enrollmentService.exists(enrollmentId, user.getIdUser())
-                        .map(enrollment -> new ResponseEntity(enrollment.getSaleList(),
+                        .map(enrollment -> new ResponseEntity<>(enrollment.getSaleList(),
                                 HttpStatus.OK))
-                        .orElseGet(() -> new ResponseEntity(null, HttpStatus.BAD_REQUEST))
-                ).orElseGet(() -> new ResponseEntity(null, HttpStatus.FORBIDDEN));
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
 
     }
 
