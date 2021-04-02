@@ -1,6 +1,9 @@
 package com.uc.backend.repository;
 
+import com.uc.backend.entity.Course;
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.User;
+import com.uc.backend.enums.EvaluationName;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -54,5 +57,11 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     List<Enrollment> findEnrollmentsByStudent_IdUser(int student_idUser);
     List<Enrollment> findEnrollmentsByStudent_IdUser_AndService_ServiceType(int student_idUser, LevelfyServiceType service_serviceType);
 
+
+
+    // To verify if someone is already enrolled (HARD WAY)
+    Optional<Enrollment> findEnrollmentByService_CourseAndStudentAndService_ServiceTypeAndService_EvaluationAndService_AvailableIsTrueAndActiveIsTrue(Course service_course, User student, LevelfyServiceType service_serviceType, EvaluationName service_evaluation);
+
+    // To verify if someone is already enrolled in a service
 
 }
