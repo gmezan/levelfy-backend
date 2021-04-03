@@ -41,7 +41,7 @@ public class AwsResourceService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         // 5. Store the image in s3 and update database with s3 image link
-        String path = String.format("%s/%s/%s", "levelfy-development-private", folder, name );
+        String path = String.format("%s/%s/%s", BucketName.BUCKET_NAME.getValue(), folder, name );
 
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
         fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream()) ;
@@ -56,7 +56,6 @@ public class AwsResourceService {
         if (file.isEmpty())
             throw new IllegalStateException("Cannot upload empty file ["+file.getSize()+"]");
         // 2. If file is an image
-        System.out.println(file.getContentType());
         if (!Arrays.asList(IMAGE_JPEG.getMimeType(),
                 IMAGE_PNG.getMimeType(),
                 IMAGE_GIF.getMimeType(),
@@ -71,7 +70,7 @@ public class AwsResourceService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
 
         // 5. Store the image in s3 and update database with s3 image link - SERVICE ID
-        String path = String.format("%s/%s/%s", "levelfy-development-private", folder, subFolder );
+        String path = String.format("%s/%s/%s", BucketName.BUCKET_NAME.getValue(), folder, subFolder );
 
         String fileName = String.format("%s-%s", UUID.randomUUID(), file.getOriginalFilename());
         fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream()) ;

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 public enum BucketName {
 
-    BUCKET_NAME("levelfy-development-private"),
-    BUCKET_URL("https://levelfy-development-private.s3-sa-east-1.amazonaws.com");
+    BUCKET_NAME(BucketHelper.bucketName),
+    BUCKET_URL(BucketHelper.bucketUrl);
 
 
     private final String value;

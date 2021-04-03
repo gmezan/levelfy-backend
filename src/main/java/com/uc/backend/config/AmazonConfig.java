@@ -11,10 +11,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
+
+    @Value("AWSAccessKeyId")
+    private String accessKey;
+
+    @Value("AWSSecretKey")
+    private String secretKey;
+
     @Bean
     public AmazonS3 s3() {
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-            "AKIAJMIYTBH6WN3CALGQ", "l/EiDVBSCcEnFX/HoCVLMYA0TsOJMdbwEdplhJdG"
+                accessKey, secretKey
         );
 
         return AmazonS3ClientBuilder
