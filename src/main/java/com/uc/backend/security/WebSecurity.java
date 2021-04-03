@@ -61,7 +61,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/service/get-prices").hasAnyRole("ADMIN", "MOD", "TEACH") // Prices info
                 .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenClientController
-                .antMatchers("/model/blog").permitAll()
+                .antMatchers("/model/blog", "/model/blog/*", "/model/blog/**").permitAll()
                 .antMatchers("/android/**").permitAll()
 
                 .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "ADMIN")
