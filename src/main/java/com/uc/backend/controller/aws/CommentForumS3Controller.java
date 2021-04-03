@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("resource/comment-forum")
+@RequestMapping("s3/comment-forum")
 public class CommentForumS3Controller {
 
     private final String folder = "commentForum";
@@ -46,6 +46,8 @@ public class CommentForumS3Controller {
     )
     public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i") int commentId,
                                                            @RequestParam("file") MultipartFile file) {
+
+        System.out.println("I am going to upload a file: " + file.getOriginalFilename());
 
         return userService.getCurrentUser()
                 .map(user ->
