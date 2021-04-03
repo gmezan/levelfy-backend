@@ -1,6 +1,7 @@
 package com.uc.backend.service.aws;
 
 import com.uc.backend.aws.BucketName;
+import com.uc.backend.dto.FileS3ResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,4 +50,33 @@ public class AwsResourceService {
 
     }
 
+    public FileS3ResponseDto uploadFile(String originalFilename, String folder, MultipartFile file) throws IllegalAccessException, IOException {
+        FileS3ResponseDto responseDto = new FileS3ResponseDto();
+        if (file.isEmpty())
+            throw new IllegalStateException("Cannot upload empty file ["+file.getSize()+"]");
+        // 2. If file is an image
+        if (!Arrays.asList(IMAGE_JPEG.getMimeType(),
+                IMAGE_PNG.getMimeType(),
+                IMAGE_GIF.getMimeType(),
+                TEXT_PLAIN.getMimeType(),
+                "application/pdf"
+                ).contains(file.getContentType()))
+            throw new IllegalAccessException("File must be a valid type");
+
+        // 4. Grab some metadata from file if any
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+
+        // 5. Store the image in s3 and update database with s3 image link
+        String path = String.format("%s/%s/%s", "levelfy-development-private", folder, originalFilename );
+
+        String fileName = String.format("%s-%s", originalFilename, UUID.randomUUID());
+        fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream()) ;
+
+        responseDto.setFileUrl(String.format("%s/%s/%s/%s", BucketName.BUCKET_URL.getValue(), folder, originalFilename, fileName));
+        responseDto.setFileName(originalFilename);
+
+        return responseDto;
+    }
 }

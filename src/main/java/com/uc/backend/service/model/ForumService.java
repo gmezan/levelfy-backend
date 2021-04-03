@@ -48,6 +48,11 @@ public class ForumService {
                 commentForum.getIdComment(), user.getIdUser());
     }
 
+    public Optional<CommentForum> getById(int commentForumId, User user) {
+        return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(
+                commentForumId, user.getIdUser());
+    }
+
     public CommentForum update(CommentForum oldCommentForum, CommentForum newCommentForum) {
         oldCommentForum.setComment(newCommentForum.getComment());
         return commentForumRepository.save(oldCommentForum);

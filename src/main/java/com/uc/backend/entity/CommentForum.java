@@ -18,8 +18,11 @@ public class CommentForum extends Auditable implements Serializable {
     @Column(nullable = false, name = "comentario")
     private  String comment;
 
-    @Column(name = "foto_url")
-    private String photo;
+    @Column(name = "archivo_url")
+    private String fileUrl;
+
+    @Column(name = "archivo_nombre")
+    private String fileName;
 
     @JsonIgnoreProperties(
             {"created","modified","role","coupon","phone","balance","birthday","token","invitingId",
@@ -61,12 +64,12 @@ public class CommentForum extends Auditable implements Serializable {
         this.comment = comment;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public User getUser() {
@@ -91,5 +94,13 @@ public class CommentForum extends Auditable implements Serializable {
 
     public void setService(Service service) {
         this.service = service;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
