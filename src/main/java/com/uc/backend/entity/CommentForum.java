@@ -31,11 +31,19 @@ public class CommentForum extends Auditable implements Serializable {
     @Column(nullable = false, name = "fecha")
     private LocalDateTime dateTime;
 
-    @JsonIgnoreProperties({"enrollmentList","enrollmentSessionList"})
+    @JsonIgnoreProperties(value = {"enrollmentList", "serviceSessionList", "serviceAgendaList"})
     /*@JsonIgnore*/
     @ManyToOne
     @JoinColumn(name = "idclase")
     private Service service;
+
+
+    public CommentForum(){}
+
+    public CommentForum(int id) {
+        this.idComment = id;
+    }
+
 
     public int getIdComment() {
         return idComment;

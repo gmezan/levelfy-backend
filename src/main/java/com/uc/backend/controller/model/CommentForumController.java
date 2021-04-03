@@ -50,7 +50,7 @@ public class CommentForumController {
                         enrollmentService.exists(serviceId, user)
                                 .map(enrollment ->
                                         new ResponseEntity<>(
-                                                forumService.listAll(enrollment.getService(), user), HttpStatus.OK
+                                                forumService.listAllByService(enrollment.getService()), HttpStatus.OK
                                         )
                                 )
                                 .orElseGet(() ->
@@ -63,11 +63,13 @@ public class CommentForumController {
 
     @GetMapping(value = "{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentForum> getCommentForumById(
-            @PathVariable("id") int id) {
+            @PathVariable("id") int idComment) {
+
+        final CommentForum mockCommentForum = new CommentForum(idComment);
+
         return userService.getCurrentUser()
-                .map(user -> forumService.getById(id, user)
-                        .map(commentForum ->
-                                new ResponseEntity<>(forumService.create(commentForum), HttpStatus.OK))
+                .map(user -> forumService.getById(mockCommentForum, user)
+                        .map(commentForum -> new ResponseEntity<>(commentForum, HttpStatus.OK))
                         .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
                 )
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
@@ -81,7 +83,7 @@ public class CommentForumController {
                         enrollmentService.exists(commentForum.getService().getIdService(), user)
                                 .map(enrollment ->
                                         new ResponseEntity<>(
-                                                forumService.create(commentForum), HttpStatus.OK
+                                                forumService.create(commentForum, enrollment), HttpStatus.OK
                                         )
                                 )
                                 .orElseGet(() ->
@@ -93,10 +95,12 @@ public class CommentForumController {
 
     @DeleteMapping(value = "{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteForum(
-            @PathVariable("id") int id) {
+            @PathVariable("id") int idComment) {
+
+        final CommentForum mockCommentForum = new CommentForum(idComment);
 
         return userService.getCurrentUser()
-                .map(user -> forumService.getById(id, user)
+                .map(user -> forumService.getById(mockCommentForum, user)
                         .map(commentForum -> {
                             forumService.delete(commentForum);
                             return new ResponseEntity(null, HttpStatus.OK);
