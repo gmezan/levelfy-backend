@@ -54,7 +54,8 @@ public class CommentForumS3Controller {
                     forumService.getById(commentId, user)
                         .map(commentForum -> {
                             try {
-                                FileS3ResponseDto resp = awsResourceService.uploadFile(String.valueOf(commentForum.getService().getIdService()), folder, file);
+                                String subFolder = "serviceId-" + String.valueOf(commentForum.getService().getIdService()).trim();
+                                FileS3ResponseDto resp = awsResourceService.uploadFile(subFolder, folder, file);
                                 commentForum.setFileUrl(resp.getFileUrl());
                                 commentForum.setFileName(resp.getFileName());
                                 forumService.save(commentForum);
