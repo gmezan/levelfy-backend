@@ -28,8 +28,8 @@ public class AwsResourceService {
     public AwsResourceService(FileStore fileStore, Environment env) {
         this.fileStore = fileStore;
         this.env = env;
-        this.BUCKET_NAME = env.getProperty("bucket.name");
-        this.BUCKET_URL = env.getProperty("bucket.url");
+        this.BUCKET_NAME = this.env.getProperty("bucket.name");
+        this.BUCKET_URL = this.env.getProperty("bucket.url");
     }
 
     // Return url
