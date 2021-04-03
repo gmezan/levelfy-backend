@@ -1,10 +1,13 @@
 package com.uc.backend.service.model;
 
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.Role;
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.RoleName;
 import com.uc.backend.repository.EnrollmentRepository;
+import com.uc.backend.repository.RoleRepository;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +26,15 @@ public class EnrollmentService {
     EnrollmentRepository enrollmentRepository;
     ServiceRepository serviceRepository;
     UserRepository userRepository;
+    RoleRepository roleRepository;
 
     @Autowired
     public EnrollmentService(EnrollmentRepository enrollmentRepository, ServiceRepository serviceRepository,
-                                UserRepository userRepository) {
+                                UserRepository userRepository, RoleRepository roleRepository) {
         this.enrollmentRepository = enrollmentRepository;
         this.serviceRepository = serviceRepository;
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public void deleteEnrollment(Enrollment enrollment) {
@@ -91,9 +96,26 @@ public class EnrollmentService {
     }
 
     public Optional<Enrollment> exists(Integer idService, User user) {
-        return enrollmentRepository.
-                findEnrollmentByService_IdServiceAndStudent_IdUser(idService,
-                        user.getIdUser());
+        Role roleClient = roleRepository.findByName(RoleName.ROLE_CLIENT).orElse(null);
+        Role roleTeach = roleRepository.findByName(RoleName.ROLE_TEACH).orElse(null);
+
+        if (roleClient==null || roleTeach==null)
+            return Optional.empty();
+
+        if (user.getRole().contains(roleClient))
+            return enrollmentRepository.
+                    findEnrollmentByService_IdServiceAndStudent_IdUser(idService,
+                            user.getIdUser());
+        else if (user.getRole().contains(roleTeach)) {
+            Optional<Service> optionalService =
+                    serviceRepository.findServiceByTeacher_IdUserAndIdService(user.getIdUser(), idService);
+
+            if (!optionalService.isPresent()) return Optional.empty();
+            Enrollment newEnrollment = new Enrollment();
+            newEnrollment.setService(optionalService.get());
+            return Optional.of(newEnrollment);
+        }
+        else return Optional.empty();
     }
 
     public Optional<Enrollment> existsAndIsActive(int enrollmentId, int userId) {

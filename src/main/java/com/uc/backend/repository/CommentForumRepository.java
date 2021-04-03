@@ -17,7 +17,9 @@ public interface CommentForumRepository extends JpaRepository<CommentForum, Inte
     public List<CommentForum> findComentarioForosByClase_IdclaseAndUsuario_Idusuario  (int idClase, int idUsuario);
 */
 
-    List<CommentForum> findByService_IdServiceAndUser_IdUser(int service_idService, int user_idUser);
+    List<CommentForum> findByService_IdService(int service_idService);
+
+    List<CommentForum> findByService_IdServiceOrderByDateTimeAsc(int service_idService);
 
     Optional<CommentForum> findCommentForumByIdCommentAndUser_IdUser(int idComment, int user_idUser);
 

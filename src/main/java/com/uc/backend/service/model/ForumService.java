@@ -1,12 +1,16 @@
 package com.uc.backend.service.model;
 
 import com.uc.backend.entity.CommentForum;
+import com.uc.backend.entity.Enrollment;
 import com.uc.backend.entity.User;
 import com.uc.backend.repository.CommentForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +25,17 @@ public class ForumService {
         this.commentForumRepository = commentForumRepository;
     }
 
-    public List<CommentForum> listAll(com.uc.backend.entity.Service service,
-                                      User user) {
-        return commentForumRepository.findByService_IdServiceAndUser_IdUser(service.getIdService(),
-                user.getIdUser());
+    public List<CommentForum> listAllByService(com.uc.backend.entity.Service service) {
+        return commentForumRepository.findByService_IdServiceOrderByDateTimeAsc(service.getIdService());
     }
 
-    public CommentForum create(CommentForum commentForum) {
+    public CommentForum create(CommentForum commentForum, com.uc.backend.entity.Service service, User user ) {
+
+        ZoneId zoneId = ZoneId.of("GMT-5");
+
+        commentForum.setUser(user);
+        commentForum.setDateTime(LocalDateTime.now(zoneId));
+        commentForum.setService(service);
         return commentForumRepository.save(commentForum);
     }
 
@@ -35,8 +43,23 @@ public class ForumService {
         commentForumRepository.delete(commentForum);
     }
 
-    public Optional<CommentForum> getById(Integer id, User user) {
-        return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(id, user.getIdUser());
+    public Optional<CommentForum> getById(CommentForum commentForum, User user) {
+        return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(
+                commentForum.getIdComment(), user.getIdUser());
     }
 
+    public Optional<CommentForum> getById(int commentForumId, User user) {
+        return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(
+                commentForumId, user.getIdUser());
+    }
+
+    public CommentForum update(CommentForum oldCommentForum, CommentForum newCommentForum) {
+        oldCommentForum.setComment(newCommentForum.getComment());
+        return commentForumRepository.save(oldCommentForum);
+    }
+
+
+    public CommentForum save(CommentForum commentForum) {
+        return commentForumRepository.save(commentForum);
+    }
 }
