@@ -80,6 +80,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("s3/*", "s3/**").hasAnyRole("ADMIN", "MOD")
 
+                .antMatchers("s3/comment-forum", "s3/comment-forum/*", "s3/comment-forum/**").hasAnyRole("CLIENT", "TEACH")
+
                 .antMatchers("/c", "/c/*","/c/**").hasRole("CLIENT")
 
 
