@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmazonConfig {
 
-    @Value("AWSAccessKeyId")
-    private String accessKey;
+    @Value("${AWSAccessKeyId}")
+    protected static String accessKey;
 
-    @Value("AWSSecretKey")
-    private String secretKey;
+    @Value("${AWSSecretKey}")
+    protected static String secretKey;
 
     @Bean
     public AmazonS3 s3() {
