@@ -32,8 +32,6 @@ public class FileStore {
         acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 
         try {
-            System.out.println(path);
-            System.out.println(fileName);
             s3.putObject(new PutObjectRequest(path, fileName, inputStream, metadata)
                             .withAccessControlList(acl));
         }
