@@ -57,4 +57,9 @@ public class ForumService {
         oldCommentForum.setComment(newCommentForum.getComment());
         return commentForumRepository.save(oldCommentForum);
     }
+
+
+    public CommentForum save(CommentForum commentForum) {
+        return commentForumRepository.save(commentForum);
+    }
 }

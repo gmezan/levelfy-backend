@@ -55,6 +55,7 @@ public class CommentForumS3Controller {
                                 FileS3ResponseDto resp = awsResourceService.uploadFile(file.getOriginalFilename(), folder, file);
                                 commentForum.setFileUrl(resp.getFileUrl());
                                 commentForum.setFileName(resp.getFileName());
+                                forumService.save(commentForum);
                                 return new ResponseEntity<>(new FileUploadDto(
                                         commentForum.getFileUrl(), commentForum.getFileName()), HttpStatus.OK);
                             } catch (IllegalAccessException e) {
