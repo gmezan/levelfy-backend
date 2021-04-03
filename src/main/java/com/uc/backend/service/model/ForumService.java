@@ -26,7 +26,7 @@ public class ForumService {
     }
 
     public List<CommentForum> listAllByService(com.uc.backend.entity.Service service) {
-        return commentForumRepository.findByService_IdService(service.getIdService());
+        return commentForumRepository.findByService_IdServiceOrderByDateTimeDesc(service.getIdService());
     }
 
     public CommentForum create(CommentForum commentForum, com.uc.backend.entity.Service service, User user ) {
