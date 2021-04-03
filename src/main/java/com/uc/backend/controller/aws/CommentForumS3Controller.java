@@ -44,10 +44,10 @@ public class CommentForumS3Controller {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<FileUploadDto> uploadCourseImage(@PathVariable("i") int commentId,
+    public ResponseEntity<FileUploadDto> uploadResource(@PathVariable("i") int commentId,
                                                            @RequestParam("file") MultipartFile file) {
 
-        System.out.println("I am going to upload a file: " + file.getOriginalFilename());
+        //  System.out.println("I am going to upload a file: " + file.getOriginalFilename());
 
         return userService.getCurrentUser()
                 .map(user ->
