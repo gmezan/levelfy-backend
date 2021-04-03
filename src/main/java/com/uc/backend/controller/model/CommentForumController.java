@@ -93,6 +93,20 @@ public class CommentForumController {
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
     }
 
+    @PutMapping(value = "", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentForum> updateCommentForum(
+            @RequestBody CommentForum commentForum) {
+        return userService.getCurrentUser()
+                .map(user ->
+                        forumService.getById(commentForum, user)
+                                .map(commentForum1 ->
+                                     new ResponseEntity<>(forumService.update(commentForum1, commentForum), HttpStatus.OK)
+                                )
+                                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                )
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
+    }
+
     @DeleteMapping(value = "{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteForum(
             @PathVariable("id") int idComment) {
