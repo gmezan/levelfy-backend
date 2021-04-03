@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("s3/comment-forum")
+@RequestMapping("resource/comment-forum")
 public class CommentForumS3Controller {
 
     private final String folder = "commentForum";
@@ -66,7 +66,7 @@ public class CommentForumS3Controller {
                         })
                         .orElseGet(() -> new ResponseEntity<>(new FileUploadDto(), HttpStatus.BAD_REQUEST))
                 )
-                .orElseGet(() -> new ResponseEntity<>(new FileUploadDto(), HttpStatus.FORBIDDEN));
+                .orElseGet(() -> new ResponseEntity<>(new FileUploadDto(), HttpStatus.I_AM_A_TEAPOT));
 
     }
 
