@@ -47,4 +47,6 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
     Optional<Service> findServiceByIdServiceAndAvailableIsTrue(int idService);
 
+    Optional<Service> findServiceByTeacher_IdUserAndIdService(int teacher_idUser, int idService);
+
 }

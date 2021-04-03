@@ -83,7 +83,7 @@ public class CommentForumController {
                         enrollmentService.exists(commentForum.getService().getIdService(), user)
                                 .map(enrollment ->
                                         new ResponseEntity<>(
-                                                forumService.create(commentForum, enrollment), HttpStatus.OK
+                                                forumService.create(commentForum, enrollment.getService(), user), HttpStatus.OK
                                         )
                                 )
                                 .orElseGet(() ->

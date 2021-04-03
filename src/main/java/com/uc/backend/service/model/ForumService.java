@@ -29,13 +29,13 @@ public class ForumService {
         return commentForumRepository.findByService_IdService(service.getIdService());
     }
 
-    public CommentForum create(CommentForum commentForum, Enrollment enrollment) {
+    public CommentForum create(CommentForum commentForum, com.uc.backend.entity.Service service, User user ) {
 
         ZoneId zoneId = ZoneId.of("GMT-5");
 
-        commentForum.setUser(enrollment.getStudent());
+        commentForum.setUser(user);
         commentForum.setDateTime(LocalDateTime.now(zoneId));
-        commentForum.setService(enrollment.getService());
+        commentForum.setService(service);
         return commentForumRepository.save(commentForum);
     }
 
