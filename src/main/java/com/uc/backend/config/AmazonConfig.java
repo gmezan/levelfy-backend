@@ -21,13 +21,20 @@ public class AmazonConfig {
         this.env = env;
         this.accessKey = this.env.getProperty("awscredential.accesskey");
         this.secretKey = this.env.getProperty("awscredential.secretkey");
+        this.region = this.env.getProperty("awscredential.region");
     }
 
     private final String accessKey;
     private final String secretKey;
+    private final String region;
 
     @Bean
     public AmazonS3 s3() {
+
+        System.out.println(accessKey);
+        System.out.println(secretKey);
+        System.out.println(region);
+
         AWSCredentials awsCredentials = new BasicAWSCredentials(
                 accessKey, secretKey
         );
@@ -35,7 +42,7 @@ public class AmazonConfig {
         return AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .withRegion("sa-east-1")
+                .withRegion(region)
                 .build();
     }
 
