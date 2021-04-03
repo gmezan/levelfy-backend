@@ -2,15 +2,13 @@ package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.TeacherCoursesInfoDto;
+import com.uc.backend.entity.ContactMessage;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.entity.Service;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
-import com.uc.backend.service.model.CourseService;
-import com.uc.backend.service.model.CourseSuggestionService;
-import com.uc.backend.service.model.ServiceService;
-import com.uc.backend.service.model.UserService;
+import com.uc.backend.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,16 +30,19 @@ public class OpenClientController {
     CourseSuggestionService courseSuggestionService;
     CourseService courseService;
     ServiceService serviceService;
+    ContactMessageService contactMessageService;
 
     @Autowired
     public OpenClientController(UserService userService,
                                 CourseSuggestionService courseSuggestionService,
                                 CourseService courseService,
-                                ServiceService serviceService) {
+                                ServiceService serviceService,
+                                ContactMessageService contactMessageService) {
         this.userService = userService;
         this.courseSuggestionService = courseSuggestionService;
         this.courseService = courseService;
         this.serviceService = serviceService;
+        this.contactMessageService = contactMessageService;
     }
 
     @PostMapping(value = "course-suggestion",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,5 +100,11 @@ public class OpenClientController {
     // -----------------------------
 
 
+    @PostMapping(value = "contact-message", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ContactMessage> postContactMessage(
+            @RequestBody ContactMessage contactMessage
+    ) {
+        return new ResponseEntity<>(contactMessageService.create(contactMessage), OK);
+    }
 
 }
