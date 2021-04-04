@@ -60,14 +60,22 @@ public class OpenClientController {
 
     @GetMapping(value = "service/list-by-course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getCoursesListByService(
-            @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(courseService.getCoursesOfAvailableServicesByServiceType(serviceType), HttpStatus.OK);
+            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam(value = "university", required = false) UniversityName universityName
+            ) {
+        if (universityName==null || universityName.equals(UniversityName.NONE))
+            return new ResponseEntity<>(courseService.getCoursesOfAvailableServicesByServiceType(serviceType), HttpStatus.OK);
+
+        return new ResponseEntity<>(courseService
+                .findCoursesAvailableByServiceTypeAndAvailableIsTrueAndUnivName(serviceType, universityName),OK);
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TeacherCoursesInfoDto>> getTeachListByService(
-            @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString()), OK);
+            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam(value = "university", required = false) UniversityName universityName) {
+
+        return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString(), universityName), OK);
     }
 
     // ----------------------------------------------------------

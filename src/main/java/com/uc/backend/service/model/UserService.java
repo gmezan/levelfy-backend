@@ -4,6 +4,7 @@ import com.uc.backend.dto.ServiceTeachDto;
 import com.uc.backend.dto.CourseInfoDto;
 import com.uc.backend.dto.TeacherCoursesInfoDto;
 import com.uc.backend.entity.User;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<TeacherCoursesInfoDto> getServiceListByTeach(String s) {
+    public List<TeacherCoursesInfoDto> getServiceListByTeach(String s, UniversityName universityName) {
         Map<Integer, TeacherCoursesInfoDto> map = new HashMap<>();
-        List<ServiceTeachDto> list = this.userRepository.getServiceListByTeach(s);
+        List<ServiceTeachDto> list;
+
+        if (universityName==null || universityName.equals(UniversityName.NONE))
+            list = this.userRepository.getServiceListByTeach(s);
+        else list = this.userRepository.getServiceListByTeachAndByUniversity(s, universityName.toString());
 
         list.forEach(serviceTeachDto -> {
 
@@ -42,7 +47,7 @@ public class UserService {
 
         });
 
-        return new ArrayList<TeacherCoursesInfoDto>(map.values());
+        return new ArrayList<>(map.values());
     }
 
     public Optional<User> getCurrentUser() {
