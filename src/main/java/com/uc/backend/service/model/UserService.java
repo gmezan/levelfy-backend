@@ -78,6 +78,7 @@ public class UserService {
         oldUser.setUniversity(completedUser.getUniversity());
         oldUser.setBirthday(completedUser.getBirthday());
         oldUser.setGender(completedUser.getGender());
+        oldUser.setPhone(completedUser.getPhone());
         return userRepository.save(oldUser);
     }
 }
