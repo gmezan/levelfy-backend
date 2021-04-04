@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class UserController {
 
     // RESTFUL
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MOD') or hasRole('ROLE_TEACH')")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getAllUsers(
             @RequestParam(name = "u", required = false) UniversityName u,
@@ -67,6 +69,7 @@ public class UserController {
         return new ResponseEntity<>(userList, OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("u") int userId) {
         return userRepository.findById(userId)
@@ -74,6 +77,7 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> newUser(@RequestBody User User) {
         return userRepository.findById(User.getIdUser())
@@ -81,6 +85,7 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(userRepository.save(User), OK));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateUser(@RequestBody User User) {
         return userRepository.findById(User.getIdUser())
@@ -88,6 +93,7 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "{u}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity deleteUser(@PathVariable("u") int userId) {
         return userRepository.findById(userId)

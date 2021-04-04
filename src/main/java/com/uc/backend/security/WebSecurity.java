@@ -69,6 +69,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/model/user/me").authenticated() // To get the current User
                 .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
+                .antMatchers("/model/course", "/model/user").hasAnyRole("TEACH")
                 .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/sale", "/model/sale/*", "/model/sale/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/service", "/model/service/*", "/model/service/**").hasAnyRole("ADMIN", "MOD", "TEACH")
@@ -85,6 +86,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/c", "/c/*","/c/**").hasRole("CLIENT")
+                .antMatchers("/t", "/t/*","/t/**").hasRole("TEACH")
 
 
                 .anyRequest().hasRole("ADMIN")
