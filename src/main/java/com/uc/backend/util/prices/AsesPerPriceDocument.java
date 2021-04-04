@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AsesPerPriceDocument extends ServicePriceDocument {
 
-    protected Integer clients;
+    public Integer clients;
 
     public AsesPerPriceDocument(BigDecimal price, Integer clients) {
         this.price = price;

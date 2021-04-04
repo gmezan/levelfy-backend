@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class Enrollment extends Auditable implements Serializable {
 
     @Column(name = "url_sesion")
     private String url;
+
+    @Column(name = "precio")
+    private BigDecimal price;
 
     @Column(name = "expiration_datetime")
     private LocalDateTime expiration;
@@ -143,5 +147,13 @@ public class Enrollment extends Auditable implements Serializable {
 
     public void setExpiration(LocalDateTime expiration) {
         this.expiration = expiration;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
