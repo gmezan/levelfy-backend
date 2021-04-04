@@ -72,4 +72,12 @@ public class UserService {
     public Optional<User> findById(int idUser) {
         return userRepository.findById(idUser);
     }
+
+    public User completeRegistration(User oldUser, User completedUser) {
+        oldUser.setName(completedUser.getName());
+        oldUser.setUniversity(completedUser.getUniversity());
+        oldUser.setBirthday(completedUser.getBirthday());
+        oldUser.setGender(completedUser.getGender());
+        return userRepository.save(oldUser);
+    }
 }

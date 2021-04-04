@@ -3,6 +3,7 @@ package com.uc.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import com.uc.backend.enums.GenderName;
 import com.uc.backend.enums.UniversityName;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -65,8 +66,11 @@ public class User extends Auditable implements Serializable {
     private String token;
 
     @Column(name = "birthday")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "genero")
+    private GenderName gender;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -272,5 +276,13 @@ public class User extends Auditable implements Serializable {
 
     public void setRole(Set<Role> role) {
         this.role = role;
+    }
+
+    public GenderName getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderName gender) {
+        this.gender = gender;
     }
 }
