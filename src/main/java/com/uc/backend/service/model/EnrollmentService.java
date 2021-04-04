@@ -137,5 +137,4 @@ public class EnrollmentService {
     public List<Enrollment> getEnrollmentsByService(int serviceId) {
         return enrollmentRepository.findEnrollmentsByService_IdService(serviceId);
     }
-
 }

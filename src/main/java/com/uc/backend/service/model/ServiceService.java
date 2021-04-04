@@ -109,4 +109,8 @@ public class ServiceService {
         return serviceSessionRepository.findServiceSessionsByService_IdService(serviceId);
     }
 
+    public Optional<Service> findById(int serviceId) {
+        return serviceRepository.findById( serviceId);
+    }
+
 }
