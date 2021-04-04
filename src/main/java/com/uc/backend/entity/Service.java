@@ -1,6 +1,7 @@
 package com.uc.backend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uc.backend.enums.EvaluationName;
 import com.uc.backend.enums.LevelfyServiceType;
@@ -63,6 +64,7 @@ public class Service extends Auditable implements Serializable {
 
     // OneToMany Relations:
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "service")
     private List<Enrollment> enrollmentList;
 
