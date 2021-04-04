@@ -105,4 +105,8 @@ public class ServiceService {
         return serviceRepository.findServiceByTeacher_IdUserAndIdService(teacher.getIdUser(), serviceId);
     }
 
+    public List<ServiceSession> getServiceSessionsByServiceId(int serviceId) {
+        return serviceSessionRepository.findServiceSessionsByService_IdService(serviceId);
+    }
+
 }

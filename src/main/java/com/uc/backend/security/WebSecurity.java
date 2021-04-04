@@ -85,7 +85,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/c", "/c/*","/c/**").hasRole("CLIENT")
-                .antMatchers("/t", "/t/*","/t/**").hasRole("TEACH")
+                .antMatchers("/t", "/t/*","/t/**").hasAnyRole("TEACH", "ADMIN")
+                .antMatchers("/a", "/a/*","/a/**").hasAnyRole( "ADMIN")
 
 
                 .anyRequest().hasRole("ADMIN")

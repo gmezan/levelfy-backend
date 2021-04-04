@@ -1,5 +1,6 @@
 package com.uc.backend.controller.roles.teach;
 
+import com.uc.backend.entity.Enrollment;
 import com.uc.backend.entity.ServiceSession;
 import com.uc.backend.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,20 @@ public class TeachController {
                 ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
 
     }
+
+    @GetMapping(value = "enrollments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Enrollment>> getEnrollments(
+            @RequestParam("serviceId") int serviceId) {
+
+        return userService.getCurrentUser()
+                .map( user -> serviceService.isTeacherLecturingService(user, serviceId)
+                        .map(service -> new ResponseEntity<>(enrollmentService.
+                                getEnrollmentsByService(service),
+                                HttpStatus.OK))
+                        .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
+                ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
+
+    }
+
 
 }
