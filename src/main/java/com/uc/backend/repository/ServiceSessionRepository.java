@@ -3,6 +3,8 @@ package com.uc.backend.repository;
 import com.uc.backend.entity.ServiceSession;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ServiceSessionRepository extends JpaRepository <ServiceSession, Integer> {
 
     /*
@@ -13,4 +15,6 @@ public interface ServiceSessionRepository extends JpaRepository <ServiceSession,
 
     List<ServiceSession> findByClase_Idclase(int idclase);
 */
+
+    List<ServiceSession> findServiceSessionsByService_IdService(int service_idService);
 }

@@ -4,6 +4,7 @@ import com.uc.backend.dto.PaymentDto;
 import com.uc.backend.entity.Enrollment;
 import com.uc.backend.entity.Sale;
 import com.uc.backend.entity.ServiceSession;
+import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,15 @@ public class ClientController {
                                 HttpStatus.OK))
                         .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST))
                 ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
+
+    }
+
+    @PostMapping(value = "user-registration", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> completeRegistration(@RequestBody User completedUser) {
+
+        return userService.getCurrentUser()
+                .map( user -> new ResponseEntity<>(userService.completeRegistration(user, completedUser), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
 
     }
 

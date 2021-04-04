@@ -6,6 +6,7 @@ import com.uc.backend.enums.RoleName;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Entity
@@ -20,6 +21,11 @@ public class Role implements Serializable {
     @NotNull
     @Column(name = "nombre", unique = true)
     private RoleName name;
+
+    public Role(int idRole, RoleName name) {
+        this.idRole = idRole;
+        this.name = name;
+    }
 
     public Role(){}
 
@@ -41,5 +47,19 @@ public class Role implements Serializable {
 
     public void setName(RoleName name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return idRole == role.idRole &&
+                name == role.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRole, name);
     }
 }

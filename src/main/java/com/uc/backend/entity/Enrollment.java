@@ -48,6 +48,9 @@ public class Enrollment extends Auditable implements Serializable {
     @Column(name = "url_sesion")
     private String url;
 
+    @Column(name = "expiration_datetime")
+    private LocalDateTime expiration;
+
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "enrollment")
@@ -132,5 +135,13 @@ public class Enrollment extends Auditable implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(LocalDateTime expiration) {
+        this.expiration = expiration;
     }
 }

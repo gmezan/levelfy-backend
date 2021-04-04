@@ -61,15 +61,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
                 .antMatchers("/model/service/get-prices").hasAnyRole("ADMIN", "MOD", "TEACH") // Prices info
                 .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenClientController
-                .antMatchers("/model/blog").permitAll()
+                .antMatchers("/model/blog", "/model/blog/*", "/model/blog/**").permitAll()
                 .antMatchers("/android/**").permitAll()
 
                 .antMatchers("/model/comment-forum", "/model/comment-forum/*", "/model/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "ADMIN")
 
 
                 .antMatchers("/model/user/me").authenticated() // To get the current User
-                .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD")
-                .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN")
+                .antMatchers("/model/user", "/model/user/*", "/model/user/**").hasAnyRole("ADMIN", "MOD", "TEACH")
+                .antMatchers("/model/course", "/model/course/*", "/model/course/**").hasAnyRole("ADMIN", "TEACH")
                 .antMatchers("/model/sale", "/model/sale/*", "/model/sale/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/service", "/model/service/*", "/model/service/**").hasAnyRole("ADMIN", "MOD", "TEACH")
                 .antMatchers("/model/sale-canceled", "/model/sale-canceled/*", "/model/sale-canceled/**").hasAnyRole("ADMIN")
@@ -77,14 +77,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/model/enrollment", "/model/enrollment/*", "/model/enrollment/**").hasAnyRole("ADMIN")
                 .antMatchers("/model/course-suggestion", "/model/course-suggestion/*", "/model/course-suggestion/**").hasAnyRole("ADMIN")
 
-                .antMatchers("/s3/comment-forum", "/s3/comment-forum/*", "/s3/comment-forum/**").hasAnyRole("CLIENT", "TEACH")
+                .antMatchers("/s3/comment-forum", "/s3/comment-forum/*", "/s3/comment-forum/**").hasAnyRole("CLIENT", "TEACH", "ADMIN")
 
 
                 .antMatchers("/s3/course", "/s3/course/*", "/s3/course/**").hasAnyRole("ADMIN", "MOD")
-                .antMatchers("/s3/service", "/s3/service/*", "/s3/service/**").hasAnyRole("ADMIN", "MOD")
+                .antMatchers("/s3/service", "/s3/service/*", "/s3/service/**").hasAnyRole("ADMIN", "MOD", "TEACH")
 
 
                 .antMatchers("/c", "/c/*","/c/**").hasRole("CLIENT")
+                .antMatchers("/t", "/t/*","/t/**").hasAnyRole("TEACH", "ADMIN")
+                .antMatchers("/a", "/a/*","/a/**").hasAnyRole( "ADMIN")
 
 
                 .anyRequest().hasRole("ADMIN")

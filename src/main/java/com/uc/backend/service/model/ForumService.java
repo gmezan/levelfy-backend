@@ -2,7 +2,9 @@ package com.uc.backend.service.model;
 
 import com.uc.backend.entity.CommentForum;
 import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.Role;
 import com.uc.backend.entity.User;
+import com.uc.backend.enums.RoleName;
 import com.uc.backend.repository.CommentForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @Transactional
 public class ForumService {
 
+    private final Role ADMIN_ROLE = new Role(4, RoleName.ROLE_ADMIN);
     CommentForumRepository commentForumRepository;
 
     @Autowired
@@ -27,6 +30,10 @@ public class ForumService {
 
     public List<CommentForum> listAllByService(com.uc.backend.entity.Service service) {
         return commentForumRepository.findByService_IdServiceOrderByDateTimeAsc(service.getIdService());
+    }
+
+    public List<CommentForum> listAllByService_ServiceId(int serviceId) {
+        return commentForumRepository.findByService_IdServiceOrderByDateTimeAsc(serviceId);
     }
 
     public CommentForum create(CommentForum commentForum, com.uc.backend.entity.Service service, User user ) {
@@ -49,6 +56,10 @@ public class ForumService {
     }
 
     public Optional<CommentForum> getById(int commentForumId, User user) {
+
+        if (user.getRole().contains(ADMIN_ROLE))
+            return commentForumRepository.findById(commentForumId);
+
         return commentForumRepository.findCommentForumByIdCommentAndUser_IdUser(
                 commentForumId, user.getIdUser());
     }
@@ -56,6 +67,11 @@ public class ForumService {
     public CommentForum update(CommentForum oldCommentForum, CommentForum newCommentForum) {
         oldCommentForum.setComment(newCommentForum.getComment());
         return commentForumRepository.save(oldCommentForum);
+    }
+
+    public Optional<CommentForum> getById(CommentForum commentForum) {
+        return commentForumRepository.findById(
+                commentForum.getIdComment());
     }
 
 

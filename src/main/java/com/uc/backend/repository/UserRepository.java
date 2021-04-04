@@ -41,4 +41,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "where uhr.idrol = 2 and c.disponible = 1 and c.tipo_servicio = ?1", nativeQuery = true)
     List<ServiceTeachDto> getServiceListByTeach(String s);
 
+    @Query(value = "SELECT u.idusuario as userId, u.nombre as fullName, u.foto_url as photo, cu.nombre as courseName, cu.universidad as university, cu.idcurso as courseId \n" +
+            "FROM usuario u inner join usuario_has_rol uhr on (u.idusuario = uhr.idusuario) \n" +
+            "inner join clase c on (c.idprofesor = u.idusuario) \n" +
+            "inner join curso cu on (c.idcurso=cu.idcurso and c.universidad=cu.universidad)\n" +
+            "where uhr.idrol = 2 and c.disponible = 1 and c.tipo_servicio = ?1 and cu.universidad= ?2", nativeQuery = true)
+    List<ServiceTeachDto> getServiceListByTeachAndByUniversity(String s, String university);
+
 }

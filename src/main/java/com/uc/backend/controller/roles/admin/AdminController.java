@@ -1,11 +1,62 @@
 package com.uc.backend.controller.roles.admin;
 
+import com.uc.backend.entity.Enrollment;
+import com.uc.backend.entity.ServiceSession;
+import com.uc.backend.service.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/a")
 public class AdminController {
+
+    EnrollmentService enrollmentService;
+    UserService userService;
+    SaleService saleService;
+    ServiceService serviceService;
+    ServiceSessionService serviceSessionService;
+
+    @Autowired
+    public AdminController(EnrollmentService enrollmentService, UserService userService,
+                           SaleService saleService, ServiceService serviceService,
+                           ServiceSessionService serviceSessionService) {
+        this.enrollmentService = enrollmentService;
+        this.userService = userService;
+        this.saleService = saleService;
+        this.serviceService = serviceService;
+        this.serviceSessionService = serviceSessionService;
+    }
+
+    @GetMapping(value = "service-session", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ServiceSession>> getServiceSessionsByServiceId(
+            @RequestParam("serviceId") int serviceId) {
+
+        return userService.getCurrentUser()
+                .map( user ->
+                        new ResponseEntity<>(serviceService
+                                .getServiceSessionsByServiceId(serviceId), HttpStatus.OK)
+                ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
+    }
+
+    @GetMapping(value = "enrollments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Enrollment>> getEnrollments(
+            @RequestParam("serviceId") int serviceId) {
+
+        return userService.getCurrentUser()
+                .map( user -> new ResponseEntity<>(enrollmentService.
+                        getEnrollmentsByService(serviceId), HttpStatus.OK)
+                ).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.FORBIDDEN));
+    }
+
+
+
 /*
     @Autowired
     ServiceRepository serviceRepository;

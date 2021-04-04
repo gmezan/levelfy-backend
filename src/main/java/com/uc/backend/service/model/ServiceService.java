@@ -4,6 +4,7 @@ import com.uc.backend.dto.CourseId;
 import com.uc.backend.entity.Service;
 import com.uc.backend.entity.ServiceAgenda;
 import com.uc.backend.entity.ServiceSession;
+import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.RoleName;
 import com.uc.backend.repository.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -97,6 +99,18 @@ public class ServiceService {
 
     public List<Service> getServiceFormByCourse(LevelfyServiceType serviceType, CourseId courseId) {
         return serviceRepository.findServicesByServiceTypeAndCourse_CourseIdAndAvailableIsTrue(serviceType,courseId);
+    }
+
+    public Optional<Service> isTeacherLecturingService(User teacher, int serviceId) {
+        return serviceRepository.findServiceByTeacher_IdUserAndIdService(teacher.getIdUser(), serviceId);
+    }
+
+    public List<ServiceSession> getServiceSessionsByServiceId(int serviceId) {
+        return serviceSessionRepository.findServiceSessionsByService_IdService(serviceId);
+    }
+
+    public Optional<Service> findById(int serviceId) {
+        return serviceRepository.findById( serviceId);
     }
 
 }

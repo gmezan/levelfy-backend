@@ -2,15 +2,13 @@ package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.TeacherCoursesInfoDto;
+import com.uc.backend.entity.ContactMessage;
 import com.uc.backend.entity.Course;
 import com.uc.backend.entity.CourseSuggestion;
 import com.uc.backend.entity.Service;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
-import com.uc.backend.service.model.CourseService;
-import com.uc.backend.service.model.CourseSuggestionService;
-import com.uc.backend.service.model.ServiceService;
-import com.uc.backend.service.model.UserService;
+import com.uc.backend.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,16 +30,19 @@ public class OpenClientController {
     CourseSuggestionService courseSuggestionService;
     CourseService courseService;
     ServiceService serviceService;
+    ContactMessageService contactMessageService;
 
     @Autowired
     public OpenClientController(UserService userService,
                                 CourseSuggestionService courseSuggestionService,
                                 CourseService courseService,
-                                ServiceService serviceService) {
+                                ServiceService serviceService,
+                                ContactMessageService contactMessageService) {
         this.userService = userService;
         this.courseSuggestionService = courseSuggestionService;
         this.courseService = courseService;
         this.serviceService = serviceService;
+        this.contactMessageService = contactMessageService;
     }
 
     @PostMapping(value = "course-suggestion",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,14 +60,22 @@ public class OpenClientController {
 
     @GetMapping(value = "service/list-by-course", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Course>> getCoursesListByService(
-            @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(courseService.getCoursesOfAvailableServicesByServiceType(serviceType), HttpStatus.OK);
+            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam(value = "university", required = false) UniversityName universityName
+            ) {
+        if (universityName==null || universityName.equals(UniversityName.NONE))
+            return new ResponseEntity<>(courseService.getCoursesOfAvailableServicesByServiceType(serviceType), HttpStatus.OK);
+
+        return new ResponseEntity<>(courseService
+                .findCoursesAvailableByServiceTypeAndAvailableIsTrueAndUnivName(serviceType, universityName),OK);
     }
 
     @GetMapping(value = "service/list-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TeacherCoursesInfoDto>> getTeachListByService(
-            @RequestParam("serviceType") LevelfyServiceType serviceType) {
-        return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString()), OK);
+            @RequestParam("serviceType") LevelfyServiceType serviceType,
+            @RequestParam(value = "university", required = false) UniversityName universityName) {
+
+        return new ResponseEntity<>(userService.getServiceListByTeach(serviceType.toString(), universityName), OK);
     }
 
     // ----------------------------------------------------------
@@ -99,5 +108,11 @@ public class OpenClientController {
     // -----------------------------
 
 
+    @PostMapping(value = "contact-message", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ContactMessage> postContactMessage(
+            @RequestBody ContactMessage contactMessage
+    ) {
+        return new ResponseEntity<>(contactMessageService.create(contactMessage), OK);
+    }
 
 }

@@ -2,6 +2,7 @@ package com.uc.backend.service.model;
 
 import com.uc.backend.entity.Course;
 import com.uc.backend.enums.LevelfyServiceType;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,10 @@ public class CourseService {
 
     public List<Course> getCoursesOfAvailableServicesByServiceType(LevelfyServiceType levelfyServiceType) {
         return courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrue(levelfyServiceType.toString());
+    }
+
+    public List<Course> findCoursesAvailableByServiceTypeAndAvailableIsTrueAndUnivName(LevelfyServiceType levelfyServiceType, UniversityName universityName) {
+        return courseRepository.findCoursesAvailableByServiceTypeAndAvailableIsTrueAndUnivName(levelfyServiceType.toString(), universityName.toString());
     }
 
 }
