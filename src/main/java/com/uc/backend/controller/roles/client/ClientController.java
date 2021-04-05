@@ -77,8 +77,8 @@ public class ClientController {
 
     }
 
-    @DeleteMapping(value = "enrollment/:id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity deleteServiceById(@RequestParam("id") Integer id) {
+    @DeleteMapping(value = "enrollment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteServiceById(@PathVariable("id") Integer id) {
         return userService.getCurrentUser()
                 .map(user -> enrollmentService.getEnrollmentById(user, id)
                         .map( enrollment -> {
