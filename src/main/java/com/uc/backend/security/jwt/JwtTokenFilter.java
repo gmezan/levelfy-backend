@@ -45,6 +45,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             //response.sendRedirect(request.getContextPath()+"/oauth/logout");
             RequestDispatcher rd = request.getRequestDispatcher("/oauth/logout");
             rd.forward(request, response);
+            return;
 
         }
         catch (Exception ex) {
