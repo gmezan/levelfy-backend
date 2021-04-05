@@ -102,6 +102,17 @@ public class OAuthController {
 
     }
 
+
+    @GetMapping("logout")
+    public ResponseEntity<?> getLogout() {
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("logout")
+    public ResponseEntity<?> postLogout() {
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
     /*
     @PostMapping("facebook")
     public ResponseEntity<?> facebook(@RequestBody TokenDto tokenDto) throws IOException {
