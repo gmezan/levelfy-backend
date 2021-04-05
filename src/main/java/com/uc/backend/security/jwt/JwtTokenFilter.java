@@ -41,6 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         catch (ExpiredJwtException ex) {
             logger.warn("Expired Token");
+            response.sendError(418);
         }
         catch (Exception ex) {
             logger.error("Fail in doFilterInternal");
