@@ -82,6 +82,16 @@ public class ClientController {
         return userService.getCurrentUser()
                 .map(user -> enrollmentService.getEnrollmentById(user, id)
                         .map( enrollment -> {
+
+                            if (enrollment.getPayed()) {
+                                // If it is already payed
+                                return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+                            }
+
+                            if (enrollment.getSaleList()!=null && !enrollment.getSaleList().isEmpty()) {
+                                return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+                            }
+
                             enrollmentService.deleteEnrollment(enrollment);
                             return new ResponseEntity(null, HttpStatus.OK);
                         })
