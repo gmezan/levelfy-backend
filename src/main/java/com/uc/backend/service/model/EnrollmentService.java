@@ -76,10 +76,17 @@ public class EnrollmentService {
 
                                 enrollment.setPrice(service.getPrice());
 
-                                BigDecimal hours =
-                                        BigDecimal.valueOf(enrollment.getEnd().getHour() - enrollment.getStart().getHour());
-
                                 if (service.getServiceType().equals(LevelfyServiceType.ASES_PER)) {
+
+                                    BigDecimal hours =
+                                            BigDecimal.valueOf(enrollment.getEnd().getHour() - enrollment.getStart().getHour());
+
+                                    if (enrollment.getEnd().isBefore(enrollment.getStart()))
+                                        return null;
+
+                                    if (hours.compareTo(BigDecimal.ZERO) < 0)
+                                        return null;
+
                                     CustomConstants.PRICES.get(service.getCourse().getCourseId().getUniversity()).get(LevelfyServiceType.ASES_PER)
                                         .forEach(servicePriceDocument -> {
                                                 AsesPerPriceDocument asesPerPriceDocument = (AsesPerPriceDocument)servicePriceDocument;
