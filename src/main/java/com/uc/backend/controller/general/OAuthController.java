@@ -105,11 +105,13 @@ public class OAuthController {
 
     @GetMapping("logout")
     public ResponseEntity<?> getLogout() {
+        logger.info("logout...");
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("logout")
     public ResponseEntity<?> postLogout() {
+        logger.info("logout...");
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,8 +42,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         catch (ExpiredJwtException ex) {
             logger.warn("Expired Token");
-            logger.warn("Context Path:" + request.getContextPath()+"/model/user/me");
             //response.sendRedirect(request.getContextPath()+"/oauth/logout");
+            RequestDispatcher rd = request.getRequestDispatcher("/oauth/logout");
+            rd.forward(request, response);
+
         }
         catch (Exception ex) {
             logger.error("Fail in doFilterInternal");
