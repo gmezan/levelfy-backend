@@ -91,7 +91,8 @@ public class EnrollmentService {
                                         .forEach(servicePriceDocument -> {
                                                 AsesPerPriceDocument asesPerPriceDocument = (AsesPerPriceDocument)servicePriceDocument;
                                                 if (asesPerPriceDocument.clients.equals(enrollment.getNumberOfStudents())) {
-                                                    enrollment.setPrice(asesPerPriceDocument.getPrice().multiply(hours));
+                                                    enrollment.setPrice(asesPerPriceDocument.getPrice().multiply(hours)
+                                                            .multiply(BigDecimal.valueOf(enrollment.getNumberOfStudents())));
                                             }
                                     });
                                 }
