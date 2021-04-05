@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         catch (ExpiredJwtException ex) {
             logger.warn("Expired Token");
             logger.warn("Context Path:" + request.getContextPath()+"/model/user/me");
-            response.sendRedirect(request.getContextPath()+"/model/user/me");
+            response.sendRedirect(request.getContextPath()+"/oauth/logout");
         }
         catch (Exception ex) {
             logger.error("Fail in doFilterInternal");
