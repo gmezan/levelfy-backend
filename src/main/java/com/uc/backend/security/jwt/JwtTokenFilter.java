@@ -1,6 +1,7 @@
 package com.uc.backend.security.jwt;
 
 import com.uc.backend.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
+        }
+        catch (ExpiredJwtException ex) {
+            logger.warn("Expired Token");
         }
         catch (Exception ex) {
             logger.error("Fail in doFilterInternal");
