@@ -47,7 +47,6 @@ public class EnrollmentController {
 
         if (active) return new ResponseEntity<>(enrollmentList.stream().filter(Enrollment::getActive).collect(Collectors.toList()), OK);
         else return new ResponseEntity<>(enrollmentList.stream().filter(e->!e.getActive()).collect(Collectors.toList()), OK);
-
     }
 
     @GetMapping(value = "{e}", produces = MediaType.APPLICATION_JSON_VALUE)

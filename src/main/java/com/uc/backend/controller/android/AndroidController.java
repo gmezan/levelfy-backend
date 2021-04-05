@@ -70,7 +70,7 @@ public class AndroidController {
         EnrollmentVerify enrollmentVerify=new EnrollmentVerify();
         return userService.getCurrentUser().map(user ->
                 enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
-             enrollmentVerify.setEnroll(true);
+             enrollmentVerify.setEnroll(true);enrollmentVerify.setIdEnrollment(enrollment.getIdEnrollment());
              return new ResponseEntity<>( enrollmentVerify , OK); }  ).orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK)))
                 .orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
 
