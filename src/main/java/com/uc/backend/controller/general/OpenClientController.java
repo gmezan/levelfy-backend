@@ -2,10 +2,7 @@ package com.uc.backend.controller.general;
 
 import com.uc.backend.dto.CourseId;
 import com.uc.backend.dto.TeacherCoursesInfoDto;
-import com.uc.backend.entity.ContactMessage;
-import com.uc.backend.entity.Course;
-import com.uc.backend.entity.CourseSuggestion;
-import com.uc.backend.entity.Service;
+import com.uc.backend.entity.*;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.UniversityName;
 import com.uc.backend.service.model.*;
@@ -99,9 +96,8 @@ public class OpenClientController {
     @GetMapping(value = "service/form-by-teach", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Service>> getListOfServicesForFormByTeach(
             @RequestParam("serviceType") LevelfyServiceType st,
-            @RequestParam("i") String idCourse,
-            @RequestParam("u") UniversityName university) {
-        return new ResponseEntity<>(serviceService.getServiceFormByCourse(st, new CourseId(idCourse, university)), OK);
+            @RequestParam("t") int teacherId) {
+        return new ResponseEntity<>(serviceService.getServiceFormByTeacher(st, teacherId), OK);
     }
 
 

@@ -77,11 +77,21 @@ public class ClientController {
 
     }
 
-    @DeleteMapping(value = "enrollment/:id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity deleteServiceById(@RequestParam("id") Integer id) {
+    @DeleteMapping(value = "enrollment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteServiceById(@PathVariable("id") Integer id) {
         return userService.getCurrentUser()
                 .map(user -> enrollmentService.getEnrollmentById(user, id)
                         .map( enrollment -> {
+
+                            if (enrollment.getPayed()) {
+                                // If it is already payed
+                                return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+                            }
+
+                            if (enrollment.getSaleList()!=null && !enrollment.getSaleList().isEmpty()) {
+                                return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+                            }
+
                             enrollmentService.deleteEnrollment(enrollment);
                             return new ResponseEntity(null, HttpStatus.OK);
                         })

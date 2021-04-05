@@ -1,6 +1,7 @@
 package com.uc.backend.security.jwt;
 
 import com.uc.backend.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +38,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+        }
+        catch (ExpiredJwtException ex) {
+            logger.warn("Expired Token");
+            //response.sendRedirect(request.getContextPath()+"/oauth/logout");
+            RequestDispatcher rd = request.getRequestDispatcher("/oauth/logout");
+            rd.forward(request, response);
+            return;
 
         }
         catch (Exception ex) {

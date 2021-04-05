@@ -6,10 +6,14 @@ import com.uc.backend.entity.Service;
 import com.uc.backend.entity.User;
 import com.uc.backend.enums.LevelfyServiceType;
 import com.uc.backend.enums.RoleName;
+import com.uc.backend.enums.UniversityName;
 import com.uc.backend.repository.EnrollmentRepository;
 import com.uc.backend.repository.RoleRepository;
 import com.uc.backend.repository.ServiceRepository;
 import com.uc.backend.repository.UserRepository;
+import com.uc.backend.util.CustomConstants;
+import com.uc.backend.util.prices.AsesPerPriceDocument;
+import com.uc.backend.util.prices.ServicePriceDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -57,7 +61,7 @@ public class EnrollmentService {
 
         enrollment.setStudent(user);
         enrollment.setActive(Boolean.TRUE);
-
+        enrollment.setPayed(Boolean.FALSE);
 
         return serviceRepository.findServiceByIdServiceAndAvailableIsTrue(enrollment.getService().getIdService())
                 .map(service ->
@@ -70,9 +74,33 @@ public class EnrollmentService {
                                 if (!service.getAvailable())
                                     return null;
 
+                                enrollment.setPrice(service.getPrice());
+
+                                if (service.getServiceType().equals(LevelfyServiceType.ASES_PER)) {
+
+                                    BigDecimal hours =
+                                            BigDecimal.valueOf(enrollment.getEnd().getHour() - enrollment.getStart().getHour());
+
+                                    if (enrollment.getEnd().isBefore(enrollment.getStart()))
+                                        return null;
+
+                                    if (hours.compareTo(BigDecimal.ZERO) < 0)
+                                        return null;
+
+                                    CustomConstants.PRICES.get(service.getCourse().getCourseId().getUniversity()).get(LevelfyServiceType.ASES_PER)
+                                        .forEach(servicePriceDocument -> {
+                                                AsesPerPriceDocument asesPerPriceDocument = (AsesPerPriceDocument)servicePriceDocument;
+                                                if (asesPerPriceDocument.clients.equals(enrollment.getNumberOfStudents())) {
+                                                    enrollment.setPrice(asesPerPriceDocument.getPrice().multiply(hours)
+                                                            .multiply(BigDecimal.valueOf(enrollment.getNumberOfStudents())));
+                                            }
+                                    });
+                                }
+
                                 // If it is FREE
                                 if (service.getPrice().equals(BigDecimal.ZERO))
                                     enrollment.setPayed(Boolean.TRUE);
+
 
                                 enrollment.setService(service);
                                 return enrollmentRepository.save(enrollment);

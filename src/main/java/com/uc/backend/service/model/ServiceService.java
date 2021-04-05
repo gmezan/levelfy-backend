@@ -113,4 +113,7 @@ public class ServiceService {
         return serviceRepository.findById( serviceId);
     }
 
+    public List<Service> getServiceFormByTeacher(LevelfyServiceType st, int teacherId) {
+        return this.serviceRepository.findServicesByServiceTypeAndTeacher_IdUserAndAvailableIsTrue(st, teacherId);
+    }
 }

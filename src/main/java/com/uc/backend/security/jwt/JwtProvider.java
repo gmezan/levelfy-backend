@@ -32,7 +32,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getEmailFromToken(String token) {
+    public String getEmailFromToken(String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
                 .getBody().getSubject();
     }

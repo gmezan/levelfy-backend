@@ -58,7 +58,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/oauth/google", "/oauth/facebook").permitAll()
+                .antMatchers("/oauth/google", "/oauth/facebook", "/oauth/logout").permitAll()
                 .antMatchers("/model/service/get-prices").hasAnyRole("ADMIN", "MOD", "TEACH") // Prices info
                 .antMatchers("/open", "/open/*", "/open/**").permitAll() // OpenClientController
                 .antMatchers("/model/blog", "/model/blog/*", "/model/blog/**").permitAll()
