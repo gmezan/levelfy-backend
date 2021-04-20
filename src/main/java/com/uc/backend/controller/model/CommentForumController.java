@@ -28,6 +28,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class CommentForumController {
 
     private final Role ADMIN_ROLE = new Role(4, RoleName.ROLE_ADMIN);
+    private final Role TEACH_ROLE = new Role(2, RoleName.ROLE_TEACH);
 
     ForumService forumService;
     UserService userService;
@@ -51,7 +52,7 @@ public class CommentForumController {
 
         return userService.getCurrentUser()
                 .map(user -> {
-                    if(user.getRole().contains(ADMIN_ROLE))
+                    if(user.getRole().contains(ADMIN_ROLE) || user.getRole().contains(TEACH_ROLE) )
                         return new ResponseEntity<>
                                 (forumService.listAllByService_ServiceId(serviceId),OK);
 
@@ -99,6 +100,13 @@ public class CommentForumController {
                         {
                             if(user.getRole().contains(ADMIN_ROLE))
                                 return serviceService.findById(commentForum.getService().getIdService()).
+                                        map(service ->
+                                                new ResponseEntity<>(forumService.create(commentForum, service, user), OK))
+                                        .orElseGet(()->new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
+
+
+                            else if (user.getRole().contains(TEACH_ROLE))
+                                return serviceService.isTeacherLecturingService(user, commentForum.getService().getIdService()).
                                         map(service ->
                                                 new ResponseEntity<>(forumService.create(commentForum, service, user), OK))
                                         .orElseGet(()->new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
