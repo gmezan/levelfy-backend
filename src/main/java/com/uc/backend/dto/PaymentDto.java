@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import static com.uc.backend.util.CustomConstants.METODOS_DE_PAGO;
 
 public class PaymentDto {
+
     private String persona;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;

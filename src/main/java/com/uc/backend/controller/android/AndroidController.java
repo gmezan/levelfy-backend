@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,8 @@ public class AndroidController {
                                 newEnrollment.setStudent(user);
                                 newEnrollment.setPayed(false);
                                 newEnrollment.setActive(true);
+                                BigDecimal price= BigDecimal.valueOf(0.0)  ;
+                                newEnrollment.setPrice(price);
                                 return new ResponseEntity<>(enrollmentRepository.save(newEnrollment), OK);
                             })
                             .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
@@ -68,13 +71,11 @@ public class AndroidController {
     public ResponseEntity<EnrollmentVerify> verifyEnrollment(@RequestParam(name = "i", required = false) int idClase
     ) {
         EnrollmentVerify enrollmentVerify=new EnrollmentVerify();
-        return userService.getCurrentUser().map(user -> {
-           return enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
-                enrollmentVerify.setEnroll(true);
-                return new ResponseEntity<>( enrollmentVerify , OK); }  )
-                    .orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK));
-
-        } ).orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
+        return userService.getCurrentUser().map(user ->
+                enrollmentRepository.findEnrollmentByService_IdServiceAndStudent_IdUser(idClase,user.getIdUser()).map(enrollment ->{
+             enrollmentVerify.setEnroll(true);enrollmentVerify.setIdEnrollment(enrollment.getIdEnrollment());
+             return new ResponseEntity<>( enrollmentVerify , OK); }  ).orElseGet(() ->  new ResponseEntity<>( enrollmentVerify , OK)))
+                .orElseGet( () -> new ResponseEntity<>(  null, BAD_REQUEST) );
 
 
     }
